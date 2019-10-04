@@ -1,0 +1,50 @@
+{
+    "name": "useAudioPlayer",
+    "version": "1.0.0",
+    "description": "Custom hook & context for controlling browser audio",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/E-Kuerschner/useAudioPlayer",
+    "author": "Erich Kuerschner",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc -w"
+    },
+    "devDependencies": {
+        "@testing-library/react": "^9.2.0",
+        "@types/howler": "^2.1.1",
+        "@types/react": "^16.9.4",
+        "@typescript-eslint/eslint-plugin": "^2.3.2",
+        "@typescript-eslint/parser": "^2.3.2",
+        "chai": "^4.2.0",
+        "eslint": "^6.5.1",
+        "eslint-plugin-react": "^7.16.0",
+        "eslint-plugin-react-hooks": "^2.1.2",
+        "husky": "^3.0.8",
+        "lint-staged": "^9.4.1",
+        "mocha": "^6.2.1",
+        "prettier": "^1.18.2",
+        "react": "^16.10.2",
+        "sinon": "^7.5.0",
+        "typescript": "^3.6.3"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0"
+    },
+    "dependencies": {
+        "howler": "^2.1.2",
+        "lodash": "^4.17.15"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,tsx,md,json}": [
+            "prettier --write",
+            "git add"
+        ]
+    }
+}
