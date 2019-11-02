@@ -1,5 +1,5 @@
 {
-    "name": "useAudioPlayer",
+    "name": "react-use-audio-player",
     "version": "0.0.1",
     "description": "Custom hook & context for controlling browser audio",
     "main": "dist/index.js",

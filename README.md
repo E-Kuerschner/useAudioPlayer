@@ -1,19 +1,19 @@
-# useAudioPlayer
+# react-use-audio-player
 
 A custom React hook for controlling browser audio playback
 
-![Version](https://img.shields.io/npm/v/useAudioPlayer)
+![Version](https://img.shields.io/npm/v/react-use-audio-player)
 
 ## Setup
 
 Install with `npm` or `yarn`
 
 ```bash
-npm install useAudioPlayer
+npm install react-use-audio-player
 ```
 
 ```bash
-yarn add useAudioPlayer
+yarn add react-use-audio-player
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ The Provider manages an audio instance and exposes an interface for manipulating
 
 ```javascript
 import React from "react"
-import { AudioPlayerProvider } from "useAudioPlayer"
+import { AudioPlayerProvider } from "react-use-audio-player"
 
 const App = () => {
     return (
@@ -46,7 +46,7 @@ Example:
 
 ```javascript
 import React from "react"
-import { useAudioPlayer } from "useAudioPlayer"
+import { useAudioPlayer } from "react-use-audio-player"
 
 const AudioPlayer = ({ audio }) => {
     const { play, pause, playbackReady, loading, isPlaying } = useAudioPlayer(
@@ -125,7 +125,7 @@ For example a component that renders a play/pause button may use `useAudioPlayer
 
 ```javascript
 import React from "react"
-import { useAudioPosition } from "useAudioPlayer"
+import { useAudioPosition } from "react-use-audio-player"
 
 const PlayBar = () => {
     const { position, duration } = useAudioPosition()
