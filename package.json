@@ -1,6 +1,6 @@
 {
     "name": "react-use-audio-player",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Custom hook & context for controlling browser audio",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -20,7 +20,8 @@
         "test": "jest",
         "build": "rimraf dist && tsc",
         "build:watch": "tsc -w",
-        "prepublish": "yarn test && yarn build"
+        "preversion": "yarn test && yarn build",
+        "release": "yarn version"
     },
     "files": [
         "dist"
