@@ -1,7 +1,7 @@
 {
     "name": "react-use-audio-player",
     "version": "0.0.5",
-    "description": "Custom hook & context for controlling browser audio",
+    "description": "React hook for building custom audio playback controls",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "repository": "https://github.com/E-Kuerschner/useAudioPlayer",
@@ -14,7 +14,9 @@
         "audio",
         "player",
         "howler",
-        "sound"
+        "sound",
+        "react-howler",
+        "howler.js"
     ],
     "scripts": {
         "start": "cd examples && yarn start",

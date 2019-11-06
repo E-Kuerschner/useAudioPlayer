@@ -13,3 +13,8 @@
     background-color: blue;
     height: 30px;
 }
+
+.errorMessage {
+    color: red;
+    font-weight: bold;
+}

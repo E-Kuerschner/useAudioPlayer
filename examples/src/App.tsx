@@ -1,13 +1,12 @@
 import React from "react"
 import { BrowserRouter, Link, Route } from "react-router-dom"
-import { BasicExample } from "./BasicExample/BasicExample"
+import { BasicExample } from "./BasicExample"
 import "./App.css"
 
 function ExampleSelect() {
     return (
         <div className="exampleSelect">
             <h3>Examples</h3>
-            <Link to="/basic">Basic Example</Link>
             <Link to="/basic">Basic Example</Link>
         </div>
     )

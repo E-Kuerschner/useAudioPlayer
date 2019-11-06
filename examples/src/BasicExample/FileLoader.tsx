@@ -13,8 +13,6 @@ export const FileLoader: FunctionComponent<{}> = () => {
 
     return (
         <div className="fileLoader">
-            {!playbackReady && !error && loading && <h1>NOT READY</h1>}
-            {error && <h1>{error.message}</h1>}
             <h5>select audio file:</h5>
             <select onChange={selectAudioFile}>
                 <option></option>
@@ -22,6 +20,10 @@ export const FileLoader: FunctionComponent<{}> = () => {
                 <option>cats.mp3</option>
                 <option>doesntExist.mp3</option>
             </select>
+            {!playbackReady && !error && loading && (
+                <p>Fetching audio file...</p>
+            )}
+            {error && <p className="errorMessage">{error.message}</p>}
         </div>
     )
 }
