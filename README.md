@@ -139,9 +139,17 @@ const PlayBar = () => {
 }
 ```
 
-## Contributing
+## Examples
 
-Please submit pull requests to the repository.
+To run the example applications follow the following steps:
+
+1. `git clone` the repository
+2. `cd useAudioPlayer/examples`
+3. `yarn/npm install`
+4. `yarn start`
+5. follow the local README for further assistance
+
+## Development Tools
 
 #### Eslint
 

@@ -1,12 +1,20 @@
 {
     "name": "react-use-audio-player",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Custom hook & context for controlling browser audio",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "repository": "https://github.com/E-Kuerschner/useAudioPlayer",
     "author": "Erich Kuerschner",
     "license": "MIT",
+    "keywords": [
+        "react",
+        "hooks",
+        "react-hooks",
+        "audio",
+        "player",
+        "howler"
+    ],
     "scripts": {
         "start": "cd examples && yarn start",
         "test": "jest",
@@ -36,7 +44,7 @@
         "lint-staged": "^9.4.1",
         "prettier": "^1.18.2",
         "rimraf": "^3.0.0",
-        "typescript": "^3.6.3"
+        "typescript": "^3.7.2"
     },
     "peerDependencies": {
         "react": "^16.8.0"

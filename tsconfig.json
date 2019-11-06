@@ -10,5 +10,5 @@
         "jsx": "react"
     },
     "lib": ["es2015"],
-    "exclude": ["src/index.spec.tsx"]
+    "exclude": ["src/index.spec.tsx", "examples"]
 }

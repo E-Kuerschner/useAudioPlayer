@@ -1,0 +1,15 @@
+.basicExample {
+
+}
+
+.audioSeekBar {
+    border: solid 1px black;
+    height: 30px;
+    width: 200px;
+    cursor: pointer;
+}
+
+.audioSeekBar__tick {
+    background-color: blue;
+    height: 30px;
+}
