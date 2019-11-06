@@ -1,6 +1,6 @@
 {
     "name": "react-use-audio-player",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Custom hook & context for controlling browser audio",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -13,7 +13,8 @@
         "react-hooks",
         "audio",
         "player",
-        "howler"
+        "howler",
+        "sound"
     ],
     "scripts": {
         "start": "cd examples && yarn start",
@@ -21,7 +22,7 @@
         "build": "rimraf dist && tsc",
         "build:watch": "tsc -w",
         "preversion": "yarn test && yarn build",
-        "release": "yarn version"
+        "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
     "files": [
         "dist"
