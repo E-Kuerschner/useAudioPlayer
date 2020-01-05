@@ -9,7 +9,7 @@ import { Howl } from "howler"
 
 const noop = () => {}
 
-interface UseAudioPlayerProps {
+interface AudioSrcProps {
     src: string
     format?: string
     autoplay?: boolean
@@ -17,7 +17,7 @@ interface UseAudioPlayerProps {
 
 interface AudioPlayer {
     player: Howl | null
-    load: (args: UseAudioPlayerProps) => void
+    load: (args: AudioSrcProps) => void
     error: Error | null
     loading: boolean
     playing: boolean
@@ -52,45 +52,51 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     const [playing, setPlaying] = useState(false)
     const [stopped, setStopped] = useState(true)
 
-    const load = useCallback(({ src, format, autoplay }) => {
-        let wasPlaying = false
-        if (playerRef.current) {
-            // don't do anything if we're asked to reload the same source
-            // @ts-ignore the _src argument actually exists
-            if (playerRef.current._src === src) return
-            wasPlaying = playerRef.current.playing()
-            // destroys the previous player
-            playerRef.current.unload()
-        }
+    const load = useCallback(
+        ({ src, format, autoplay = false }: AudioSrcProps) => {
+            let wasPlaying = false
+            if (playerRef.current) {
+                // don't do anything if we're asked to reload the same source
+                // @ts-ignore the _src argument actually exists
+                if (playerRef.current._src === src) return
+                wasPlaying = playerRef.current.playing()
+                // destroys the previous player
+                playerRef.current.unload()
+            }
 
-        // create a new player
-        const howl = new Howl({
-            src,
-            format,
-            autoplay: wasPlaying || autoplay, // continues playing next song
-            onload: () => void setLoading(false),
-            onplay: () => {
-                // prevents howl from playing the same song twice
-                if (!howl.playing()) return
-                setPlaying(true)
-                setStopped(false)
-            },
-            onpause: () => void setPlaying(false),
-            onstop: () => void setStopped(true),
-            onplayerror: (_id, error) => {
-                setError(new Error("[Play error] " + error))
-                setPlaying(false)
-                setStopped(true)
-            },
-            onloaderror: (_id, error) => {
-                setError(new Error("[Load error] " + error))
-                setLoading(false)
-            },
-        })
+            // create a new player
+            const howl = new Howl({
+                src,
+                format,
+                autoplay: wasPlaying || autoplay, // continues playing next song
+                onload: () => void setLoading(false),
+                onplay: () => {
+                    // prevents howl from playing the same song twice
+                    if (!howl.playing()) return
+                    setPlaying(true)
+                    setStopped(false)
+                },
+                onpause: () => void setPlaying(false),
+                onstop: () => {
+                    setStopped(true)
+                    setPlaying(false)
+                },
+                onplayerror: (_id, error) => {
+                    setError(new Error("[Play error] " + error))
+                    setPlaying(false)
+                    setStopped(true)
+                },
+                onloaderror: (_id, error) => {
+                    setError(new Error("[Load error] " + error))
+                    setLoading(false)
+                },
+            })
 
-        setPlayer(howl)
-        playerRef.current = howl
-    }, [])
+            setPlayer(howl)
+            playerRef.current = howl
+        },
+        []
+    )
 
     useEffect(() => {
         // unload the player on unmount
@@ -116,10 +122,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     )
 }
 
-export const useAudioPlayer = (props: UseAudioPlayerProps): UseAudioPlayer => {
+export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
     const { player, load, ...context } = useContext(AudioPlayerContext)!
 
-    const { src, format = "mp3", autoplay } = props || {}
+    const { src, format, autoplay } = props || {}
 
     useEffect(() => {
         // if useAudioPlayer is called without arguments
