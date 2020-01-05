@@ -141,7 +141,7 @@ export const useAudioPlayer = (props: UseAudioPlayerProps): UseAudioPlayer => {
 
 // gives current audio position state updates in an animation frame loop for animating visualizations
 export const useAudioPosition = (): AudioPosition => {
-    const { player, playing } = useContext(AudioPlayerContext)!
+    const { player, stopped, playing } = useContext(AudioPlayerContext)!
 
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
@@ -152,7 +152,7 @@ export const useAudioPosition = (): AudioPosition => {
             setPosition(player.seek() as number)
             setDuration(player.duration() as number)
         }
-    }, [player])
+    }, [player, stopped])
 
     // updates position
     useEffect(() => {
