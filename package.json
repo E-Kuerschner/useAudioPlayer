@@ -54,6 +54,7 @@
         "react": "^16.8.0"
     },
     "dependencies": {
+        "@types/howler": "^2.1.2",
         "howler": "^2.1.2"
     },
     "husky": {
