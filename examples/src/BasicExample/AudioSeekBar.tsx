@@ -1,9 +1,9 @@
-import React, { FunctionComponent, MouseEvent } from "react"
+import * as React from "react"
 import { useAudioPlayer, useAudioPosition } from "react-use-audio-player"
 
-export const AudioSeekBar: FunctionComponent<{}> = () => {
+export const AudioSeekBar: React.FunctionComponent<{}> = () => {
     const { position, duration } = useAudioPosition()
-    const { seek, isPlaying } = useAudioPlayer()
+    const { seek, playing } = useAudioPlayer()
     const [barWidth, setBarWidth] = React.useState("0%")
 
     const seekBarElem = React.useRef<HTMLDivElement>(null)
@@ -14,18 +14,18 @@ export const AudioSeekBar: FunctionComponent<{}> = () => {
     }, [position, duration])
 
     const goTo = React.useCallback(
-        (event: MouseEvent) => {
+        (event: React.MouseEvent) => {
             const { pageX: eventOffsetX } = event
 
             // TODO duration is 0 until the audio starts playing
-            if (seekBarElem.current && isPlaying()) {
+            if (seekBarElem.current && playing) {
                 const elementOffsetX = seekBarElem.current.offsetLeft
                 const elementWidth = seekBarElem.current.clientWidth
                 const percent = (eventOffsetX - elementOffsetX) / elementWidth
                 seek(percent * duration)
             }
         },
-        [duration, seekBarElem]
+        [duration, playing, seek]
     )
 
     return (

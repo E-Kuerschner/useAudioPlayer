@@ -1,13 +1,14 @@
-import React, { ChangeEvent, FunctionComponent } from "react"
+import * as React from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
-export const FileLoader: FunctionComponent<{}> = () => {
-    const { playbackReady, loading, error, loadAudio } = useAudioPlayer()
+export const FileLoader: React.FunctionComponent<{}> = () => {
+    const [src, setSrc] = React.useState("")
+    const { ready, loading, error } = useAudioPlayer({ src })
 
-    const selectAudioFile = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectAudioFile = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target
         if (value) {
-            loadAudio(value)
+            setSrc(value)
         }
     }
 
@@ -20,9 +21,7 @@ export const FileLoader: FunctionComponent<{}> = () => {
                 <option>cats.mp3</option>
                 <option>doesntExist.mp3</option>
             </select>
-            {!playbackReady && !error && loading && (
-                <p>Fetching audio file...</p>
-            )}
+            {!ready && !error && loading && <p>Fetching audio file...</p>}
             {error && <p className="errorMessage">{error.message}</p>}
         </div>
     )

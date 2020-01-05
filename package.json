@@ -3,7 +3,11 @@
     "version": "0.0.6",
     "description": "React hook for building custom audio playback controls",
     "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "typings": "dist/index.d.ts",
+    "module": "dist/react-use-audio-player.esm.js",
+    "files": [
+        "dist"
+    ],
     "repository": "https://github.com/E-Kuerschner/useAudioPlayer",
     "author": "Erich Kuerschner",
     "license": "MIT",
@@ -19,39 +23,25 @@
         "howler.js"
     ],
     "scripts": {
-        "start": "cd examples && yarn start",
-        "test": "jest",
-        "build": "rimraf dist && tsc",
-        "build:watch": "tsc -w",
-        "preversion": "yarn test && yarn build",
-        "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
+        "start": "tsdx watch",
+        "build": "tsdx build",
+        "test": "tsdx test --passWithNoTests",
+        "lint": "tsdx lint",
+        "prepare": "tsdx build"
     },
-    "files": [
-        "dist"
-    ],
     "devDependencies": {
-        "@babel/core": "^7.6.4",
-        "@babel/preset-env": "^7.6.3",
-        "@babel/preset-typescript": "^7.6.0",
-        "@testing-library/react": "^9.2.0",
-        "@types/howler": "^2.1.1",
-        "@types/jest": "^24.0.21",
-        "@types/react": "^16.9.4",
-        "@typescript-eslint/eslint-plugin": "^2.3.2",
-        "@typescript-eslint/parser": "^2.3.2",
-        "babel-jest": "^24.9.0",
-        "eslint": "^6.5.1",
-        "eslint-plugin-react": "^7.16.0",
-        "eslint-plugin-react-hooks": "^2.1.2",
-        "husky": "^3.0.8",
-        "jest": "^24.9.0",
-        "lint-staged": "^9.4.1",
-        "prettier": "^1.18.2",
-        "rimraf": "^3.0.0",
-        "typescript": "^3.7.2"
+        "@types/jest": "^24.0.25",
+        "@types/react": "^16.9.17",
+        "@types/react-dom": "^16.9.4",
+        "husky": "^3.1.0",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "tsdx": "^0.12.1",
+        "tslib": "^1.10.0",
+        "typescript": "^3.7.4"
     },
     "peerDependencies": {
-        "react": "^16.8.0"
+        "react": ">=16"
     },
     "dependencies": {
         "@types/howler": "^2.1.2",
@@ -59,13 +49,13 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged"
+            "pre-commit": "tsdx lint"
         }
     },
-    "lint-staged": {
-        "*.{ts,tsx,md,json}": [
-            "prettier --write",
-            "git add"
-        ]
+    "prettier": {
+        "tabWidth": 4,
+        "printWidth": 80,
+        "semi": false,
+        "trailingComma": "es5"
     }
 }

@@ -1,39 +1,28 @@
 {
-    "name": "examples",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@types/jest": "^24.0.21",
-        "@types/node": "^12.12.5",
-        "@types/react": "^16.9.11",
-        "@types/react-dom": "^16.9.3",
-        "@types/react-router-dom": "^5.1.2",
-        "react": "^16.11.0",
-        "react-dom": "^16.11.0",
-        "react-router-dom": "^5.1.2",
-        "react-scripts": "3.2.0",
-        "react-use-audio-player": "^0.0.2",
-        "typescript": "^3.7.2"
-    },
+    "name": "example",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "start": "parcel index.html",
+        "build": "parcel build index.html"
     },
-    "eslintConfig": {
-        "extends": "react-app"
+    "dependencies": {
+        "react-app-polyfill": "^1.0.0",
+        "react-router-dom": "^5.1.2",
+        "react-use-audio-player": "^0.0.6"
     },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
+    "alias": {
+        "react": "../node_modules/react",
+        "react-dom": "../node_modules/react-dom/profiling",
+        "scheduler/tracing": "../node_modules/scheduler/tracing-profiling",
+        "react-use-audio-player": "../src"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.11",
+        "@types/react-dom": "^16.8.4",
+        "parcel": "^1.12.3",
+        "parcel-plugin-static-files-copy": "^2.2.1",
+        "typescript": "^3.4.5"
     }
 }
