@@ -54,8 +54,7 @@
         "react": "^16.8.0"
     },
     "dependencies": {
-        "howler": "^2.1.2",
-        "lodash": "^4.17.15"
+        "howler": "^2.1.2"
     },
     "husky": {
         "hooks": {
