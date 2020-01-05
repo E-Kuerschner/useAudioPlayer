@@ -11,8 +11,8 @@ const noop = () => {}
 
 interface UseAudioPlayerProps {
     src: string
-    format: string
-    autoplay: boolean
+    format?: string
+    autoplay?: boolean
 }
 
 interface AudioPlayer {
