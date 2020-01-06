@@ -1,25 +1,41 @@
-import React from "react"
+import React, {
+    useState,
+    useCallback,
+    useEffect,
+    useRef,
+    useContext,
+} from "react"
 import { Howl } from "howler"
-import { isNil } from "lodash"
 
-interface AudioPlayer {
-    loading: boolean
-    loadAudio: (url: string) => void
-    playbackReady: boolean
-    error: Error
-    play: () => void
-    isPlaying: () => boolean
-    pause: () => void
-    stop: () => void
-    seek: (pos: number) => void
-    mute: (muted: boolean) => void
-    sound: Howl
+const noop = () => {}
+
+interface AudioSrcProps {
+    src: string
+    format?: string
+    autoplay?: boolean
 }
 
-const AudioPlayerContext = React.createContext<AudioPlayer>(null)
+interface AudioPlayer {
+    player: Howl | null
+    load: (args: AudioSrcProps) => void
+    error: Error | null
+    loading: boolean
+    playing: boolean
+    stopped: boolean
+    ready: boolean
+}
+
+type UseAudioPlayer = Omit<AudioPlayer, "player" | "load"> & {
+    play: Howl["play"] | typeof noop
+    pause: Howl["pause"] | typeof noop
+    stop: Howl["stop"] | typeof noop
+    mute: Howl["mute"] | typeof noop
+    seek: Howl["seek"] | typeof noop
+}
+
+const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
 
 interface AudioPlayerProviderProps {
-    value?: AudioPlayer
     children: React.ReactNode
 }
 
@@ -28,165 +44,132 @@ interface AudioPosition {
     duration: number
 }
 
-export function AudioPlayerProvider(props: AudioPlayerProviderProps) {
-    const [playbackReady, setPlaybackReady] = React.useState(false)
-    const [loading, setLoading] = React.useState(false)
-    const [error, setError] = React.useState<Error>(null)
-    const player = React.useRef<Howl>(null)
+export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
+    const [player, setPlayer] = useState<Howl | null>(null)
+    const playerRef = useRef<Howl>()
+    const [error, setError] = useState<Error | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [playing, setPlaying] = useState(false)
+    const [stopped, setStopped] = useState(true)
 
-    const loadAudio = React.useCallback(
-        (src: string) => {
-            setError(null)
-
-            if (playbackReady && player.current.playing()) {
-                player.current.unload()
-                setPlaybackReady(false)
+    const load = useCallback(
+        ({ src, format, autoplay = false }: AudioSrcProps) => {
+            let wasPlaying = false
+            if (playerRef.current) {
+                // don't do anything if we're asked to reload the same source
+                // @ts-ignore the _src argument actually exists
+                if (playerRef.current._src === src) return
+                wasPlaying = playerRef.current.playing()
+                // destroys the previous player
+                playerRef.current.unload()
             }
 
-            setLoading(true)
-            player.current = new Howl({
+            // create a new player
+            const howl = new Howl({
                 src,
-                onload() {
-                    setLoading(false)
-                    setPlaybackReady(true)
+                format,
+                autoplay: wasPlaying || autoplay, // continues playing next song
+                onload: () => void setLoading(false),
+                onplay: () => {
+                    // prevents howl from playing the same song twice
+                    if (!howl.playing()) return
+                    setPlaying(true)
+                    setStopped(false)
                 },
-                onloaderror(id, error) {
+                onpause: () => void setPlaying(false),
+                onstop: () => {
+                    setStopped(true)
+                    setPlaying(false)
+                },
+                onplayerror: (_id, error) => {
+                    setError(new Error("[Play error] " + error))
+                    setPlaying(false)
+                    setStopped(true)
+                },
+                onloaderror: (_id, error) => {
+                    setError(new Error("[Load error] " + error))
                     setLoading(false)
-                    setPlaybackReady(false)
-                    setError(new Error(error))
-                }
+                },
             })
+
+            setPlayer(howl)
+            playerRef.current = howl
         },
-        [player, playbackReady]
+        []
     )
 
-    const play = React.useCallback(() => {
-        if (!player.current.playing()) {
-            player.current.play()
+    useEffect(() => {
+        // unload the player on unmount
+        return () => {
+            if (playerRef.current) playerRef.current.unload()
         }
-    }, [player])
+    }, [])
 
-    const pause = React.useCallback(() => {
-        player.current.pause()
-    }, [player])
-
-    const stop = React.useCallback(() => {
-        player.current.stop()
-    }, [player])
-
-    const seek = React.useCallback(
-        (pos: number) => {
-            if (playbackReady) {
-                player.current.seek(pos)
-            }
-        },
-        [player, playbackReady]
-    )
-
-    const isPlaying = React.useCallback(() => {
-        if (!playbackReady) return false
-        return player.current.playing()
-    }, [player, playbackReady])
-
-    const mute = React.useCallback(
-        (muted: boolean) => {
-            if (playbackReady) {
-                player.current.mute(muted)
-            }
-        },
-        [player, playbackReady]
-    )
-
-    const contextValue: AudioPlayer = React.useMemo(() => {
-        return isNil(props.value)
-            ? {
-                  error,
-                  playbackReady,
-                  loading,
-                  loadAudio,
-                  play,
-                  pause,
-                  stop,
-                  seek,
-                  isPlaying,
-                  mute,
-                  sound: player.current
-              }
-            : props.value
-    }, [
-        props.value,
-        playbackReady,
+    const contextValue: AudioPlayer = {
+        player,
+        load,
         error,
         loading,
-        loadAudio,
-        play,
-        pause,
-        stop,
-        seek,
-        mute,
-        isPlaying,
-        player
-    ])
+        playing,
+        stopped,
+        ready: !loading && !error,
+    }
 
     return (
         <AudioPlayerContext.Provider value={contextValue}>
-            {props.children}
+            {children}
         </AudioPlayerContext.Provider>
     )
 }
 
-// gives programmer access to the audio context
-export const useAudioPlayer = (url?: string): AudioPlayer => {
-    const value = React.useContext(AudioPlayerContext)
+export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
+    const { player, load, ...context } = useContext(AudioPlayerContext)!
 
-    React.useEffect(() => {
-        if (url) {
-            value.loadAudio(url)
-        }
-    }, [url, value])
+    const { src, format, autoplay } = props || {}
 
-    return value
+    useEffect(() => {
+        // if useAudioPlayer is called without arguments
+        // don't do anything: the user will have access
+        // to the current context
+        if (!src) return
+        load({ src, format, autoplay })
+    }, [src, format, autoplay, load])
+
+    return {
+        ...context,
+        play: player ? player.play.bind(player) : noop,
+        pause: player ? player.pause.bind(player) : noop,
+        stop: player ? player.stop.bind(player) : noop,
+        mute: player ? player.mute.bind(player) : noop,
+        seek: player ? player.seek.bind(player) : noop,
+    }
 }
 
 // gives current audio position state updates in an animation frame loop for animating visualizations
 export const useAudioPosition = (): AudioPosition => {
-    const { sound, playbackReady } = useAudioPlayer()
-    const [position, setPosition] = React.useState(0)
-    const [duration, setDuration] = React.useState(0)
-    const frameRequest = React.useRef<number | undefined>()
+    const { player, stopped, playing } = useContext(AudioPlayerContext)!
 
-    const animate = React.useCallback(() => {
-        if (playbackReady && sound.playing()) {
-            setPosition(sound.seek() as number)
-            frameRequest.current = requestAnimationFrame(animate)
-        } else {
-            cancelAnimationFrame(frameRequest.current)
+    const [position, setPosition] = useState(0)
+    const [duration, setDuration] = useState(0)
+
+    // sets position and duration on mount
+    useEffect(() => {
+        if (player) {
+            setPosition(player.seek() as number)
+            setDuration(player.duration() as number)
         }
-    }, [playbackReady, sound])
+    }, [player, stopped])
 
-    React.useEffect(() => {
-        if (playbackReady) {
-            sound.on("play", () => {
-                setDuration(sound.duration())
-                frameRequest.current = requestAnimationFrame(animate)
-            })
-            sound.on("pause", () => {
-                cancelAnimationFrame(frameRequest.current)
-            })
-            sound.on("stop", () => {
-                setPosition(0)
-                cancelAnimationFrame(frameRequest.current)
-            })
-            return () => {
-                sound.off("play")
-                sound.off("pause")
-                sound.off("stop")
-            }
-        }
-    }, [playbackReady, sound, animate])
+    // updates position
+    useEffect(() => {
+        let timeout: NodeJS.Timeout
+        if (player && playing)
+            timeout = setInterval(
+                () => setPosition(player.seek() as number),
+                1000
+            )
+        return () => clearTimeout(timeout)
+    }, [player, playing])
 
-    return {
-        position,
-        duration
-    }
+    return { position, duration }
 }
