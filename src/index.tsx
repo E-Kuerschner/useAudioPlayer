@@ -3,7 +3,7 @@ import React, {
     useCallback,
     useEffect,
     useRef,
-    useContext,
+    useContext
 } from "react"
 import { Howl } from "howler"
 
@@ -47,7 +47,7 @@ interface AudioPosition {
 
 export function AudioPlayerProvider({
     children,
-    value,
+    value
 }: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
     const playerRef = useRef<Howl>()
@@ -93,7 +93,7 @@ export function AudioPlayerProvider({
                 onloaderror: (_id, error) => {
                     setError(new Error("[Load error] " + error))
                     setLoading(false)
-                },
+                }
             })
 
             setPlayer(howl)
@@ -118,7 +118,7 @@ export function AudioPlayerProvider({
               loading,
               playing,
               stopped,
-              ready: !loading && !error,
+              ready: !loading && !error
           }
 
     return (
@@ -147,26 +147,26 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         pause: player ? player.pause.bind(player) : noop,
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
-        seek: player ? player.seek.bind(player) : noop,
+        seek: player ? player.seek.bind(player) : noop
     }
 }
 
-// gives current audio position state updates in an animation frame loop for animating visualizations
+// gives current audio position state - updates in an animation frame loop for animating audio visualizations
 export const useAudioPosition = (): AudioPosition => {
-    const { player, stopped, playing } = useContext(AudioPlayerContext)!
+    const { player, playing } = useContext(AudioPlayerContext)!
 
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
 
-    // sets position and duration on mount
+    // sets position and duration on player initialization
     useEffect(() => {
         if (player) {
             setPosition(player.seek() as number)
             setDuration(player.duration() as number)
         }
-    }, [player, stopped])
+    }, [player])
 
-    // updates position
+    // updates position on a one second loop
     useEffect(() => {
         let timeout: number
         if (player && playing)
