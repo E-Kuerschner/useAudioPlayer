@@ -36,6 +36,7 @@ type UseAudioPlayer = Omit<AudioPlayer, "player" | "load"> & {
 const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
 
 interface AudioPlayerProviderProps {
+    value?: AudioPlayer
     children: React.ReactNode
 }
 
@@ -44,7 +45,10 @@ interface AudioPosition {
     duration: number
 }
 
-export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
+export function AudioPlayerProvider({
+    children,
+    value,
+}: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
     const playerRef = useRef<Howl>()
     const [error, setError] = useState<Error | null>(null)
@@ -105,15 +109,17 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
         }
     }, [])
 
-    const contextValue: AudioPlayer = {
-        player,
-        load,
-        error,
-        loading,
-        playing,
-        stopped,
-        ready: !loading && !error,
-    }
+    const contextValue: AudioPlayer = value
+        ? value
+        : {
+              player,
+              load,
+              error,
+              loading,
+              playing,
+              stopped,
+              ready: !loading && !error,
+          }
 
     return (
         <AudioPlayerContext.Provider value={contextValue}>
@@ -162,9 +168,9 @@ export const useAudioPosition = (): AudioPosition => {
 
     // updates position
     useEffect(() => {
-        let timeout: NodeJS.Timeout
+        let timeout: number
         if (player && playing)
-            timeout = setInterval(
+            timeout = window.setInterval(
                 () => setPosition(player.seek() as number),
                 1000
             )
