@@ -2,9 +2,8 @@ import React, { FunctionComponent } from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
 export const AudioControls: FunctionComponent<{}> = () => {
-    const { play, pause, stop, mute, isPlaying } = useAudioPlayer()
+    const { play, pause, stop, mute, playing } = useAudioPlayer()
     // TODO useAudioPlayer should track playing state rather than an isPlaying function
-    const [playing, setPlaying] = React.useState(isPlaying())
     const [muted, setMuted] = React.useState(false)
 
     React.useEffect(() => {
@@ -12,17 +11,14 @@ export const AudioControls: FunctionComponent<{}> = () => {
     }, [muted, mute])
 
     const handlePlayPause = () => {
-        if (isPlaying()) {
-            setPlaying(false)
+        if (playing) {
             pause()
         } else {
-            setPlaying(true)
             play()
         }
     }
 
     const handleStop = () => {
-        setPlaying(false)
         stop()
     }
 

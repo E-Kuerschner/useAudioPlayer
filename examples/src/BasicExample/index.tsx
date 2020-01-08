@@ -17,13 +17,13 @@ export const BasicExample: FunctionComponent<{}> = () => {
 
 const Player: FunctionComponent<{}> = () => {
     const value = useAudioPlayer()
-    const { playbackReady } = value
+    const { ready } = value
 
     return (
         <div className="basicExample">
             <FileLoader />
             <br />
-            {playbackReady && (
+            {ready && (
                 <React.Fragment>
                     <AudioControls />
                     <AudioSeekBar />
