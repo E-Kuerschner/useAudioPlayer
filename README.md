@@ -89,9 +89,6 @@ const AudioPlayer = ({ file }) => {
 
 `useAudioPlayer` returns a single object containing the following members:
 
--   `load: (config: { src: string, format?: string, autoplay?: boolean }) => void`
-    <br/>loads an audio file
-
 -   `loading: boolean`
     <br/>true if audio is being fetched
 
