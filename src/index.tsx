@@ -80,6 +80,10 @@ export function AudioPlayerProvider({
                     setPlaying(true)
                     setStopped(false)
                 },
+                onend: () => {
+                    setStopped(true)
+                    setPlaying(false)
+                },
                 onpause: () => void setPlaying(false),
                 onstop: () => {
                     setStopped(true)
@@ -153,18 +157,18 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
 
 // gives current audio position state - updates in an animation frame loop for animating audio visualizations
 export const useAudioPosition = (): AudioPosition => {
-    const { player, playing } = useContext(AudioPlayerContext)!
+    const { player, playing, stopped } = useContext(AudioPlayerContext)!
 
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
 
-    // sets position and duration on player initialization
+    // sets position and duration on player initialization and when the audio is stopped
     useEffect(() => {
         if (player) {
             setPosition(player.seek() as number)
             setDuration(player.duration() as number)
         }
-    }, [player])
+    }, [player, stopped])
 
     // updates position on a one second loop
     useEffect(() => {
