@@ -73,7 +73,10 @@ export function AudioPlayerProvider({
                 src,
                 format,
                 autoplay: wasPlaying || autoplay, // continues playing next song
-                onload: () => void setLoading(false),
+                onload: () => {
+                    setStopped(true)
+                    setLoading(false)
+                },
                 onplay: () => {
                     // prevents howl from playing the same song twice
                     if (!howl.playing()) return
