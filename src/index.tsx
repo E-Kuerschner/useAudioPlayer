@@ -74,6 +74,7 @@ export function AudioPlayerProvider({
                 format,
                 autoplay: wasPlaying || autoplay, // continues playing next song
                 onload: () => {
+                    setError(null)
                     setStopped(true)
                     setLoading(false)
                 },
