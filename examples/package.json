@@ -10,7 +10,7 @@
     "dependencies": {
         "react-app-polyfill": "^1.0.0",
         "react-router-dom": "^5.1.2",
-        "react-use-audio-player": "^0.0.6"
+        "react-use-audio-player": "^0.0.10"
     },
     "alias": {
         "react": "../node_modules/react",

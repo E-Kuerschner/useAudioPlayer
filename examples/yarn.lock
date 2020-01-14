@@ -4194,13 +4194,12 @@ react-router@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-use-audio-player@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/react-use-audio-player/-/react-use-audio-player-0.0.6.tgz#afef69dc20044ed18408eff7dc6a83bb80969fb1"
-  integrity sha512-SiQ7dqgNlQYMGEHex/5XhWpNm6BhcN7AArTPgQFQsZ6p7+9aqQl31V1R4mX0o/EFzBhsY9bhqRPE2lw5bVSeVA==
+react-use-audio-player@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/react-use-audio-player/-/react-use-audio-player-0.0.10.tgz#dca4be2af974354e03c853873fbfc4e50505a42d"
+  integrity sha512-eEpM4Vi9Z+vdwm1vDYgCgNpWyURBmMONsg/qq0sHovHhVt1VDYBzcsjXISxFzX+OFhb0+mGTLqsAJpp3uHAqoQ==
   dependencies:
     howler "^2.1.2"
-    lodash "^4.17.15"
 
 readable-stream@^2.0.2, readable-stream@^2.2.2, readable-stream@^2.3.3, readable-stream@^2.3.6, readable-stream@~2.3.3, readable-stream@~2.3.6:
   version "2.3.7"

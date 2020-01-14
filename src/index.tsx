@@ -3,7 +3,7 @@ import React, {
     useCallback,
     useEffect,
     useRef,
-    useContext,
+    useContext
 } from "react"
 import { Howl } from "howler"
 
@@ -37,6 +37,7 @@ const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
 
 interface AudioPlayerProviderProps {
     children: React.ReactNode
+    value?: AudioPlayer
 }
 
 interface AudioPosition {
@@ -44,7 +45,10 @@ interface AudioPosition {
     duration: number
 }
 
-export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
+export function AudioPlayerProvider({
+    children,
+    value
+}: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
     const playerRef = useRef<Howl>()
     const [error, setError] = useState<Error | null>(null)
@@ -69,12 +73,20 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
                 src,
                 format,
                 autoplay: wasPlaying || autoplay, // continues playing next song
-                onload: () => void setLoading(false),
+                onload: () => {
+                    setError(null)
+                    setStopped(true)
+                    setLoading(false)
+                },
                 onplay: () => {
                     // prevents howl from playing the same song twice
                     if (!howl.playing()) return
                     setPlaying(true)
                     setStopped(false)
+                },
+                onend: () => {
+                    setStopped(true)
+                    setPlaying(false)
                 },
                 onpause: () => void setPlaying(false),
                 onstop: () => {
@@ -89,7 +101,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
                 onloaderror: (_id, error) => {
                     setError(new Error("[Load error] " + error))
                     setLoading(false)
-                },
+                }
             })
 
             setPlayer(howl)
@@ -105,15 +117,17 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
         }
     }, [])
 
-    const contextValue: AudioPlayer = {
-        player,
-        load,
-        error,
-        loading,
-        playing,
-        stopped,
-        ready: !loading && !error,
-    }
+    const contextValue: AudioPlayer = value
+        ? value
+        : {
+              player,
+              load,
+              error,
+              loading,
+              playing,
+              stopped,
+              ready: !loading && !error
+          }
 
     return (
         <AudioPlayerContext.Provider value={contextValue}>
@@ -141,18 +155,18 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         pause: player ? player.pause.bind(player) : noop,
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
-        seek: player ? player.seek.bind(player) : noop,
+        seek: player ? player.seek.bind(player) : noop
     }
 }
 
-// gives current audio position state updates in an animation frame loop for animating visualizations
+// gives current audio position state - updates in an animation frame loop for animating audio visualizations
 export const useAudioPosition = (): AudioPosition => {
-    const { player, stopped, playing } = useContext(AudioPlayerContext)!
+    const { player, playing, stopped } = useContext(AudioPlayerContext)!
 
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
 
-    // sets position and duration on mount
+    // sets position and duration on player initialization and when the audio is stopped
     useEffect(() => {
         if (player) {
             setPosition(player.seek() as number)
@@ -160,11 +174,11 @@ export const useAudioPosition = (): AudioPosition => {
         }
     }, [player, stopped])
 
-    // updates position
+    // updates position on a one second loop
     useEffect(() => {
-        let timeout: NodeJS.Timeout
+        let timeout: number
         if (player && playing)
-            timeout = setInterval(
+            timeout = window.setInterval(
                 () => setPosition(player.seek() as number),
                 1000
             )

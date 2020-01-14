@@ -16,7 +16,7 @@ For convenience, the library's type definitions are included in the package unde
 
 ## Usage
 
-This library exports a context Provider and two hooks for controlling the audio source.
+This library exports a context Provider and two hooks for controlling an audio source, giving you the tools you need to build you own audio player or visualization.
 
 <br/>
 
@@ -53,26 +53,26 @@ import React from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
 const AudioPlayer = ({ file }) => {
-    const { play, pause, playbackReady, loading, isPlaying } = useAudioPlayer(
-        file
-    )
+    const { play, pause, ready, loading, playing } = useAudioPlayer({
+        src: file,
+        format: "mp3",
+        autoplay: false
+    })
 
     const togglePlay = () => {
-        if (isPlaying()) {
+        if (playing) {
             pause()
         } else {
             play()
         }
     }
 
-    if (!playbackReady && !loading) return <div>No audio to play</div>
+    if (!ready && !loading) return <div>No audio to play</div>
     if (loading) return <div>Loading audio</div>
 
     return (
         <div>
-            <button onClick={togglePlay}>
-                {isPlaying() ? "Pause" : "Play"}
-            </button>
+            <button onClick={togglePlay}>{playing ? "Pause" : "Play"}</button>
         </div>
     )
 }
@@ -80,51 +80,50 @@ const AudioPlayer = ({ file }) => {
 
 #### API
 
-##### `loading: boolean`
+#### Arguments
 
-true if audio is being fetched
+-   `audioPlayerConfig: { src: string, format?: string, autoplay?: boolean }`
+    <br/>`autoplay` and `format` are optional. `autoplay` will default to false.
 
-##### `playbackReady: boolean`
+#### Return Value
 
-true if the audio has been loaded and can be played
+`useAudioPlayer` returns a single object containing the following members:
 
-##### `error: Error`
+-   `loading: boolean`
+    <br/>true if audio is being fetched
 
-set when audio has failed to load
+-   `ready: boolean`
+    <br/>true if the audio has been loaded and can be played
 
-##### `play: function`
+-   `playing: boolean`
+    <br/>true is the audio is currently playing
 
-plays the loaded audio
+-   `stopped: boolean`
+    <br/>true if the audio has been stopped
 
-##### `pause: function`
+-   `error: Error`
+    <br/>set when audio has failed to load
 
-pauses audio
+-   `play: () => void`
+    <br/>plays the loaded audio
 
-##### `stop: function`
+-   `pause: () => void`
+    <br/>pauses the audio
 
-stops the audio, returning the position to 0
+-   `stop: () => void`
+    <br/>stops the audio, returning the position to 0
 
-##### `loadAudio: function(url: string)`
+-   `seek: (position: number) => void`
+    <br/>sets the position of the audio to position (seconds)
 
-loads an audio file
-
-##### `isPlaying: function: boolean`
-
-true is the audio is currently playing
-
-##### `seek: function(position: number)`
-
-sets the position of the audio to position (seconds)
-
-##### `mute: function`
-
-mutes the audio
+-   `mute: () => void`
+    <br/>mutes the audio
 
 <br/>
 
 > #### useAudioPosition
 
-This hooks exposes the current position and duration of the audio instance as its playing in real time (60 fps via [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)).
+This hooks exposes the current position and duration of the audio instance as its playing in real time.
 This data may be useful when animating a visualization for your audio like a seek bar.
 A separate hook was created to manage this state in order to avoid many rerenders of components that don't need the live data feed.
 For example a component that renders a play/pause button may use `useAudioPlayer` but does not need to rerender every time the position of the playing audio changes.
@@ -147,13 +146,15 @@ const PlayBar = () => {
 
 #### API
 
-##### `position: number`
+#### Return Value
 
-the current playback position of the audio in seconds
+`useAudioPosition` returns an object containing the following members:
 
-##### `duration: number`
+-   `position: number`
+    <br/>the current playback position of the audio in seconds
 
-the total length of the audio in seconds
+-   `duration: number`
+    <br/>the total length of the audio in seconds
 
 ## Examples
 
