@@ -56,6 +56,6 @@
         "tabWidth": 4,
         "printWidth": 80,
         "semi": false,
-        "trailingComma": "es5"
+        "trailingComma": "none"
     }
 }
