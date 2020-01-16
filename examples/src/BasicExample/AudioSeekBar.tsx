@@ -1,19 +1,26 @@
-import React, { FunctionComponent, MouseEvent } from "react"
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    FunctionComponent,
+    MouseEvent
+} from "react"
 import { useAudioPlayer, useAudioPosition } from "react-use-audio-player"
 
 export const AudioSeekBar: FunctionComponent<{}> = () => {
     const { position, duration } = useAudioPosition()
     const { seek, playing } = useAudioPlayer()
-    const [barWidth, setBarWidth] = React.useState("0%")
+    const [barWidth, setBarWidth] = useState("0%")
 
-    const seekBarElem = React.useRef<HTMLDivElement>(null)
+    const seekBarElem = useRef<HTMLDivElement>(null)
 
-    React.useEffect(() => {
+    useEffect(() => {
         const width = ((position / duration) * 100 || 0) + "%"
         setBarWidth(width)
     }, [position, duration])
 
-    const goTo = React.useCallback(
+    const goTo = useCallback(
         (event: MouseEvent) => {
             const { pageX: eventOffsetX } = event
 
@@ -25,7 +32,7 @@ export const AudioSeekBar: FunctionComponent<{}> = () => {
                 seek(percent * duration)
             }
         },
-        [duration, seekBarElem]
+        [duration, playing, seek]
     )
 
     return (

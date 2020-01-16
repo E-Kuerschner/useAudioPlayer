@@ -1,33 +1,20 @@
-import React, { FunctionComponent } from "react"
+import React, { useEffect, useState, FunctionComponent } from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
 export const AudioControls: FunctionComponent<{}> = () => {
     const { play, pause, stop, mute, playing } = useAudioPlayer()
-    // TODO useAudioPlayer should track playing state rather than an isPlaying function
-    const [muted, setMuted] = React.useState(false)
+    const [muted, setMuted] = useState(false)
 
-    React.useEffect(() => {
+    useEffect(() => {
         mute(muted)
     }, [muted, mute])
 
-    const handlePlayPause = () => {
-        if (playing) {
-            pause()
-        } else {
-            play()
-        }
-    }
-
-    const handleStop = () => {
-        stop()
-    }
-
     return (
         <div className="audioControls">
-            <button onClick={handlePlayPause}>
+            <button onClick={() => (playing ? pause() : play())}>
                 {playing ? "pause" : "play"}
             </button>
-            <button onClick={handleStop}>stop</button>
+            <button onClick={() => stop()}>stop</button>
             <button onClick={() => setMuted(lastState => !lastState)}>
                 mute
             </button>

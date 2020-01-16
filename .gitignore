@@ -1,5 +1,6 @@
-node_modules
-.idea/
-dist/
 *.log
-.npm
+.DS_Store
+node_modules
+.cache
+dist
+.idea

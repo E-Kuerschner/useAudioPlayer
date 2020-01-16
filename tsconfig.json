@@ -1,14 +1,30 @@
 {
+    "include": ["src", "types", "test"],
     "compilerOptions": {
-        "module": "commonjs",
+        "target": "es5",
+        "module": "esnext",
+        "lib": ["dom", "esnext"],
+        "importHelpers": true,
         "declaration": true,
-        "esModuleInterop": true,
-        "target": "es6",
-        "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "dist",
-        "jsx": "react"
-    },
-    "lib": ["es2015"],
-    "exclude": ["src/index.spec.tsx", "examples"]
+        "rootDir": "./",
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "baseUrl": "./",
+        "paths": {
+            "*": ["src/*", "node_modules/*"]
+        },
+        "jsx": "react",
+        "esModuleInterop": true
+    }
 }

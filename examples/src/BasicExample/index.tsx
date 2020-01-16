@@ -24,10 +24,10 @@ const Player: FunctionComponent<{}> = () => {
             <FileLoader />
             <br />
             {ready && (
-                <React.Fragment>
+                <>
                     <AudioControls />
                     <AudioSeekBar />
-                </React.Fragment>
+                </>
             )}
         </div>
     )

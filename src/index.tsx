@@ -36,8 +36,8 @@ type UseAudioPlayer = Omit<AudioPlayer, "player" | "load"> & {
 const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
 
 interface AudioPlayerProviderProps {
-    value?: AudioPlayer
     children: React.ReactNode
+    value?: AudioPlayer
 }
 
 interface AudioPosition {
