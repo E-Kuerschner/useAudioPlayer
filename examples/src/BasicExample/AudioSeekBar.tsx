@@ -1,20 +1,27 @@
-import * as React from "react"
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    FunctionComponent,
+    MouseEvent
+} from "react"
 import { useAudioPlayer, useAudioPosition } from "react-use-audio-player"
 
-export const AudioSeekBar: React.FunctionComponent<{}> = () => {
+export const AudioSeekBar: FunctionComponent<{}> = () => {
     const { position, duration } = useAudioPosition()
     const { seek, playing } = useAudioPlayer()
-    const [barWidth, setBarWidth] = React.useState("0%")
+    const [barWidth, setBarWidth] = useState("0%")
 
-    const seekBarElem = React.useRef<HTMLDivElement>(null)
+    const seekBarElem = useRef<HTMLDivElement>(null)
 
-    React.useEffect(() => {
+    useEffect(() => {
         const width = ((position / duration) * 100 || 0) + "%"
         setBarWidth(width)
     }, [position, duration])
 
-    const goTo = React.useCallback(
-        (event: React.MouseEvent) => {
+    const goTo = useCallback(
+        (event: MouseEvent) => {
             const { pageX: eventOffsetX } = event
 
             // TODO duration is 0 until the audio starts playing

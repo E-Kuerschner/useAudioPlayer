@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { FunctionComponent } from "react"
 import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player"
 import { AudioSeekBar } from "./AudioSeekBar"
 import { FileLoader } from "./FileLoader"
@@ -6,7 +6,7 @@ import { AudioControls } from "./AudioControls"
 import { BackToHome } from "../BackToHome"
 import "./styles.css"
 
-export const BasicExample: React.FunctionComponent<{}> = () => {
+export const BasicExample: FunctionComponent<{}> = () => {
     return (
         <AudioPlayerProvider>
             <BackToHome />
@@ -15,7 +15,7 @@ export const BasicExample: React.FunctionComponent<{}> = () => {
     )
 }
 
-const Player: React.FunctionComponent<{}> = () => {
+const Player: FunctionComponent<{}> = () => {
     const value = useAudioPlayer()
     const { ready } = value
 

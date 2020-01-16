@@ -1,11 +1,11 @@
-import * as React from "react"
+import React, { useState, FunctionComponent, ChangeEvent } from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
-export const FileLoader: React.FunctionComponent<{}> = () => {
-    const [audioFile, setAudioFile] = React.useState("audio.mp3")
+export const FileLoader: FunctionComponent<{}> = () => {
+    const [audioFile, setAudioFile] = useState("audio.mp3")
     const { ready, loading, error } = useAudioPlayer({ src: audioFile })
 
-    const selectAudioFile = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectAudioFile = (e: ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target
         if (value) {
             setAudioFile(value)

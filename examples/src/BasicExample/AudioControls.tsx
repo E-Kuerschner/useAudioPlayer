@@ -1,11 +1,11 @@
-import * as React from "react"
+import React, { useEffect, useState, FunctionComponent } from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
-export const AudioControls: React.FunctionComponent<{}> = () => {
+export const AudioControls: FunctionComponent<{}> = () => {
     const { play, pause, stop, mute, playing } = useAudioPlayer()
-    const [muted, setMuted] = React.useState(false)
+    const [muted, setMuted] = useState(false)
 
-    React.useEffect(() => {
+    useEffect(() => {
         mute(muted)
     }, [muted, mute])
 
