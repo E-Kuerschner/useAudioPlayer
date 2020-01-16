@@ -1,3 +1,47 @@
-.app {
-  padding: 25px;
+* {
+    box-sizing: border-box;
 }
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #272a51;
+    color: #e1fdff;
+    font-weight: 400;
+}
+
+a {
+    color: #79b7c0;
+}
+a:hover {
+    color: #5593aa;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+}
+
+.exampleSelect {
+    padding: 20px;
+}
+
+/*
+#e1fdff
+#e5f9f9
+#e9f3f3
+#ddeaea
+#c4dfde
+#a1d0d1
+#79b7c0
+#5593aa
+#3a6891
+#324672
+#272a51
+#1c192f
+*/

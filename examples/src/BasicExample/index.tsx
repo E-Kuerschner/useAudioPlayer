@@ -6,29 +6,30 @@ import { AudioControls } from "./AudioControls"
 import { BackToHome } from "../BackToHome"
 import "./styles.css"
 
-export const BasicExample: FunctionComponent<{}> = () => {
-    return (
-        <AudioPlayerProvider>
-            <BackToHome />
-            <Player />
-        </AudioPlayerProvider>
-    )
-}
-
-const Player: FunctionComponent<{}> = () => {
+const Player = () => {
     const value = useAudioPlayer()
     const { ready } = value
+    if (ready) {
+        return (
+            <>
+                <AudioControls />
+                <AudioSeekBar />
+            </>
+        )
+    }
 
+    return null
+}
+
+export const BasicExample: FunctionComponent = () => {
     return (
         <div className="basicExample">
-            <FileLoader />
-            <br />
-            {ready && (
-                <>
-                    <AudioControls />
-                    <AudioSeekBar />
-                </>
-            )}
+            <BackToHome />
+            <AudioPlayerProvider>
+                <FileLoader />
+                <br />
+                <Player />
+            </AudioPlayerProvider>
         </div>
     )
 }

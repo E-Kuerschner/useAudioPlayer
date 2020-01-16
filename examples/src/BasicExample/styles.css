@@ -1,16 +1,16 @@
 .basicExample {
-
+    padding: 20px;
 }
 
 .audioSeekBar {
-    border: solid 1px black;
     height: 30px;
     width: 200px;
     cursor: pointer;
+    background-color: white;
 }
 
 .audioSeekBar__tick {
-    background-color: blue;
+    background-color: #a1d0d1;
     height: 30px;
 }
 

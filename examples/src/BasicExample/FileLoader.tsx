@@ -15,7 +15,7 @@ export const FileLoader: FunctionComponent<{}> = () => {
     return (
         <div className="fileLoader">
             <h5>select audio file:</h5>
-            <select onChange={selectAudioFile}>
+            <select onChange={selectAudioFile} defaultValue="audio.mp3">
                 <option></option>
                 <option>audio.mp3</option>
                 <option>cats.mp3</option>
