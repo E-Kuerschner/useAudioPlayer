@@ -27,7 +27,9 @@
         "build": "tsdx build",
         "test": "tsdx test --passWithNoTests",
         "lint": "tsdx lint",
-        "prepare": "tsdx build"
+        "prepare": "tsdx build",
+        "preversion": "yarn test && yarn build",
+        "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
     "devDependencies": {
         "@types/jest": "^24.0.25",
