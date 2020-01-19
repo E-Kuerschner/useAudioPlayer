@@ -25,7 +25,7 @@ interface AudioPlayer {
     ready: boolean
 }
 
-type UseAudioPlayer = Omit<AudioPlayer, "player" | "load"> & {
+type UseAudioPlayer = Omit<AudioPlayer, "player"> & {
     play: Howl["play"] | typeof noop
     pause: Howl["pause"] | typeof noop
     stop: Howl["stop"] | typeof noop
@@ -155,7 +155,8 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         pause: player ? player.pause.bind(player) : noop,
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
-        seek: player ? player.seek.bind(player) : noop
+        seek: player ? player.seek.bind(player) : noop,
+        load
     }
 }
 

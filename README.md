@@ -82,12 +82,15 @@ const AudioPlayer = ({ file }) => {
 
 #### Arguments
 
--   `audioPlayerConfig: { src: string, format?: string, autoplay?: boolean }`
+-   `(optional) audioPlayerConfig: { src: string, format?: string, autoplay?: boolean }`
     <br/>`autoplay` and `format` are optional. `autoplay` will default to false.
 
 #### Return Value
 
 `useAudioPlayer` returns a single object containing the following members:
+
+-   `laod: ({ src: string, format?: string, autoplay?: boolean }) => void`
+    <br/>method to lazily load audio
 
 -   `loading: boolean`
     <br/>true if audio is being fetched
@@ -165,14 +168,3 @@ To run the example applications follow the following steps:
 3. `yarn install`
 4. `yarn start`
 5. follow the local README for further assistance
-
-## Development Tools
-
-#### Eslint
-
-A basic eslint configuration has been set up but should be expanded with more rules.
-
-#### Prettier
-
-Code style and formatting is handled by [Prettier](https://prettier.io/).
-The formatter will run pre-commit to ensure consistent style between contributers.

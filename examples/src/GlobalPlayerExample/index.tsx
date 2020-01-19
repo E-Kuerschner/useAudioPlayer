@@ -24,21 +24,25 @@ const PlayBar = () => {
 }
 
 const Dog: FunctionComponent = () => {
-    useAudioPlayer({ src: "/dog.mp3" })
+    const { load } = useAudioPlayer()
     return (
         <div className="page">
             <div className="page__title">Dogs rock!</div>
+            <button onClick={() => load({ src: "/dog.mp3" })}>
+                Let's hear em!
+            </button>
         </div>
     )
 }
 
 const Cat: FunctionComponent = () => {
-    useAudioPlayer({
-        src: "/cats.mp3"
-    })
+    const { load } = useAudioPlayer()
     return (
         <div className="page">
             <div className="page__title">Cats rock!</div>
+            <button onClick={() => load({ src: "/cats.mp3" })}>
+                Let's hear em!
+            </button>
         </div>
     )
 }
