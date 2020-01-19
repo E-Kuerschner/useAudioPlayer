@@ -1,6 +1,6 @@
 {
     "name": "react-use-audio-player",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "React hook for building custom audio playback controls",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
@@ -32,6 +32,7 @@
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
     "devDependencies": {
+        "@types/howler": "^2.1.2",
         "@types/jest": "^24.0.25",
         "@types/react": "^16.9.17",
         "@types/react-dom": "^16.9.4",
@@ -40,8 +41,7 @@
         "react-dom": "^16.12.0",
         "tsdx": "^0.12.1",
         "tslib": "^1.10.0",
-        "typescript": "^3.7.4",
-        "@types/howler": "^2.1.2"
+        "typescript": "^3.7.4"
     },
     "peerDependencies": {
         "react": ">=16.8"
