@@ -1,0 +1,91 @@
+.globalPlayerExample {
+    padding: 20px 20px 0 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.navigation {
+    display: flex;
+    justify-content: left;
+    width: 100%;
+    height: 50px;
+}
+
+.navigation__link {
+    margin-right: 25px;
+}
+
+.page {
+    width: 100%;
+    height: calc(100% - 125px);
+    padding: 25px;
+}
+
+.page__title {
+    font-size: xx-large;
+    font-weight: 200;
+    margin-bottom: 50px;
+}
+
+.soundLibrary {
+}
+
+.soundLibrary__sounds {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.track {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 250px;
+    height: 250px;
+    border: solid 1px white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.track:hover {
+    background-color: white;
+    color: black;
+}
+
+.track__icon {
+    font-size: xx-large;
+}
+
+.track__title {
+    font-size: xx-large;
+}
+
+.playBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    background-color: #1c192f;
+    text-align: center;
+}
+
+.playBar__playButton {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+}
+
+.playBar__seek {
+    width: 400px;
+    height: 10px;
+    border-radius: 12px;
+}

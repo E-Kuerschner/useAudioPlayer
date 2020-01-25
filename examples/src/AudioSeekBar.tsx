@@ -7,8 +7,14 @@ import React, {
     MouseEvent
 } from "react"
 import { useAudioPlayer, useAudioPosition } from "react-use-audio-player"
+import "./AudioSeekBar.css"
 
-export const AudioSeekBar: FunctionComponent<{}> = () => {
+interface AudioSeekBarProps {
+    className?: string
+}
+
+export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = (props) => {
+    const { className = "" } = props
     const { position, duration } = useAudioPosition()
     const { seek, playing } = useAudioPlayer()
     const [barWidth, setBarWidth] = useState("0%")
@@ -36,7 +42,7 @@ export const AudioSeekBar: FunctionComponent<{}> = () => {
     )
 
     return (
-        <div className="audioSeekBar" ref={seekBarElem} onClick={goTo}>
+        <div className={`audioSeekBar ${className} `} ref={seekBarElem} onClick={goTo}>
             <div style={{ width: barWidth }} className="audioSeekBar__tick" />
         </div>
     )

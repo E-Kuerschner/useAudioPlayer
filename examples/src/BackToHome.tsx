@@ -1,6 +1,10 @@
 import React, { FunctionComponent } from "react"
 import { Link } from "react-router-dom"
 
-export const BackToHome: FunctionComponent<{}> = () => {
-    return <Link to="/">{"< -"} Example Select</Link>
+interface BackToHomeProps {
+    className?: string
+}
+
+export const BackToHome: FunctionComponent<BackToHomeProps> = (props) => {
+    return <Link className={ props.className || "" } to="/">{"< -"} Example Select</Link>
 }

@@ -1,7 +1,7 @@
 import React from "react"
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom"
 import { BasicExample } from "./BasicExample"
-import { GlobalPlayerExample } from "./GlobalPlayerExample"
+import { Spotifyish } from "./Spotifyish"
 import "./App.css"
 
 function ExampleSelect() {
@@ -9,7 +9,7 @@ function ExampleSelect() {
         <div className="exampleSelect">
             <h3>Examples</h3>
             <Link to="/basic">Basic Example</Link>
-            <Link to="/globalPlayer">Global Player Example</Link>
+            <Link to="/spotifyish/library">Spotify-ish</Link>
         </div>
     )
 }
@@ -20,10 +20,7 @@ function App() {
             <BrowserRouter>
                 <Switch>
                     <Route path="/basic" component={BasicExample} />
-                    <Route
-                        path="/globalPlayer"
-                        component={GlobalPlayerExample}
-                    />
+                    <Route path="/spotifyish" component={Spotifyish} />
                     <Route exact path="/" component={ExampleSelect} />
                 </Switch>
             </BrowserRouter>

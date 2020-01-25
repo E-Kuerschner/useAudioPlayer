@@ -2,19 +2,16 @@
     padding: 20px;
 }
 
-.audioSeekBar {
-    height: 30px;
-    width: 200px;
-    cursor: pointer;
-    background-color: white;
-}
-
-.audioSeekBar__tick {
-    background-color: #a1d0d1;
-    height: 30px;
-}
-
 .errorMessage {
     color: red;
     font-weight: bold;
+}
+
+.player {
+
+}
+
+.player__seek {
+    width: 400px;
+    height: 15px;
 }
