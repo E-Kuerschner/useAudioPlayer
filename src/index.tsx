@@ -57,6 +57,17 @@ export function AudioPlayerProvider({
 
     const playerRef = useRef<Howl>()
 
+    const constructHowl = useCallback(
+        ({ src, format, autoplay }: AudioSrcProps): Howl => {
+            return new Howl({
+                src,
+                format,
+                autoplay
+            })
+        },
+        []
+    )
+
     const load = useCallback(
         ({ src, format, autoplay = false }: AudioSrcProps) => {
             let wasPlaying = false
@@ -71,45 +82,45 @@ export function AudioPlayerProvider({
 
             setLoading(true)
             // create a new player
-            const howl = new Howl({
+            const howl = constructHowl({
                 src,
                 format,
-                autoplay: wasPlaying || autoplay, // continues playing next song
-                onload: () => {
-                    setError(null)
-                    setStopped(true)
-                    setLoading(false)
-                },
-                onplay: () => {
-                    // prevents howl from playing the same song twice
-                    if (!howl.playing()) return
-                    setPlaying(true)
-                    setStopped(false)
-                },
-                onend: () => {
-                    setStopped(true)
-                    setPlaying(false)
-                },
-                onpause: () => void setPlaying(false),
-                onstop: () => {
-                    setStopped(true)
-                    setPlaying(false)
-                },
-                onplayerror: (_id, error) => {
-                    setError(new Error("[Play error] " + error))
-                    setPlaying(false)
-                    setStopped(true)
-                },
-                onloaderror: (_id, error) => {
-                    setError(new Error("[Load error] " + error))
-                    setLoading(false)
-                }
+                autoplay: wasPlaying || autoplay // continues playing next song
+            })
+            howl.on("load", () => {
+                setError(null)
+                setStopped(true)
+                setLoading(false)
+            })
+            howl.on("play", function(this: Howl) {
+                // prevents howl from playing the same song twice
+                if (!this.playing()) return
+                setPlaying(true)
+                setStopped(false)
+            })
+            howl.on("end", () => {
+                setStopped(true)
+                setPlaying(false)
+            })
+            howl.on("pause", () => void setPlaying(false))
+            howl.on("stop", () => {
+                setStopped(true)
+                setPlaying(false)
+            })
+            howl.on("playerror", (_id, error) => {
+                setError(new Error("[Play error] " + error))
+                setPlaying(false)
+                setStopped(true)
+            })
+            howl.on("loaderror", (_id, error) => {
+                setError(new Error("[Load error] " + error))
+                setLoading(false)
             })
 
             setPlayer(howl)
             playerRef.current = howl
         },
-        []
+        [constructHowl]
     )
 
     useEffect(() => {
