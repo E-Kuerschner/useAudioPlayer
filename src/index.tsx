@@ -50,11 +50,12 @@ export function AudioPlayerProvider({
     value
 }: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
-    const playerRef = useRef<Howl>()
     const [error, setError] = useState<Error | null>(null)
     const [loading, setLoading] = useState(true)
     const [playing, setPlaying] = useState(false)
     const [stopped, setStopped] = useState(true)
+
+    const playerRef = useRef<Howl>()
 
     const load = useCallback(
         ({ src, format, autoplay = false }: AudioSrcProps) => {
@@ -68,6 +69,7 @@ export function AudioPlayerProvider({
                 playerRef.current.unload()
             }
 
+            setLoading(true)
             // create a new player
             const howl = new Howl({
                 src,
