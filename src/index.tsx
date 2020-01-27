@@ -3,9 +3,12 @@ import React, {
     useCallback,
     useEffect,
     useRef,
-    useContext
+    useContext,
+    useReducer,
+    useMemo
 } from "react"
 import { Howl } from "howler"
+import { initialState, reducer, Actions } from "./audioPlayerState"
 
 const noop = () => {}
 
@@ -50,10 +53,10 @@ export function AudioPlayerProvider({
     value
 }: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
-    const [error, setError] = useState<Error | null>(null)
-    const [loading, setLoading] = useState(true)
-    const [playing, setPlaying] = useState(false)
-    const [stopped, setStopped] = useState(true)
+    const [{ loading, error, playing, stopped }, dispatch] = useReducer(
+        reducer,
+        initialState
+    )
 
     const playerRef = useRef<Howl>()
 
@@ -70,51 +73,55 @@ export function AudioPlayerProvider({
 
     const load = useCallback(
         ({ src, format, autoplay = false }: AudioSrcProps) => {
+            dispatch({ type: Actions.RESET_ERRORS })
+
             let wasPlaying = false
             if (playerRef.current) {
                 // don't do anything if we're asked to reload the same source
                 // @ts-ignore the _src argument actually exists
                 if (playerRef.current._src === src) return
                 wasPlaying = playerRef.current.playing()
-                // destroys the previous player
-                playerRef.current.unload()
+                if (wasPlaying) {
+                    playerRef.current.stop()
+                    // remove event handlers from player that is about to be replaced
+                    playerRef.current.off()
+                    playerRef.current = undefined
+                }
             }
 
-            setLoading(true)
             // create a new player
             const howl = constructHowl({
                 src,
                 format,
                 autoplay: wasPlaying || autoplay // continues playing next song
             })
-            howl.on("load", () => {
-                setError(null)
-                setStopped(true)
-                setLoading(false)
-            })
+
+            // if this howl has already been loaded then there is no need to change loading state
+            // @ts-ignore _state exists
+            if (howl._state !== "loaded") {
+                dispatch({ type: Actions.ON_LOAD })
+            }
+
+            howl.on("load", () => void dispatch({ type: Actions.ON_LOAD }))
             howl.on("play", function(this: Howl) {
                 // prevents howl from playing the same song twice
                 if (!this.playing()) return
-                setPlaying(true)
-                setStopped(false)
+                dispatch({ type: Actions.ON_PLAY })
             })
-            howl.on("end", () => {
-                setStopped(true)
-                setPlaying(false)
-            })
-            howl.on("pause", () => void setPlaying(false))
-            howl.on("stop", () => {
-                setStopped(true)
-                setPlaying(false)
-            })
+            howl.on("end", () => void dispatch({ type: Actions.ON_END }))
+            howl.on("pause", () => void dispatch({ type: Actions.ON_PAUSE }))
+            howl.on("stop", () => void dispatch({ type: Actions.ON_STOP }))
             howl.on("playerror", (_id, error) => {
-                setError(new Error("[Play error] " + error))
-                setPlaying(false)
-                setStopped(true)
+                dispatch({
+                    type: Actions.ON_PLAY_ERROR,
+                    error: new Error("[Play error] " + error)
+                })
             })
             howl.on("loaderror", (_id, error) => {
-                setError(new Error("[Load error] " + error))
-                setLoading(false)
+                dispatch({
+                    type: Actions.ON_LOAD_ERROR,
+                    error: new Error("[Load error] " + error)
+                })
             })
 
             setPlayer(howl)
@@ -130,17 +137,19 @@ export function AudioPlayerProvider({
         }
     }, [])
 
-    const contextValue: AudioPlayer = value
-        ? value
-        : {
-              player,
-              load,
-              error,
-              loading,
-              playing,
-              stopped,
-              ready: !loading && !error
-          }
+    const contextValue: AudioPlayer = useMemo(() => {
+        return value
+            ? value
+            : {
+                  player,
+                  load,
+                  error,
+                  loading,
+                  playing,
+                  stopped,
+                  ready: !loading && !error
+              }
+    }, [loading, error, playing, stopped, load, value, player])
 
     return (
         <AudioPlayerContext.Provider value={contextValue}>
