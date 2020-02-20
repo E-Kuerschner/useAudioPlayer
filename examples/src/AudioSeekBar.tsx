@@ -13,9 +13,9 @@ interface AudioSeekBarProps {
     className?: string
 }
 
-export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = (props) => {
+export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
     const { className = "" } = props
-    const { position, duration } = useAudioPosition()
+    const { position, duration } = useAudioPosition({ highRefreshRate: true })
     const { seek, playing } = useAudioPlayer()
     const [barWidth, setBarWidth] = useState("0%")
 
@@ -42,7 +42,11 @@ export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = (props) => {
     )
 
     return (
-        <div className={`audioSeekBar ${className} `} ref={seekBarElem} onClick={goTo}>
+        <div
+            className={`audioSeekBar ${className} `}
+            ref={seekBarElem}
+            onClick={goTo}
+        >
             <div style={{ width: barWidth }} className="audioSeekBar__tick" />
         </div>
     )

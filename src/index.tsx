@@ -182,10 +182,16 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
     }
 }
 
-// gives current audio position state - updates in an animation frame loop for animating audio visualizations
-export const useAudioPosition = (): AudioPosition => {
-    const { player, playing, stopped } = useContext(AudioPlayerContext)!
+interface UseAudioPositionConfig {
+    highRefreshRate?: boolean
+}
 
+// gives current audio position state - updates in an animation frame loop for animating audio visualizations
+export const useAudioPosition = (
+    config: UseAudioPositionConfig = {}
+): AudioPosition => {
+    const { highRefreshRate = false } = config
+    const { player, playing, stopped } = useContext(AudioPlayerContext)!
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
 
@@ -197,16 +203,35 @@ export const useAudioPosition = (): AudioPosition => {
         }
     }, [player, stopped])
 
-    // updates position on a one second loop
+    // updates position on a one second loop for low refresh rate default setting
     useEffect(() => {
         let timeout: number
-        if (player && playing)
+        if (!highRefreshRate && player && playing)
             timeout = window.setInterval(
                 () => setPosition(player.seek() as number),
                 1000
             )
         return () => clearTimeout(timeout)
-    }, [player, playing])
+    }, [highRefreshRate, player, playing])
+
+    // updates position on a 60fps loop for high refresh rate setting
+    useEffect(() => {
+        let frame: number
+        const animate = () => {
+            setPosition(player?.seek() as number)
+            frame = requestAnimationFrame(animate)
+        }
+
+        if (highRefreshRate && player && playing) {
+            animate()
+        }
+
+        return () => {
+            if (frame) {
+                cancelAnimationFrame(frame)
+            }
+        }
+    }, [highRefreshRate, player, playing])
 
     return { position, duration }
 }

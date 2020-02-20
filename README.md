@@ -136,7 +136,7 @@ import React from "react"
 import { useAudioPosition } from "react-use-audio-player"
 
 const PlayBar = () => {
-    const { position, duration } = useAudioPosition()
+    const { position, duration } = useAudioPosition({ highRefreshRate: true })
     const [percent, setPercent] = React.useState(0)
 
     React.useEffect(() => {
@@ -148,6 +148,11 @@ const PlayBar = () => {
 ```
 
 #### API
+
+#### Arguments
+-   `(optional) config: { highRefreshRate: boolean }`
+    <br/>`highRefreshRate` will allow useAudioPosition to update state at a smooth 60fps rate
+    via the browser's requestAnimationFrame API. This is ideal for when you want smoother animations.
 
 #### Return Value
 
@@ -168,3 +173,13 @@ To run the example applications follow the following steps:
 3. `yarn install`
 4. `yarn start`
 5. follow the local README for further assistance
+
+## Release
+
+The most basic npm release strategy is being followed for now. A good explanation can be found [here](https://cloudfour.com/thinks/how-to-publish-an-updated-version-of-an-npm-package/).
+
+Steps
+1. commit work & tests
+2. `yarn/npm version` (preversion script will ensure code is tested and built)
+3. `yarn/npm publish`
+4. `git push` & `git push --tags`
