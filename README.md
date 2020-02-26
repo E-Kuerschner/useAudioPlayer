@@ -3,6 +3,7 @@
 A custom React hook for controlling browser audio powered by the amazing [howler.js](https://howlerjs.com/) library. The intention of this package is to abstract away the details of howler's API using built-in React primitives to create an interface that is more React-friendly, allowing you to write React code that is free from audio-related side-effects.
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
+[![CircleCI](https://circleci.com/gh/E-Kuerschner/useAudioPlayer/tree/master.svg?style=shield)](https://app.circleci.com/github/E-Kuerschner/useAudioPlayer/pipelines?branch=master)
 
 ## Install
 
