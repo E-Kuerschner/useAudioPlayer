@@ -5,3 +5,5 @@ node_modules
 dist
 .idea
 *.nvmrc
+test/cypress/videos
+test/cypress/screenshots
