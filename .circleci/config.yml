@@ -1,17 +1,28 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  cypress: cypress-io/cypress@1
 jobs:
-  build-and-test:
+  unit-tests:
     executor:
       name: node/default
     steps:
-      - checkout
       - node/with-cache:
           steps:
+            - checkout
             - run: yarn install
             - run: yarn test
 workflows:
-    build-and-test:
+    all-tests:
       jobs:
-        - build-and-test
+        - unit-tests
+        - cypress/run:
+            yarn: true
+            start: cd examples && yarn install && yarn start
+            wait-on: 'http://localhost:1234'
+            command: yarn test:integration
+            post-steps:
+              - store_artifacts:
+                  path: test/cypress/vidoes
+              - store_artifacts:
+                  path: test/cypress/screenshots
