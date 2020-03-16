@@ -1,4 +1,4 @@
-context("Testing", () => {
+context("useAudioPlayer use cases for Spotify-like application", () => {
     let audioContext = null
     beforeEach(() => {
         audioContext = null
@@ -15,22 +15,22 @@ context("Testing", () => {
         cy.contains("Spotify-ish").click()
     })
 
-    it("has something on screen", () => {
+    it("can visualize playback time with a seek bar", () => {
         cy.contains("cats")
             .click()
             .then(() => {
-                console.log(audioContext)
-                expect(audioContext.state).to.equal("running")
-                // eslint-disable-next-line cypress/no-unnecessary-waiting
-                cy.wait(4000).then(() => {
-                    console.log("HERHEH")
-                    cy.get(".playBar__playButton")
-                        .click()
-                        .then(() => {
-                            expect(audioContext.currentTime).to.be.greaterThan(
-                                4
-                            )
-                        })
+                cy.get(".fa-pause").then(() => {
+                    expect(audioContext.state).to.equal("running")
+                    // eslint-disable-next-line cypress/no-unnecessary-waiting
+                    cy.wait(4000).then(() => {
+                        cy.get(".playBar__playButton")
+                            .click()
+                            .then(() => {
+                                expect(
+                                    audioContext.currentTime
+                                ).to.be.approximately(4, 0.5)
+                            })
+                    })
                 })
             })
     })
