@@ -104,11 +104,7 @@ export function AudioPlayerProvider({
             }
 
             howl.on("load", () => void dispatch({ type: Actions.ON_LOAD }))
-            howl.on("play", function(this: Howl) {
-                // prevents howl from playing the same song twice
-                if (!this.playing()) return
-                dispatch({ type: Actions.ON_PLAY })
-            })
+            howl.on("play", () => void dispatch({ type: Actions.ON_PLAY }))
             howl.on("end", () => void dispatch({ type: Actions.ON_END }))
             howl.on("pause", () => void dispatch({ type: Actions.ON_PAUSE }))
             howl.on("stop", () => void dispatch({ type: Actions.ON_STOP }))
