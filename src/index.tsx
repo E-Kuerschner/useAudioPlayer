@@ -5,7 +5,8 @@ import React, {
     useRef,
     useContext,
     useReducer,
-    useMemo
+    useMemo,
+    useLayoutEffect
 } from "react"
 import { Howl } from "howler"
 import { initialState, reducer, Actions } from "./audioPlayerState"
@@ -34,6 +35,7 @@ type UseAudioPlayer = Omit<AudioPlayer, "player"> & {
     stop: Howl["stop"] | typeof noop
     mute: Howl["mute"] | typeof noop
     seek: Howl["seek"] | typeof noop
+    togglePlayPause: () => void
 }
 
 const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
@@ -103,11 +105,7 @@ export function AudioPlayerProvider({
             }
 
             howl.on("load", () => void dispatch({ type: Actions.ON_LOAD }))
-            howl.on("play", function(this: Howl) {
-                // prevents howl from playing the same song twice
-                if (!this.playing()) return
-                dispatch({ type: Actions.ON_PLAY })
-            })
+            howl.on("play", () => void dispatch({ type: Actions.ON_PLAY }))
             howl.on("end", () => void dispatch({ type: Actions.ON_END }))
             howl.on("pause", () => void dispatch({ type: Actions.ON_PAUSE }))
             howl.on("stop", () => void dispatch({ type: Actions.ON_STOP }))
@@ -171,6 +169,16 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         load({ src, format, autoplay })
     }, [src, format, autoplay, load])
 
+    const togglePlayPause = useCallback(() => {
+        if (!player) return
+
+        if (player.playing()) {
+            player.pause()
+        } else {
+            player.play()
+        }
+    }, [player])
+
     return {
         ...context,
         play: player ? player.play.bind(player) : noop,
@@ -178,7 +186,8 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
         seek: player ? player.seek.bind(player) : noop,
-        load
+        load,
+        togglePlayPause
     }
 }
 
@@ -194,6 +203,7 @@ export const useAudioPosition = (
     const { player, playing, stopped } = useContext(AudioPlayerContext)!
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
+    const animationFrameRef = useRef<number>()
 
     // sets position and duration on player initialization and when the audio is stopped
     useEffect(() => {
@@ -215,20 +225,20 @@ export const useAudioPosition = (
     }, [highRefreshRate, player, playing])
 
     // updates position on a 60fps loop for high refresh rate setting
-    useEffect(() => {
-        let frame: number
+    useLayoutEffect(() => {
         const animate = () => {
             setPosition(player?.seek() as number)
-            frame = requestAnimationFrame(animate)
+            animationFrameRef.current = requestAnimationFrame(animate)
         }
 
+        // kick off a new animation cycle when the player is defined and starts playing
         if (highRefreshRate && player && playing) {
-            animate()
+            animationFrameRef.current = requestAnimationFrame(animate)
         }
 
         return () => {
-            if (frame) {
-                cancelAnimationFrame(frame)
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current)
             }
         }
     }, [highRefreshRate, player, playing])

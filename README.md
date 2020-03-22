@@ -54,26 +54,18 @@ import React from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 
 const AudioPlayer = ({ file }) => {
-    const { play, pause, ready, loading, playing } = useAudioPlayer({
+    const { togglePlayPause, ready, loading, playing } = useAudioPlayer({
         src: file,
         format: "mp3",
         autoplay: false
     })
-
-    const togglePlay = () => {
-        if (playing) {
-            pause()
-        } else {
-            play()
-        }
-    }
 
     if (!ready && !loading) return <div>No audio to play</div>
     if (loading) return <div>Loading audio</div>
 
     return (
         <div>
-            <button onClick={togglePlay}>{playing ? "Pause" : "Play"}</button>
+            <button onClick={togglePlayPause}>{playing ? "Pause" : "Play"}</button>
         </div>
     )
 }
@@ -113,6 +105,9 @@ const AudioPlayer = ({ file }) => {
 
 -   `pause: () => void`
     <br/>pauses the audio
+
+-   `togglePlayPause: () => void`
+    <br/>convenient equivalent to alternating calls to `play` and `pause`
 
 -   `stop: () => void`
     <br/>stops the audio, returning the position to 0
