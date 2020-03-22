@@ -5,7 +5,8 @@ import React, {
     useRef,
     useContext,
     useReducer,
-    useMemo
+    useMemo,
+    useLayoutEffect
 } from "react"
 import { Howl } from "howler"
 import { initialState, reducer, Actions } from "./audioPlayerState"
@@ -194,6 +195,7 @@ export const useAudioPosition = (
     const { player, playing, stopped } = useContext(AudioPlayerContext)!
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
+    const animationFrameRef = useRef<number>()
 
     // sets position and duration on player initialization and when the audio is stopped
     useEffect(() => {
@@ -215,20 +217,20 @@ export const useAudioPosition = (
     }, [highRefreshRate, player, playing])
 
     // updates position on a 60fps loop for high refresh rate setting
-    useEffect(() => {
-        let frame: number
+    useLayoutEffect(() => {
         const animate = () => {
             setPosition(player?.seek() as number)
-            frame = requestAnimationFrame(animate)
+            animationFrameRef.current = requestAnimationFrame(animate)
         }
 
+        // kick off a new animation cycle when the player is defined and starts playing
         if (highRefreshRate && player && playing) {
-            animate()
+            animationFrameRef.current = requestAnimationFrame(animate)
         }
 
         return () => {
-            if (frame) {
-                cancelAnimationFrame(frame)
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current)
             }
         }
     }, [highRefreshRate, player, playing])
