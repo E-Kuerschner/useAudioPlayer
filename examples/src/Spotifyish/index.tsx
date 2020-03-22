@@ -6,18 +6,12 @@ import { AudioSeekBar } from "../AudioSeekBar"
 import "./styles.css"
 
 const PlayBar = () => {
-    const { play, pause, playing, ready } = useAudioPlayer()
+    const { togglePlayPause, playing, ready } = useAudioPlayer()
     return (
         <div className="playBar">
             <button
                 className="playBar__playButton"
-                onClick={() => {
-                    if (playing) {
-                        pause()
-                    } else {
-                        play()
-                    }
-                }}
+                onClick={togglePlayPause}
                 disabled={!ready}
             >
                 <i className={`fa ${playing ? "fa-pause" : "fa-play"}`} />

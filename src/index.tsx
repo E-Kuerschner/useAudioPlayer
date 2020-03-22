@@ -35,6 +35,7 @@ type UseAudioPlayer = Omit<AudioPlayer, "player"> & {
     stop: Howl["stop"] | typeof noop
     mute: Howl["mute"] | typeof noop
     seek: Howl["seek"] | typeof noop
+    togglePlayPause: () => void
 }
 
 const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
@@ -168,6 +169,16 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         load({ src, format, autoplay })
     }, [src, format, autoplay, load])
 
+    const togglePlayPause = useCallback(() => {
+        if (!player) return
+
+        if (player.playing()) {
+            player.pause()
+        } else {
+            player.play()
+        }
+    }, [player])
+
     return {
         ...context,
         play: player ? player.play.bind(player) : noop,
@@ -175,7 +186,8 @@ export const useAudioPlayer = (props?: AudioSrcProps): UseAudioPlayer => {
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
         seek: player ? player.seek.bind(player) : noop,
-        load
+        load,
+        togglePlayPause
     }
 }
 
