@@ -159,6 +159,9 @@ const PlayBar = () => {
 
 -   `duration: number`
     <br/>the total length of the audio in seconds
+    
+-   `seek: (position: number) => void`
+    <br/> For convenience the `seek` method from useAudioPlayer is also returned from this hook
 
 ## Examples
 
