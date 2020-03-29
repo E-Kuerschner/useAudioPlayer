@@ -1,5 +1,6 @@
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { AudioPlayerContext } from "./context"
+import { useAudioPlayer, AudioPlayerControls } from "./useAudioPlayer"
 
 interface UseAudioPositionConfig {
     highRefreshRate?: boolean
@@ -8,6 +9,7 @@ interface UseAudioPositionConfig {
 interface AudioPosition {
     position: number
     duration: number
+    seek: AudioPlayerControls["seek"]
 }
 
 // gives current audio position state - updates in an animation frame loop for animating audio visualizations
@@ -16,6 +18,7 @@ export const useAudioPosition = (
 ): AudioPosition => {
     const { highRefreshRate = false } = config
     const { player, playing, stopped } = useContext(AudioPlayerContext)!
+    const { seek } = useAudioPlayer()
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
     const animationFrameRef = useRef<number>()
@@ -58,5 +61,5 @@ export const useAudioPosition = (
         }
     }, [highRefreshRate, player, playing])
 
-    return { position, duration }
+    return { position, duration, seek }
 }

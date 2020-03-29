@@ -4,7 +4,7 @@ import { AudioPlayer, AudioSrcProps } from "./types"
 
 const noop = () => {}
 
-type AudioPlayerControls = Omit<AudioPlayer, "player"> & {
+export type AudioPlayerControls = Omit<AudioPlayer, "player"> & {
     play: Howl["play"] | typeof noop
     pause: Howl["pause"] | typeof noop
     stop: Howl["stop"] | typeof noop

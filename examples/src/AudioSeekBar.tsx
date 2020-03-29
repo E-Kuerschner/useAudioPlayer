@@ -15,8 +15,10 @@ interface AudioSeekBarProps {
 
 export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
     const { className = "" } = props
-    const { position, duration } = useAudioPosition({ highRefreshRate: true })
-    const { seek, playing } = useAudioPlayer()
+    const { position, duration, seek } = useAudioPosition({
+        highRefreshRate: true
+    })
+    const { playing } = useAudioPlayer()
     const [barWidth, setBarWidth] = useState("0%")
 
     const seekBarElem = useRef<HTMLDivElement>(null)
