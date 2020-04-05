@@ -117,6 +117,9 @@ const AudioPlayer = ({ file }) => {
 
 -   `mute: () => void`
     <br/>mutes the audio
+    
+-   `volume: (value: number) => number`
+    <br/>get/set the volume of the current sound. Volume values between 0.0 and 1.0
 
 <br/>
 

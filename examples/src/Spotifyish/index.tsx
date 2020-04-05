@@ -3,6 +3,7 @@ import { Route, Link, RouteChildrenProps, Switch } from "react-router-dom"
 import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player"
 import { BackToHome } from "../BackToHome"
 import { AudioSeekBar } from "../AudioSeekBar"
+import { VolumeControl } from "../VolumeControl"
 import "./styles.css"
 
 const PlayBar = () => {
@@ -17,6 +18,7 @@ const PlayBar = () => {
                 <i className={`fa ${playing ? "fa-pause" : "fa-play"}`} />
             </button>
             <AudioSeekBar className="playBar__seek" />
+            <VolumeControl />
         </div>
     )
 }

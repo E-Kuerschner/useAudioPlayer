@@ -10,6 +10,7 @@ export type AudioPlayerControls = Omit<AudioPlayer, "player"> & {
     stop: Howl["stop"] | typeof noop
     mute: Howl["mute"] | typeof noop
     seek: Howl["seek"] | typeof noop
+    volume: Howl["volume"] | typeof noop
     togglePlayPause: () => void
 }
 
@@ -43,6 +44,7 @@ export const useAudioPlayer = (props?: AudioSrcProps): AudioPlayerControls => {
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
         seek: player ? player.seek.bind(player) : noop,
+        volume: player ? player.volume.bind(player) : noop,
         load,
         togglePlayPause
     }
