@@ -21,10 +21,10 @@ export function AudioPlayerProvider({
     value
 }: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
-    const [{ loading, error, playing, stopped }, dispatch] = useReducer(
-        reducer,
-        initialState
-    )
+    const [
+        { loading, error, playing, stopped, duration, ready },
+        dispatch
+    ] = useReducer(reducer, initialState)
 
     const playerRef = useRef<Howl>()
 
@@ -41,7 +41,7 @@ export function AudioPlayerProvider({
 
     const load = useCallback(
         ({ src, format, autoplay = false }: AudioSrcProps) => {
-            dispatch({ type: Actions.RESET_ERRORS })
+            dispatch({ type: Actions.START_LOAD })
 
             let wasPlaying = false
             if (playerRef.current) {
@@ -64,13 +64,20 @@ export function AudioPlayerProvider({
                 autoplay: wasPlaying || autoplay // continues playing next song
             })
 
-            // if this howl has already been loaded then there is no need to change loading state
+            // if this howl has already been loaded (cached) then fire the load action
             // @ts-ignore _state exists
-            if (howl._state !== "loaded") {
-                dispatch({ type: Actions.ON_LOAD })
+            if (howl._state === "loaded") {
+                dispatch({ type: Actions.ON_LOAD, duration: howl.duration() })
             }
 
-            howl.on("load", () => void dispatch({ type: Actions.ON_LOAD }))
+            howl.on(
+                "load",
+                () =>
+                    void dispatch({
+                        type: Actions.ON_LOAD,
+                        duration: howl.duration()
+                    })
+            )
             howl.on("play", () => void dispatch({ type: Actions.ON_PLAY }))
             howl.on("end", () => void dispatch({ type: Actions.ON_END }))
             howl.on("pause", () => void dispatch({ type: Actions.ON_PAUSE }))
@@ -111,9 +118,10 @@ export function AudioPlayerProvider({
                   loading,
                   playing,
                   stopped,
-                  ready: !loading && !error
+                  ready,
+                  duration
               }
-    }, [loading, error, playing, stopped, load, value, player])
+    }, [loading, error, playing, stopped, load, value, player, ready, duration])
 
     return (
         <AudioPlayerContext.Provider value={contextValue}>

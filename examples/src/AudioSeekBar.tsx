@@ -7,7 +7,7 @@ import React, {
     MouseEvent
 } from "react"
 import { useAudioPlayer, useAudioPosition } from "react-use-audio-player"
-import "./AudioSeekBar.css"
+import "./AudioSeekBar.scss"
 
 interface AudioSeekBarProps {
     className?: string

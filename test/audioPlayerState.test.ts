@@ -11,15 +11,46 @@ const buildStatingState = (partialState: Partial<AudioPlayerState> = {}) => ({
 })
 
 describe("audio player state reducer", () => {
-    test("ON_LOAD sets stopped and unsets loading", () => {
-        const state = buildStatingState({ loading: true, stopped: false })
+    test("START_LOAD sets [loading, stopped] and unsets [error, duration, ready]", () => {
+        const state = buildStatingState({
+            loading: false,
+            duration: 100,
+            ready: true,
+            stopped: false,
+            error: new Error("WHAT")
+        })
 
-        const nextState = reducer(state, { type: Actions.ON_LOAD })
+        const nextState = reducer(state, {
+            type: Actions.START_LOAD
+        })
 
         expect(nextState).toEqual({
             ...state,
+            loading: true,
             stopped: true,
-            loading: false
+            duration: 0,
+            ready: false,
+            error: null
+        })
+    })
+
+    test("ON_LOAD sets [duration, ready] and unsets loading", () => {
+        const state = buildStatingState({
+            loading: true,
+            duration: 0,
+            ready: false
+        })
+
+        const nextState = reducer(state, {
+            type: Actions.ON_LOAD,
+            duration: 100
+        })
+
+        expect(nextState).toEqual({
+            ...state,
+            loading: false,
+            duration: 100,
+            ready: true
         })
     })
 
@@ -35,7 +66,7 @@ describe("audio player state reducer", () => {
         })
     })
 
-    test("ON_STOP / ON_END set stopped and unset playing", () => {
+    test("ON_STOP / ON_END sets stopped and unsets playing", () => {
         const state = buildStatingState({ playing: true, stopped: false })
 
         let nextState = reducer(state, { type: Actions.ON_STOP })
@@ -66,15 +97,7 @@ describe("audio player state reducer", () => {
         })
     })
 
-    test("RESET_ERRORS unsets error", () => {
-        const state = buildStatingState({ error: new Error("blah") })
-
-        const nextState = reducer(state, { type: Actions.RESET_ERRORS })
-
-        expect(nextState).toEqual({ ...state, error: null })
-    })
-
-    test("ON_PLAY_ERROR sets error and stopped and unsets playing", () => {
+    test("ON_PLAY_ERROR sets [error, stopped] and unsets playing", () => {
         const state = buildStatingState({
             error: null,
             stopped: false,
@@ -95,7 +118,7 @@ describe("audio player state reducer", () => {
         })
     })
 
-    test("ON_LOAD_ERROR sets error and stopped and unsets playing and loading", () => {
+    test("ON_LOAD_ERROR sets [error, stopped] and unsets [playing, loading]", () => {
         const state = buildStatingState({
             error: null,
             playing: true,
