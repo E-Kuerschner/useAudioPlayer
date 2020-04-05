@@ -12,4 +12,5 @@ export interface AudioPlayer {
     playing: boolean
     stopped: boolean
     ready: boolean
+    duration: number
 }

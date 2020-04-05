@@ -17,17 +17,18 @@ export const useAudioPosition = (
     config: UseAudioPositionConfig = {}
 ): AudioPosition => {
     const { highRefreshRate = false } = config
-    const { player, playing, stopped } = useContext(AudioPlayerContext)!
+    const { player, playing, stopped, duration } = useContext(
+        AudioPlayerContext
+    )!
+
     const { seek } = useAudioPlayer()
     const [position, setPosition] = useState(0)
-    const [duration, setDuration] = useState(0)
     const animationFrameRef = useRef<number>()
 
-    // sets position and duration on player initialization and when the audio is stopped
+    // sets position on player initialization and when the audio is stopped
     useEffect(() => {
         if (player) {
             setPosition(player.seek() as number)
-            setDuration(player.duration() as number)
         }
     }, [player, stopped])
 

@@ -19,23 +19,23 @@
     width: 100%;
     height: calc(100% - 125px);
     padding: 25px;
-}
 
-.page__title {
-    font-size: xx-large;
-    font-weight: 200;
-    margin-bottom: 50px;
+    &__title {
+        font-size: xx-large;
+        font-weight: 200;
+        margin-bottom: 50px;
+    }
 }
 
 .soundLibrary {
+    &__sounds {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+    }
 }
 
-.soundLibrary__sounds {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-}
 
 .track {
     display: inline-flex;
@@ -47,20 +47,21 @@
     border: solid 1px white;
     border-radius: 4px;
     cursor: pointer;
+
+    &:hover {
+        background-color: white;
+        color: black;
+    }
+
+    &__icon {
+        font-size: xx-large;
+    }
+
+    &__title {
+        font-size: xx-large;
+    }
 }
 
-.track:hover {
-    background-color: white;
-    color: black;
-}
-
-.track__icon {
-    font-size: xx-large;
-}
-
-.track__title {
-    font-size: xx-large;
-}
 
 .playBar {
     display: flex;
@@ -74,18 +75,23 @@
     height: 75px;
     background-color: #1c192f;
     text-align: center;
-}
 
-.playBar__playButton {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    outline: none;
-}
+    &__playButton {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        outline: none;
+    }
 
-.playBar__seek {
-    width: 400px;
-    height: 10px;
-    border-radius: 12px;
+    &__seek {
+        width: 400px;
+        height: 10px;
+        border-radius: 12px;
+    }
+
+    &__timeStuff {
+        display: flex;
+        align-items: center;
+    }
 }
