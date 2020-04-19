@@ -27,6 +27,7 @@ export function AudioPlayerProvider({
     ] = useReducer(reducer, initialState)
 
     const playerRef = useRef<Howl>()
+    const prevPlayer = useRef<Howl>()
 
     const constructHowl = useCallback(
         ({ src, format, autoplay }: AudioSrcProps): Howl => {
@@ -41,13 +42,20 @@ export function AudioPlayerProvider({
 
     const load = useCallback(
         ({ src, format, autoplay = false }: AudioSrcProps) => {
-            dispatch({ type: Actions.START_LOAD })
-
             let wasPlaying = false
             if (playerRef.current) {
                 // don't do anything if we're asked to reload the same source
                 // @ts-ignore the _src argument actually exists
                 if (playerRef.current._src === src) return
+
+                // if the previous sound is still loading then destroy it as soon as it finishes
+                if (loading) {
+                    prevPlayer.current = playerRef.current
+                    prevPlayer.current.once("load", () => {
+                        prevPlayer.current?.unload()
+                    })
+                }
+
                 wasPlaying = playerRef.current.playing()
                 if (wasPlaying) {
                     playerRef.current.stop()
@@ -56,6 +64,9 @@ export function AudioPlayerProvider({
                     playerRef.current = undefined
                 }
             }
+
+            // signal that the loading process has begun
+            dispatch({ type: Actions.START_LOAD })
 
             // create a new player
             const howl = constructHowl({
@@ -98,7 +109,7 @@ export function AudioPlayerProvider({
             setPlayer(howl)
             playerRef.current = howl
         },
-        [constructHowl]
+        [constructHowl, loading]
     )
 
     useEffect(() => {
