@@ -82,7 +82,7 @@ const AudioPlayer = ({ file }) => {
 
 `useAudioPlayer` returns a single object containing the following members:
 
--   `laod: ({ src: string, format?: string, autoplay?: boolean }) => void`
+-   `load: ({ src: string, format?: string, autoplay?: boolean }) => void`
     <br/>method to lazily load audio
 
 -   `loading: boolean`
@@ -112,7 +112,7 @@ const AudioPlayer = ({ file }) => {
 -   `stop: () => void`
     <br/>stops the audio, returning the position to 0
 
--   `seek: (position: number) => void`
+-   `seek: (position: number) => number | undefined`
     <br/>sets the position of the audio to position (seconds)
 
 -   `mute: () => void`
@@ -163,7 +163,7 @@ const PlayBar = () => {
 -   `duration: number`
     <br/>the total length of the audio in seconds
     
--   `seek: (position: number) => void`
+-   `seek`
     <br/> For convenience the `seek` method from useAudioPlayer is also returned from this hook
 
 ## Examples
