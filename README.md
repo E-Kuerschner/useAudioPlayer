@@ -96,6 +96,9 @@ const AudioPlayer = ({ file }) => {
 
 -   `stopped: boolean`
     <br/>true if the audio has been stopped
+    
+-   `ended: boolean`
+    <br/>is true once the currently loaded audio finishes playing. This will be unset if you begin playing again or load a new sound.
 
 -   `error: Error`
     <br/>set when audio has failed to load

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { AudioPlayerContext } from "./context"
+import { context } from "./context"
 import { useAudioPlayer, AudioPlayerControls } from "./useAudioPlayer"
 
 interface UseAudioPositionConfig {
@@ -17,9 +17,7 @@ export const useAudioPosition = (
     config: UseAudioPositionConfig = {}
 ): AudioPosition => {
     const { highRefreshRate = false } = config
-    const { player, playing, stopped, duration } = useContext(
-        AudioPlayerContext
-    )!
+    const { player, playing, stopped, duration } = useContext(context)!
 
     const { seek } = useAudioPlayer()
     const [position, setPosition] = useState(0)

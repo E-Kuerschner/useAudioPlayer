@@ -34,11 +34,12 @@ describe("audio player state reducer", () => {
         })
     })
 
-    test("ON_LOAD sets [duration, ready] and unsets loading", () => {
+    test("ON_LOAD sets [duration, ready] and unsets [loading, ended]", () => {
         const state = buildStatingState({
             loading: true,
             duration: 0,
-            ready: false
+            ready: false,
+            ended: true
         })
 
         const nextState = reducer(state, {
@@ -50,23 +51,29 @@ describe("audio player state reducer", () => {
             ...state,
             loading: false,
             duration: 100,
-            ready: true
+            ready: true,
+            ended: false
         })
     })
 
-    test("ON_PLAY sets playing and unsets stopped", () => {
-        const state = buildStatingState({ playing: false, stopped: true })
+    test("ON_PLAY sets playing and unsets [stopped, ended]", () => {
+        const state = buildStatingState({
+            playing: false,
+            stopped: true,
+            ended: true
+        })
 
         const nextState = reducer(state, { type: Actions.ON_PLAY })
 
         expect(nextState).toEqual({
             ...state,
             playing: true,
-            stopped: false
+            stopped: false,
+            ended: false
         })
     })
 
-    test("ON_STOP / ON_END sets stopped and unsets playing", () => {
+    test("ON_STOP sets stopped and unsets playing", () => {
         const state = buildStatingState({ playing: true, stopped: false })
 
         let nextState = reducer(state, { type: Actions.ON_STOP })
@@ -76,13 +83,22 @@ describe("audio player state reducer", () => {
             stopped: true,
             playing: false
         })
+    })
 
-        nextState = reducer(state, { type: Actions.ON_END })
+    test("ON_END sets [stopped, ended] and unsets playing", () => {
+        const state = buildStatingState({
+            playing: true,
+            stopped: false,
+            ended: false
+        })
+
+        const nextState = reducer(state, { type: Actions.ON_END })
 
         expect(nextState).toEqual({
             ...state,
             stopped: true,
-            playing: false
+            playing: false,
+            ended: true
         })
     })
 

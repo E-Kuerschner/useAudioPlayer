@@ -30,12 +30,14 @@ export interface AudioPlayerState {
     error: Error | null
     duration: number
     ready: boolean
+    ended: boolean
 }
 
 export const initialState: AudioPlayerState = {
     loading: true,
     playing: false,
     stopped: true,
+    ended: false,
     error: null,
     duration: 0,
     ready: false
@@ -57,20 +59,28 @@ export function reducer(state: AudioPlayerState, action: Action) {
                 ...state,
                 loading: false,
                 duration: (action as LoadAction).duration,
+                ended: false,
                 ready: true
             }
         case Actions.ON_PLAY:
             return {
                 ...state,
                 playing: true,
+                ended: false,
                 stopped: false
             }
         case Actions.ON_STOP:
-        case Actions.ON_END:
             return {
                 ...state,
                 stopped: true,
                 playing: false
+            }
+        case Actions.ON_END:
+            return {
+                ...state,
+                stopped: true,
+                playing: false,
+                ended: true
             }
         case Actions.ON_PAUSE:
             return {
