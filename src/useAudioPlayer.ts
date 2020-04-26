@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect } from "react"
-import { AudioPlayerContext } from "./context"
-import { AudioPlayer, AudioSrcProps } from "./types"
+import { context } from "./context"
+import { AudioPlayerContext, AudioSrcProps } from "./types"
 
 const noop = () => {}
 
-export type AudioPlayerControls = Omit<AudioPlayer, "player"> & {
+export type AudioPlayerControls = Omit<AudioPlayerContext, "player"> & {
     play: Howl["play"] | typeof noop
     pause: Howl["pause"] | typeof noop
     stop: Howl["stop"] | typeof noop
@@ -15,7 +15,7 @@ export type AudioPlayerControls = Omit<AudioPlayer, "player"> & {
 }
 
 export const useAudioPlayer = (props?: AudioSrcProps): AudioPlayerControls => {
-    const { player, load, ...context } = useContext(AudioPlayerContext)!
+    const { player, load, ...rest } = useContext(context)!
 
     const { src, format, autoplay } = props || {}
 
@@ -54,7 +54,7 @@ export const useAudioPlayer = (props?: AudioSrcProps): AudioPlayerControls => {
     )
 
     return {
-        ...context,
+        ...rest,
         play: player ? player.play.bind(player) : noop,
         pause: player ? player.pause.bind(player) : noop,
         stop: player ? player.stop.bind(player) : noop,

@@ -1,4 +1,4 @@
 import React from "react"
-import { AudioPlayer } from "./types"
+import { AudioPlayerContext } from "./types"
 
-export const AudioPlayerContext = React.createContext<AudioPlayer | null>(null)
+export const context = React.createContext<AudioPlayerContext | null>(null)

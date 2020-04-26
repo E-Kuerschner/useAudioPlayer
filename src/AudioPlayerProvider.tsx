@@ -8,12 +8,12 @@ import React, {
 } from "react"
 import { Howl } from "howler"
 import { initialState, reducer, Actions } from "./audioPlayerState"
-import { AudioPlayerContext } from "./context"
-import { AudioPlayer, AudioSrcProps } from "./types"
+import { context } from "./context"
+import { AudioPlayerContext, AudioSrcProps } from "./types"
 
 interface AudioPlayerProviderProps {
     children: React.ReactNode
-    value?: AudioPlayer
+    value?: AudioPlayerContext
 }
 
 export function AudioPlayerProvider({
@@ -119,7 +119,7 @@ export function AudioPlayerProvider({
         }
     }, [])
 
-    const contextValue: AudioPlayer = useMemo(() => {
+    const contextValue: AudioPlayerContext = useMemo(() => {
         return value
             ? value
             : {
@@ -146,9 +146,5 @@ export function AudioPlayerProvider({
         ended
     ])
 
-    return (
-        <AudioPlayerContext.Provider value={contextValue}>
-            {children}
-        </AudioPlayerContext.Provider>
-    )
+    return <context.Provider value={contextValue}>{children}</context.Provider>
 }
