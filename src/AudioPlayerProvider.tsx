@@ -22,7 +22,7 @@ export function AudioPlayerProvider({
 }: AudioPlayerProviderProps) {
     const [player, setPlayer] = useState<Howl | null>(null)
     const [
-        { loading, error, playing, stopped, duration, ready },
+        { loading, error, playing, stopped, duration, ready, ended },
         dispatch
     ] = useReducer(reducer, initialState)
 
@@ -130,9 +130,21 @@ export function AudioPlayerProvider({
                   playing,
                   stopped,
                   ready,
-                  duration
+                  duration,
+                  ended
               }
-    }, [loading, error, playing, stopped, load, value, player, ready, duration])
+    }, [
+        loading,
+        error,
+        playing,
+        stopped,
+        load,
+        value,
+        player,
+        ready,
+        duration,
+        ended
+    ])
 
     return (
         <AudioPlayerContext.Provider value={contextValue}>
