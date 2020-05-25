@@ -4,6 +4,7 @@ A custom React hook for controlling browser audio powered by the amazing [howler
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
 [![CircleCI](https://circleci.com/gh/E-Kuerschner/useAudioPlayer/tree/master.svg?style=shield)](https://app.circleci.com/github/E-Kuerschner/useAudioPlayer/pipelines?branch=master)
+![npm bundle size](https://img.shields.io/bundlephobia/min/react-use-audio-player)
 
 ## Install
 
