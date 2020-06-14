@@ -33,7 +33,7 @@
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
     "devDependencies": {
-        "@types/howler": "^2.1.2",
+        "@types/howler": "^2.2.0",
         "@types/jest": "^24.0.25",
         "@types/react": "^16.9.17",
         "@types/react-dom": "^16.9.4",
@@ -50,7 +50,7 @@
         "react": ">=16.8"
     },
     "dependencies": {
-        "howler": "^2.1.2"
+        "howler": "^2.2.0"
     },
     "husky": {
         "hooks": {
