@@ -75,16 +75,30 @@ const AudioPlayer = ({ file }) => {
 #### API
 
 #### Arguments
-
--   `(optional) audioPlayerConfig: { src: string, format?: string, autoplay?: boolean }`
-    <br/>`autoplay` and `format` are optional. `autoplay` will default to false.
-
+`useAudioPlayer` optionally accepts some configuration as its only argument.
+The available options closely mirror howler's options but differ in some areas. 
+    
+- `src: string`
+<br/> The path to an audio file
+    
+- `format?: string`
+<br/> The format of the audio file. The format is infered from the file extension by default.
+    
+- `autoplay?: boolean`
+<br/> Read more [here](https://github.com/goldfire/howler.js#autoplay-boolean-false)
+    
+- `html5?: boolean`
+<br/> Read more [here](https://github.com/goldfire/howler.js#html5-boolean-false)
+   
+- `xhr?: Object`
+<br/> Read more [here](https://github.com/goldfire/howler.js#xhr-object-null)
+    
 #### Return Value
 
 `useAudioPlayer` returns a single object containing the following members:
 
--   `load: ({ src: string, format?: string, autoplay?: boolean }) => void`
-    <br/>method to lazily load audio
+-   `load: (config: object) => void`
+    <br/>method to lazily load audio. It accepts the same configuration object that useAudioPlayer does.
 
 -   `loading: boolean`
     <br/>true if audio is being fetched

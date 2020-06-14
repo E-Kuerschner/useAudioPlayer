@@ -42,10 +42,25 @@ const SoundLibrary: FunctionComponent = () => {
                             onClick={() => load({ src, autoplay: !playing })}
                         >
                             <i className="fa fa-music track__icon" />
-                            <div className="track__title">{src.slice(1, src.indexOf("."))}</div>
+                            <div className="track__title">
+                                {src.slice(1, src.indexOf("."))}
+                            </div>
                         </div>
                     )
                 })}
+                <div
+                    className="track"
+                    onClick={() =>
+                        load({
+                            src: "/cats.mp3",
+                            autoplay: !playing,
+                            html5: true
+                        })
+                    }
+                >
+                    <i className="fa fa-music track__icon" />
+                    <div className="track__title">cats html5</div>
+                </div>
             </div>
         </div>
     )

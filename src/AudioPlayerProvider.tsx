@@ -6,10 +6,10 @@ import React, {
     useReducer,
     useMemo
 } from "react"
-import { Howl } from "howler"
+import { Howl, HowlOptions } from "howler"
 import { initialState, reducer, Actions } from "./audioPlayerState"
 import { context } from "./context"
-import { AudioPlayerContext, AudioSrcProps } from "./types"
+import { AudioPlayerContext, AudioOptions } from "./types"
 
 interface AudioPlayerProviderProps {
     children: React.ReactNode
@@ -29,19 +29,23 @@ export function AudioPlayerProvider({
     const playerRef = useRef<Howl>()
     const prevPlayer = useRef<Howl>()
 
-    const constructHowl = useCallback(
-        ({ src, format, autoplay }: AudioSrcProps): Howl => {
-            return new Howl({
-                src,
-                format,
-                autoplay
-            })
-        },
-        []
-    )
+    const constructHowl = useCallback((audioProps: AudioOptions): Howl => {
+        return new Howl(audioProps as HowlOptions)
+    }, [])
 
     const load = useCallback(
-        ({ src, format, autoplay = false }: AudioSrcProps) => {
+        ({
+            src,
+            // defaults inferred from howler docs https://github.com/goldfire/howler.js#options
+            format = undefined,
+            autoplay = false,
+            html5 = false,
+            xhr = {
+                method: "GET",
+                headers: undefined,
+                withCredentials: undefined
+            }
+        }: AudioOptions) => {
             let wasPlaying = false
             if (playerRef.current) {
                 // don't do anything if we're asked to reload the same source
@@ -72,7 +76,9 @@ export function AudioPlayerProvider({
             const howl = constructHowl({
                 src,
                 format,
-                autoplay: wasPlaying || autoplay // continues playing next song
+                autoplay: wasPlaying || autoplay, // continues playing next song
+                html5,
+                xhr
             })
 
             // if this howl has already been loaded (cached) then fire the load action

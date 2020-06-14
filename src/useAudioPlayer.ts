@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect } from "react"
+import { Howl } from "howler"
 import { context } from "./context"
-import { AudioPlayerContext, AudioSrcProps } from "./types"
+import { AudioPlayerContext, AudioOptions } from "./types"
 
 const noop = () => {}
 
@@ -14,18 +15,18 @@ export type AudioPlayerControls = Omit<AudioPlayerContext, "player"> & {
     togglePlayPause: () => void
 }
 
-export const useAudioPlayer = (props?: AudioSrcProps): AudioPlayerControls => {
+export const useAudioPlayer = (options?: AudioOptions): AudioPlayerControls => {
     const { player, load, ...rest } = useContext(context)!
 
-    const { src, format, autoplay } = props || {}
+    const { src, ...restOptions } = options || {}
 
     useEffect(() => {
         // if useAudioPlayer is called without arguments
         // don't do anything: the user will have access
         // to the current context
         if (!src) return
-        load({ src, format, autoplay })
-    }, [src, format, autoplay, load])
+        load({ src, ...restOptions })
+    }, [src, restOptions, load])
 
     const togglePlayPause = useCallback(() => {
         if (!player) return

@@ -1,12 +1,16 @@
+import { HowlOptions, Howl } from "howler"
 import { AudioPlayerState } from "./audioPlayerState"
 
-export interface AudioSrcProps {
+export interface AudioOptions {
+    // src and format intentionally do not mirror HowlOptions
     src: string
     format?: string
-    autoplay?: boolean
+    autoplay?: HowlOptions["autoplay"]
+    html5?: HowlOptions["html5"]
+    xhr?: HowlOptions["xhr"]
 }
 
 export interface AudioPlayerContext extends AudioPlayerState {
     player: Howl | null
-    load: (args: AudioSrcProps) => void
+    load: (args: AudioOptions) => void
 }
