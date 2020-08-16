@@ -1,6 +1,13 @@
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
+import {
+    useCallback,
+    useContext,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState
+} from "react"
 import { context } from "./context"
-import { useAudioPlayer, AudioPlayerControls } from "./useAudioPlayer"
+import { Howl } from "howler"
 
 interface UseAudioPositionConfig {
     highRefreshRate?: boolean
@@ -9,7 +16,7 @@ interface UseAudioPositionConfig {
 interface AudioPosition {
     position: number
     duration: number
-    seek: AudioPlayerControls["seek"]
+    seek: (position: number) => number
 }
 
 // gives current audio position state - updates in an animation frame loop for animating audio visualizations
@@ -19,7 +26,6 @@ export const useAudioPosition = (
     const { highRefreshRate = false } = config
     const { player, playing, stopped, duration } = useContext(context)!
 
-    const { seek } = useAudioPlayer()
     const [position, setPosition] = useState(0)
     const animationFrameRef = useRef<number>()
 
@@ -59,6 +65,20 @@ export const useAudioPosition = (
             }
         }
     }, [highRefreshRate, player, playing])
+
+    const seek = useCallback(
+        position => {
+            if (!player) return 0
+
+            // it appears that howler returns the Howl object when seek is given a position
+            // to get the latest potion you must call seek again with no parameters
+            const result = player.seek(position) as Howl
+            const updatedPos = result.seek() as number
+            setPosition(updatedPos)
+            return updatedPos
+        },
+        [player]
+    )
 
     return { position, duration, seek }
 }

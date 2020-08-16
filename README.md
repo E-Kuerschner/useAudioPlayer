@@ -130,9 +130,6 @@ The available options closely mirror howler's options but differ in some areas.
 -   `stop: () => void`
     <br/>stops the audio, returning the position to 0
 
--   `seek: (position: number) => number | undefined`
-    <br/>sets the position of the audio to position (seconds)
-
 -   `mute: () => void`
     <br/>mutes the audio
     
@@ -153,14 +150,18 @@ import React from "react"
 import { useAudioPosition } from "react-use-audio-player"
 
 const PlayBar = () => {
-    const { position, duration } = useAudioPosition({ highRefreshRate: true })
+    const { position, duration, seek } = useAudioPosition({ highRefreshRate: true })
     const [percent, setPercent] = React.useState(0)
 
     React.useEffect(() => {
         setPercent((position / duration) * 100 || 0)
     }, [position, duration])
+    
+    const goToPosition = React.useCallback((percentage) => {
+        seek(duration * percentage)
+    }, [duration, seek])
 
-    return <ProgressBar percentComplete={percent} />
+    return <ProgressBar percentComplete={percent} onBarPositionClick={goToPosition} />
 }
 ```
 
@@ -181,8 +182,8 @@ const PlayBar = () => {
 -   `duration: number`
     <br/>the total length of the audio in seconds
     
--   `seek`
-    <br/> For convenience the `seek` method from useAudioPlayer is also returned from this hook
+-   `seek: (position: number) => number`
+    <br/>sets the position of the audio to position (seconds)
 
 ## Examples
 

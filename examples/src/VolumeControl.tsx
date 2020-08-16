@@ -4,6 +4,7 @@ import "./VolumeControl.scss"
 
 export const VolumeControl = () => {
     const { volume } = useAudioPlayer()
+    console.log("rerendering vol control")
 
     const handleChange = useCallback(
         (slider: ChangeEvent<HTMLInputElement>) => {

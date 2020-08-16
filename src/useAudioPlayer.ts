@@ -11,7 +11,6 @@ export type AudioPlayerControls = Omit<AudioPlayerContext, "player"> & {
     stop: Howl["stop"] | typeof noop
     mute: Howl["mute"] | typeof noop
     volume: Howl["volume"] | typeof noop
-    seek: (position?: number) => number
     togglePlayPause: () => void
 }
 
@@ -38,18 +37,6 @@ export const useAudioPlayer = (options?: AudioOptions): AudioPlayerControls => {
         }
     }, [player])
 
-    const seek: AudioPlayerControls["seek"] = useCallback(
-        position => {
-            if (!player) return 0
-
-            // it appears that howler returns the Howl object when seek is given a position
-            // to get the latest potion you must call seek again with no parameters
-            const result = player.seek(position) as Howl
-            return result.seek() as number
-        },
-        [player]
-    )
-
     return {
         ...rest,
         play: player ? player.play.bind(player) : noop,
@@ -57,7 +44,6 @@ export const useAudioPlayer = (options?: AudioOptions): AudioPlayerControls => {
         stop: player ? player.stop.bind(player) : noop,
         mute: player ? player.mute.bind(player) : noop,
         volume: player ? player.volume.bind(player) : noop,
-        seek,
         load,
         togglePlayPause
     }

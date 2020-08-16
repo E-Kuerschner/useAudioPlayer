@@ -32,8 +32,7 @@ export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
         (event: MouseEvent) => {
             const { pageX: eventOffsetX } = event
 
-            // TODO duration is 0 until the audio starts playing
-            if (seekBarElem.current && playing) {
+            if (seekBarElem.current) {
                 const elementOffsetX = seekBarElem.current.offsetLeft
                 const elementWidth = seekBarElem.current.clientWidth
                 const percent = (eventOffsetX - elementOffsetX) / elementWidth
