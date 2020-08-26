@@ -4,7 +4,7 @@ import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player"
 import { BackToHome } from "../BackToHome"
 import { AudioSeekBar } from "../AudioSeekBar"
 import { VolumeControl } from "../VolumeControl"
-import { DurationLabel } from "../DurationLabel"
+import { TimeLabel } from "../TimeLabel"
 import "./styles.scss"
 
 const PlayBar = () => {
@@ -20,7 +20,7 @@ const PlayBar = () => {
             </button>
             <div className="playBar__timeStuff">
                 <AudioSeekBar className="playBar__seek" />
-                <DurationLabel />
+                <TimeLabel />
             </div>
             <VolumeControl />
         </div>

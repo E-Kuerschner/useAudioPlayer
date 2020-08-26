@@ -8,7 +8,7 @@ import React, {
 } from "react"
 import { Howl, HowlOptions } from "howler"
 import { initialState, reducer, Actions } from "./audioPlayerState"
-import { context } from "./context"
+import { playerContext, positionContext } from "./context"
 import { AudioPlayerContext, AudioOptions } from "./types"
 
 interface AudioPlayerProviderProps {
@@ -28,6 +28,15 @@ export function AudioPlayerProvider({
 
     const playerRef = useRef<Howl>()
     const prevPlayer = useRef<Howl>()
+
+    const [position, setPosition] = useState(0)
+    const positionContextValue = useMemo(
+        () => ({
+            position,
+            setPosition
+        }),
+        [position, setPosition]
+    )
 
     const constructHowl = useCallback((audioProps: AudioOptions): Howl => {
         return new Howl(audioProps as HowlOptions)
@@ -152,5 +161,11 @@ export function AudioPlayerProvider({
         ended
     ])
 
-    return <context.Provider value={contextValue}>{children}</context.Provider>
+    return (
+        <playerContext.Provider value={contextValue}>
+            <positionContext.Provider value={positionContextValue}>
+                {children}
+            </positionContext.Provider>
+        </playerContext.Provider>
+    )
 }

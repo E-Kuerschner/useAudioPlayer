@@ -1,3 +1,4 @@
+import React from "react"
 import { HowlOptions, Howl } from "howler"
 import { AudioPlayerState } from "./audioPlayerState"
 
@@ -13,4 +14,9 @@ export interface AudioOptions {
 export interface AudioPlayerContext extends AudioPlayerState {
     player: Howl | null
     load: (args: AudioOptions) => void
+}
+
+export interface AudioPlayerPositionContext {
+    position: number
+    setPosition: React.Dispatch<number>
 }

@@ -3,10 +3,9 @@ import {
     useContext,
     useEffect,
     useLayoutEffect,
-    useRef,
-    useState
+    useRef
 } from "react"
-import { context } from "./context"
+import { playerContext, positionContext } from "./context"
 import { Howl } from "howler"
 
 interface UseAudioPositionConfig {
@@ -24,9 +23,9 @@ export const useAudioPosition = (
     config: UseAudioPositionConfig = {}
 ): AudioPosition => {
     const { highRefreshRate = false } = config
-    const { player, playing, stopped, duration } = useContext(context)!
+    const { player, playing, stopped, duration } = useContext(playerContext)!
+    const { position, setPosition } = useContext(positionContext)
 
-    const [position, setPosition] = useState(0)
     const animationFrameRef = useRef<number>()
 
     // sets position on player initialization and when the audio is stopped
@@ -34,7 +33,7 @@ export const useAudioPosition = (
         if (player) {
             setPosition(player.seek() as number)
         }
-    }, [player, stopped])
+    }, [player, setPosition, stopped])
 
     // updates position on a one second loop for low refresh rate default setting
     useEffect(() => {
@@ -45,7 +44,7 @@ export const useAudioPosition = (
                 1000
             )
         return () => clearTimeout(timeout)
-    }, [highRefreshRate, player, playing])
+    }, [highRefreshRate, player, playing, setPosition])
 
     // updates position on a 60fps loop for high refresh rate setting
     useLayoutEffect(() => {
@@ -64,7 +63,7 @@ export const useAudioPosition = (
                 cancelAnimationFrame(animationFrameRef.current)
             }
         }
-    }, [highRefreshRate, player, playing])
+    }, [highRefreshRate, player, playing, setPosition])
 
     const seek = useCallback(
         position => {
@@ -77,7 +76,7 @@ export const useAudioPosition = (
             setPosition(updatedPos)
             return updatedPos
         },
-        [player]
+        [player, setPosition]
     )
 
     return { position, duration, seek }

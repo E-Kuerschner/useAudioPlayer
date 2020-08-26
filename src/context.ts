@@ -1,4 +1,11 @@
 import React from "react"
-import { AudioPlayerContext } from "./types"
+import { AudioPlayerContext, AudioPlayerPositionContext } from "./types"
 
-export const context = React.createContext<AudioPlayerContext | null>(null)
+export const playerContext = React.createContext<AudioPlayerContext | null>(
+    null
+)
+
+export const positionContext = React.createContext<AudioPlayerPositionContext>({
+    position: 0,
+    setPosition: () => {}
+})
