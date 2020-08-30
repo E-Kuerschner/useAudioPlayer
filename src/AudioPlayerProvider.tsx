@@ -9,7 +9,7 @@ import React, {
 import { Howl, HowlOptions } from "howler"
 import { initialState, reducer, Actions } from "./audioPlayerState"
 import { playerContext, positionContext } from "./context"
-import { AudioPlayerContext, AudioOptions } from "./types"
+import { AudioPlayerContext } from "./types"
 
 interface AudioPlayerProviderProps {
     children: React.ReactNode
@@ -38,23 +38,12 @@ export function AudioPlayerProvider({
         [position, setPosition]
     )
 
-    const constructHowl = useCallback((audioProps: AudioOptions): Howl => {
-        return new Howl(audioProps as HowlOptions)
+    const constructHowl = useCallback((audioProps: HowlOptions): Howl => {
+        return new Howl(audioProps)
     }, [])
 
     const load = useCallback(
-        ({
-            src,
-            // defaults inferred from howler docs https://github.com/goldfire/howler.js#options
-            format = undefined,
-            autoplay = false,
-            html5 = false,
-            xhr = {
-                method: "GET",
-                headers: undefined,
-                withCredentials: undefined
-            }
-        }: AudioOptions) => {
+        ({ src, autoplay = false, html5 = false, ...rest }: HowlOptions) => {
             let wasPlaying = false
             if (playerRef.current) {
                 // don't do anything if we're asked to reload the same source
@@ -84,10 +73,9 @@ export function AudioPlayerProvider({
             // create a new player
             const howl = constructHowl({
                 src,
-                format,
                 autoplay: wasPlaying || autoplay, // continues playing next song
                 html5,
-                xhr
+                ...rest
             })
 
             // if this howl has already been loaded (cached) then fire the load action

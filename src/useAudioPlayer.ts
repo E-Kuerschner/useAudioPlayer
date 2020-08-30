@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect } from "react"
-import { Howl } from "howler"
+import { Howl, HowlOptions } from "howler"
 import { playerContext } from "./context"
-import { AudioPlayerContext, AudioOptions } from "./types"
+import { AudioPlayerContext } from "./types"
 
 const noop = () => {}
 
@@ -14,7 +14,7 @@ export type AudioPlayerControls = Omit<AudioPlayerContext, "player"> & {
     togglePlayPause: () => void
 }
 
-export const useAudioPlayer = (options?: AudioOptions): AudioPlayerControls => {
+export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
     const { player, load, ...rest } = useContext(playerContext)!
 
     const { src, ...restOptions } = options || {}
