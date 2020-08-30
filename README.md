@@ -1,6 +1,6 @@
 # react-use-audio-player
-
-A custom React hook for controlling browser audio powered by the amazing [howler.js](https://howlerjs.com/) library. The intention of this package is to abstract away the details of howler's API using built-in React primitives to create an interface that is more React-friendly, allowing you to write React code that is free from audio-related side-effects.
+Custom React hooks for controlling audio in the browser powered by the amazing [howler.js](https://howlerjs.com/) library. The intention of this package is to provide an idiomatic way to use Howler in React via custom hooks.
+The currently available hooks allow you to set up an environment in which you can distribute the responsibility of managing a single audio source between different components in your React application. 
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
 [![CircleCI](https://circleci.com/gh/E-Kuerschner/useAudioPlayer/tree/master.svg?style=shield)](https://app.circleci.com/github/E-Kuerschner/useAudioPlayer/pipelines?branch=master)
@@ -24,9 +24,11 @@ This library exports a context Provider and two hooks for controlling an audio s
 
 > #### AudioPlayerProvider
 
-This Provider is required for the hooks to function.
-The Provider contains a single audio source and exposes an interface for manipulating it via the `useAudioPlayer` hook.
-The benefit of having a single, shared audio source is that it allows the developer to compose together multiple components that share knowledge about the audio.
+This Provider is required for any of the hooks to function.
+The Provider encapsulates a reference to a single audio source and all the state.
+Besides the initial setup, you will never need to interact with the Provider directly.
+The `useAudioPlayer` and `useAudioPosition` hooks give you an interface to do that.
+The benefit of having a single, shared audio source is that it allows you to compose together multiple components that share knowledge about the audio.
 For example, you may have separate components `PlayPauseButton`, `SeekBar` and `VolumeControls` all working together on the same audio source.
 
 ```javascript
@@ -58,7 +60,8 @@ const AudioPlayer = ({ file }) => {
     const { togglePlayPause, ready, loading, playing } = useAudioPlayer({
         src: file,
         format: "mp3",
-        autoplay: false
+        autoplay: false,
+        onend: () => console.log("sound has ended!")
     })
 
     if (!ready && !loading) return <div>No audio to play</div>
@@ -76,28 +79,13 @@ const AudioPlayer = ({ file }) => {
 
 #### Arguments
 `useAudioPlayer` optionally accepts some configuration as its only argument.
-The available options closely mirror howler's options but differ in some areas. 
-    
-- `src: string`
-<br/> The path to an audio file
-    
-- `format?: string`
-<br/> The format of the audio file. The format is infered from the file extension by default.
-    
-- `autoplay?: boolean`
-<br/> Read more [here](https://github.com/goldfire/howler.js#autoplay-boolean-false)
-    
-- `html5?: boolean`
-<br/> Read more [here](https://github.com/goldfire/howler.js#html5-boolean-false)
-   
-- `xhr?: Object`
-<br/> Read more [here](https://github.com/goldfire/howler.js#xhr-object-null)
+The options interface is identical to the [howler options](https://github.com/goldfire/howler.js#options).
     
 #### Return Value
 
 `useAudioPlayer` returns a single object containing the following members:
 
--   `load: (config: object) => void`
+-   `load: (config: HowlOptions) => void`
     <br/>method to lazily load audio. It accepts the same configuration object that useAudioPlayer does.
 
 -   `loading: boolean`
@@ -143,7 +131,7 @@ The available options closely mirror howler's options but differ in some areas.
 This hooks exposes the current position and duration of the audio instance as its playing in real time.
 This data may be useful when animating a visualization for your audio like a seek bar.
 A separate hook was created to manage this state in order to avoid many rerenders of components that don't need the live data feed.
-For example a component that renders a play/pause button may use `useAudioPlayer` but does not need to rerender every time the position of the playing audio changes.
+For example a component which renders a play/pause button may use `useAudioPlayer` but does not need to rerender every time the position of the playing audio changes.
 
 ```javascript
 import React from "react"
