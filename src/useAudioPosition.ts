@@ -3,6 +3,7 @@ import {
     useContext,
     useEffect,
     useLayoutEffect,
+    useMemo,
     useRef
 } from "react"
 import { playerContext, positionContext } from "./context"
@@ -15,6 +16,7 @@ interface UseAudioPositionConfig {
 interface AudioPosition {
     position: number
     duration: number
+    percentComplete: number
     seek: (position: number) => number
 }
 
@@ -79,5 +81,9 @@ export const useAudioPosition = (
         [player, setPosition]
     )
 
-    return { position, duration, seek }
+    const percentComplete = useMemo(() => {
+        return (position / duration) * 100 || 0
+    }, [duration, position])
+
+    return { position, duration, seek, percentComplete }
 }

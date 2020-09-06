@@ -33,6 +33,7 @@
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
     "devDependencies": {
+        "@testing-library/react-hooks": "^3.4.1",
         "@types/howler": "^2.2.0",
         "@types/jest": "^24.0.25",
         "@types/react": "^16.9.17",
@@ -42,6 +43,7 @@
         "husky": "^3.1.0",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
+        "react-test-renderer": "^16.12.0",
         "tsdx": "^0.13.1",
         "tslib": "^1.10.0",
         "typescript": "^3.8.3"

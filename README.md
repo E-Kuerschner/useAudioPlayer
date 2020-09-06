@@ -138,18 +138,13 @@ import React from "react"
 import { useAudioPosition } from "react-use-audio-player"
 
 const PlayBar = () => {
-    const { position, duration, seek } = useAudioPosition({ highRefreshRate: true })
-    const [percent, setPercent] = React.useState(0)
-
-    React.useEffect(() => {
-        setPercent((position / duration) * 100 || 0)
-    }, [position, duration])
+    const { percentComplete, duration, seek } = useAudioPosition({ highRefreshRate: true })
     
     const goToPosition = React.useCallback((percentage) => {
         seek(duration * percentage)
     }, [duration, seek])
 
-    return <ProgressBar percentComplete={percent} onBarPositionClick={goToPosition} />
+    return <ProgressBar percentComplete={percentComplete} onBarPositionClick={goToPosition} />
 }
 ```
 
@@ -169,6 +164,9 @@ const PlayBar = () => {
 
 -   `duration: number`
     <br/>the total length of the audio in seconds
+
+-   `percentComplete: number`
+    <br/>the percentage of the duration the current position represents    
     
 -   `seek: (position: number) => number`
     <br/>sets the position of the audio to position (seconds)

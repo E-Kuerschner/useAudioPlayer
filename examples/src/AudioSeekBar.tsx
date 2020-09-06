@@ -15,7 +15,7 @@ interface AudioSeekBarProps {
 
 export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
     const { className = "" } = props
-    const { position, duration, seek } = useAudioPosition({
+    const { duration, seek, percentComplete } = useAudioPosition({
         highRefreshRate: true
     })
     const { playing } = useAudioPlayer()
@@ -24,9 +24,8 @@ export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
     const seekBarElem = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const width = ((position / duration) * 100 || 0) + "%"
-        setBarWidth(width)
-    }, [position, duration])
+        setBarWidth(`${percentComplete}%`)
+    }, [percentComplete])
 
     const goTo = useCallback(
         (event: MouseEvent) => {
