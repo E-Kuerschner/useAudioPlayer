@@ -11,7 +11,7 @@ import { initialState, reducer, Actions } from "./audioPlayerState"
 import { playerContext, positionContext } from "./context"
 import { AudioPlayerContext } from "./types"
 
-interface AudioPlayerProviderProps {
+export interface AudioPlayerProviderProps {
     children: React.ReactNode
     value?: AudioPlayerContext
 }

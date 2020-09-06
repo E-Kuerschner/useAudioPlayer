@@ -3,7 +3,7 @@ import {
     AudioPlayerState,
     initialState,
     reducer
-} from "../src/audioPlayerState"
+} from "./audioPlayerState"
 
 const buildStatingState = (partialState: Partial<AudioPlayerState> = {}) => ({
     ...initialState,
