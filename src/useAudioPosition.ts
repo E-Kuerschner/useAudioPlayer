@@ -8,6 +8,7 @@ import {
 } from "react"
 import { playerContext, positionContext } from "./context"
 import { Howl } from "howler"
+import useIsomorphicLayoutEffect from "./useIsomorphicLayout"
 
 interface UseAudioPositionConfig {
     highRefreshRate?: boolean
@@ -49,7 +50,7 @@ export const useAudioPosition = (
     }, [highRefreshRate, player, playing, setPosition])
 
     // updates position on a 60fps loop for high refresh rate setting
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         const animate = () => {
             setPosition(player?.seek() as number)
             animationFrameRef.current = requestAnimationFrame(animate)
