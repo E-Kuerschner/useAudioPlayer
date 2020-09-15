@@ -1,11 +1,4 @@
-import {
-    useCallback,
-    useContext,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef
-} from "react"
+import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import { playerContext, positionContext } from "./context"
 import { Howl } from "howler"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayout"
