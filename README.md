@@ -125,6 +125,8 @@ The options interface is identical to the [howler options](https://github.com/go
 -   `volume: (value: number) => number`
     <br/>get/set the volume of the current sound. Volume values between 0.0 and 1.0
 
+-   `player`
+    <br/>an escape hatch to access the underlying Howl object in case you need to use a howler feature which is not supported by this library's API
 <br/>
 
 > #### useAudioPosition
