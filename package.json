@@ -52,7 +52,7 @@
         "react": ">=16.8"
     },
     "dependencies": {
-        "howler": "^2.2.0"
+        "howler": "^2.2.1"
     },
     "husky": {
         "hooks": {

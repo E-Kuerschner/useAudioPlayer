@@ -19,6 +19,7 @@ export const FileLoader: FunctionComponent<{}> = () => {
                 <option></option>
                 <option>audio.mp3</option>
                 <option>cats.mp3</option>
+                <option>explosion.wav</option>
                 <option>doesntExist.mp3</option>
             </select>
             {!ready && !error && loading && <p>Fetching audio file...</p>}
