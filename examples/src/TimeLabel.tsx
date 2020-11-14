@@ -16,7 +16,8 @@ const formatTime = (seconds: number) => {
 
 export const TimeLabel = () => {
     const { duration, position } = useAudioPosition({ highRefreshRate: true })
-    const elapsed = typeof position === 'number' ? position : 0
+    if (duration === Infinity) return null
+    const elapsed = typeof position === "number" ? position : 0
 
     return <div>{`${formatTime(elapsed)} / ${formatTime(duration)}`}</div>
 }

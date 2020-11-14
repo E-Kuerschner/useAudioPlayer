@@ -174,6 +174,21 @@ const PlayBar = () => {
 -   `seek: (position: number) => number`
     <br/>sets the position of the audio to position (seconds)
 
+## Gotchas
+
+#### Streaming audio
+In order for streamed audio content to work, make sure to force the audio source to use html5 and specify the format of the audio as shown below:
+
+More information in this Howler [thread](https://github.com/goldfire/howler.js/issues/378)
+```typescript jsx
+const { pause } = useAudioPlayer({
+    autoplay: true,
+    src: "https://stream.toohotradio.net/128",
+    html5: true,
+    format: ["mp3"]
+})
+```
+
 ## Examples
 
 To run the example applications follow the following steps:
