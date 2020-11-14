@@ -48,7 +48,11 @@ export function AudioPlayerProvider({
             if (playerRef.current) {
                 // don't do anything if we're asked to reload the same source
                 // @ts-ignore the _src argument actually exists
-                if (playerRef.current._src === src) return
+                const { _src } = playerRef.current
+                // internal Howl _src property is sometimes an array and other times a single string
+                // still need to to do more research on why this is
+                const prevSrc = Array.isArray(_src) ? _src[0] : _src
+                if (prevSrc === src) return
 
                 // if the previous sound is still loading then destroy it as soon as it finishes
                 if (loading) {
