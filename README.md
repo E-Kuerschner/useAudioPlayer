@@ -1,5 +1,6 @@
 # react-use-audio-player
-Custom React hooks for controlling audio in the browser powered by the amazing [howler.js](https://howlerjs.com/) library. The intention of this package is to provide an idiomatic way to use Howler in React via custom hooks.
+Custom React hooks for controlling audio in the browser powered by the amazing [howler.js](https://howlerjs.com/) library. 
+The intention of this package is to provide an idiomatic way to use Howler in React while providing a simpler API via custom React hooks.
 The currently available hooks allow you to set up an environment in which you can distribute the responsibility of managing a single audio source between different components in your React application. 
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
@@ -86,47 +87,51 @@ The options interface is identical to the [howler options](https://github.com/go
 
 `useAudioPlayer` returns a single object containing the following members:
 
--   `load: (config: HowlOptions) => void`
-    <br/>method to lazily load audio. It accepts the same configuration object that useAudioPlayer does.
+- `player`: [Howl](https://github.com/goldfire/howler.js/#methods)
+    <br/>an escape hatch to access the underlying Howl object in case you need to use a howler feature which is not supported by this library's simplified API
 
--   `loading: boolean`
+- `load: (config: HowlOptions) => void`
+    <br/>method to lazily load audio. It accepts the same configuration object as useAudioPlayer.
+    <br/>once a sound has already been loaded, calling this method will not do anything unless the `src` property is different from the previously loaded sound
+
+- `loading: boolean`
     <br/>true if audio is being fetched
 
--   `ready: boolean`
+- `ready: boolean`
     <br/>true if the audio has been loaded and can be played
 
--   `playing: boolean`
+- `playing: boolean`
     <br/>true is the audio is currently playing
 
--   `stopped: boolean`
+- `stopped: boolean`
     <br/>true if the audio has been stopped
     
--   `ended: boolean`
+- `ended: boolean`
     <br/>is true once the currently loaded audio finishes playing. This will be unset if you begin playing again or load a new sound.
 
--   `error: Error`
+- `error: Error`
     <br/>set when audio has failed to load
 
--   `play: () => void`
+- `play: () => void`
     <br/>plays the loaded audio
 
--   `pause: () => void`
+- `pause: () => void`
     <br/>pauses the audio
 
--   `togglePlayPause: () => void`
+- `togglePlayPause: () => void`
     <br/>convenient equivalent to alternating calls to `play` and `pause`
 
--   `stop: () => void`
+- `stop: () => void`
     <br/>stops the audio, returning the position to 0
 
--   `mute: () => void`
+- `mute: () => void`
     <br/>mutes the audio
     
--   `volume: (value: number) => number`
+- `volume: (value: number) => number`
     <br/>get/set the volume of the current sound. Volume values between 0.0 and 1.0
 
--   `player`
-    <br/>an escape hatch to access the underlying Howl object in case you need to use a howler feature which is not supported by this library's API
+- `fade: (start: number, end: number, duration: number) => Howl`
+    <br/>fades the sound from volume _start_ to volume _end_ over _duration_ ms
 <br/>
 
 > #### useAudioPosition
@@ -174,9 +179,69 @@ const PlayBar = () => {
 -   `seek: (position: number) => number`
     <br/>sets the position of the audio to position (seconds)
 
-## Gotchas
+## Gotchas & Quick Gudies
 
-#### Streaming audio
+### Guide: Switching sounds
+Switching from one sound the next is a common use-case (i.e. a playlist queue). This can be done in a couple of different ways:
+
+#### 1) calling #load in response to a user interaction
+```tsx
+const { load } = useAudioPlayer({
+    src: songA,
+    autoplay: true
+})
+
+const nextTrack = () => {
+    load({
+        src: songB,
+        autoplay: true
+    })
+}
+
+return <button onClick={nextTrack}>Start next track</button>
+```
+
+#### 2) updating the src property in the options object
+```tsx
+const songs = [songA, songB]
+const [songIndex, setSongIndex] = useState(0)
+
+const audioApi = useAudioPlayer({
+    src: songs[songIndex],
+    autoplay: true,
+    onend: () => setSongIndex(songIndex + 1)
+})
+```
+
+### Gotcha: Using event listeners
+Unfortunately, due to the current implementation there are some not-so-clear restraints applied to the use of event listeners.
+
+Currently, the options for `useAudioPlayer` matches the options for a [Howl object](https://github.com/goldfire/howler.js/#options) one-to-one, including all of Howler's event listeners.
+However, setting the event listeners in the hook's options has some negative consequences when trying to invoke any of the hook's own methods which manipulate the audio (togglePlayPause, volume, fade, etc.).
+
+Internally, those methods are memoized React callbacks with a dependency on the howler audio player object that is created when your sound loads. Initially, this player object is null.
+Therefore, when trying to use one of the hook's own methods inside the option's event listeners, a stale reference to the player object will be captured (for more on this problem [check out this article](https://dmitripavlutin.com/react-hooks-stale-closures/))
+
+For a recommended workaround, see the code snippet below:
+
+```tsx
+    const { fade } = useAudioPlayer({
+        src: mySong,
+        autoplay: true,
+        onplay: () => {
+            // BAD! Internally fade maintains a reference to player which is initially null
+            // this will introduce a stale reference
+            fade(0, 1, 5000)
+        },
+    });
+
+    // BETTER! Guarantees that the latest reference to fade is used
+    useEffect(() => {
+        fade(0,1,5000)
+    }, [fade])
+```
+
+### Gotcha: Streaming audio
 In order for streamed audio content to work, make sure to force the audio source to use html5 and specify the format of the audio as shown below:
 
 More information in this Howler [thread](https://github.com/goldfire/howler.js/issues/378)

@@ -11,6 +11,7 @@ export type AudioPlayerControls = AudioPlayerContext & {
     stop: Howl["stop"] | typeof noop
     mute: Howl["mute"] | typeof noop
     volume: Howl["volume"] | typeof noop
+    fade: Howl["fade"] | typeof noop
     togglePlayPause: () => void
 }
 
@@ -23,6 +24,7 @@ export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
         // don't do anything: the user will have access
         // to the current context
         if (!src) return
+        // todo: could improve perf even more by not calling load if the options haven't really changed across renders of the calling component
         load({ src, ...restOptions })
     }, [options, load])
 
@@ -42,9 +44,10 @@ export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
             pause: player ? player.pause.bind(player) : noop,
             stop: player ? player.stop.bind(player) : noop,
             mute: player ? player.mute.bind(player) : noop,
-            volume: player ? player.volume.bind(player) : noop
+            volume: player ? player.volume.bind(player) : noop,
+            fade: player ? player.fade.bind(player) : noop
         }
-    }, [noop, player])
+    }, [player])
 
     return useMemo(() => {
         return {
