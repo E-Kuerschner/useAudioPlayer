@@ -1,0 +1,12 @@
+.autoPlayNextSound {
+    padding: 20px;
+}
+
+.autoPlayNextSound a {
+    margin-bottom: 25px;
+}
+
+button {
+    padding: 8px;
+    margin-right: 4px;
+}
