@@ -1,18 +1,17 @@
-import { useCallback, useContext, useEffect } from "react"
+import { useCallback, useContext, useEffect, useMemo } from "react"
 import { Howl, HowlOptions } from "howler"
 import { playerContext } from "./context"
 import { AudioPlayerContext } from "./types"
 
 const noop = () => {}
 
-export type AudioPlayerControls = Omit<AudioPlayerContext, "player"> & {
+export type AudioPlayerControls = AudioPlayerContext & {
     play: Howl["play"] | typeof noop
     pause: Howl["pause"] | typeof noop
     stop: Howl["stop"] | typeof noop
     mute: Howl["mute"] | typeof noop
     volume: Howl["volume"] | typeof noop
     togglePlayPause: () => void
-    player: Howl | null
 }
 
 export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
@@ -37,15 +36,23 @@ export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
         }
     }, [player])
 
-    return {
-        ...rest,
-        player,
-        play: player ? player.play.bind(player) : noop,
-        pause: player ? player.pause.bind(player) : noop,
-        stop: player ? player.stop.bind(player) : noop,
-        mute: player ? player.mute.bind(player) : noop,
-        volume: player ? player.volume.bind(player) : noop,
-        load,
-        togglePlayPause
-    }
+    const boundHowlerMethods = useMemo(() => {
+        return {
+            play: player ? player.play.bind(player) : noop,
+            pause: player ? player.pause.bind(player) : noop,
+            stop: player ? player.stop.bind(player) : noop,
+            mute: player ? player.mute.bind(player) : noop,
+            volume: player ? player.volume.bind(player) : noop
+        }
+    }, [noop, player])
+
+    return useMemo(() => {
+        return {
+            ...rest,
+            ...boundHowlerMethods,
+            player,
+            load,
+            togglePlayPause
+        }
+    }, [rest, player, boundHowlerMethods, load, togglePlayPause])
 }
