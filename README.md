@@ -238,8 +238,8 @@ For a recommended workaround, see the code snippet below:
 
     // BETTER! Guarantees that the latest reference to fade is used
     useEffect(() => {
-        player && fade(0,1,5000)
-    }, [fade, player])
+        fade(0,1,5000)
+    }, [fade])
 ```
 
 ### Gotcha: Streaming audio
