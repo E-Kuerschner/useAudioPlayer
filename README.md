@@ -228,6 +228,7 @@ For a recommended workaround, see the code snippet below:
     const { fade } = useAudioPlayer({
         src: mySong,
         autoplay: true,
+        volume: 0, //set to 0 expecting to fade in below
         onplay: () => {
             // BAD! Internally fade maintains a reference to player which is initially null
             // this will introduce a stale reference
