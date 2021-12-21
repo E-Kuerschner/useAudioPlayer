@@ -225,7 +225,7 @@ Therefore, when trying to use one of the hook's own methods inside the option's 
 For a recommended workaround, see the code snippet below:
 
 ```tsx
-    const { player, fade } = useAudioPlayer({
+    const { fade } = useAudioPlayer({
         src: mySong,
         autoplay: true,
         volume: 0, //set to 0 expecting to fade in below
