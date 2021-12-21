@@ -225,9 +225,10 @@ Therefore, when trying to use one of the hook's own methods inside the option's 
 For a recommended workaround, see the code snippet below:
 
 ```tsx
-    const { fade } = useAudioPlayer({
+    const { player, fade } = useAudioPlayer({
         src: mySong,
         autoplay: true,
+        volume: 0, //set to 0 expecting to fade in below
         onplay: () => {
             // BAD! Internally fade maintains a reference to player which is initially null
             // this will introduce a stale reference
@@ -237,8 +238,8 @@ For a recommended workaround, see the code snippet below:
 
     // BETTER! Guarantees that the latest reference to fade is used
     useEffect(() => {
-        fade(0,1,5000)
-    }, [fade])
+        player && fade(0,1,5000)
+    }, [fade, player])
 ```
 
 ### Gotcha: Streaming audio
