@@ -4,7 +4,7 @@ The intention of this package is to provide an idiomatic way to use Howler in Re
 The currently available hooks allow you to set up an environment in which you can distribute the responsibility of managing a single audio source between different components in your React application. 
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
-[![CircleCI](https://circleci.com/gh/E-Kuerschner/useAudioPlayer/tree/master.svg?style=shield)](https://app.circleci.com/pipelines/gh/E-Kuerschner/useAudioPlayer?branch=master)
+[![CircleCI](https://circleci.com/gh/E-Kuerschner/useAudioPlayer/tree/main.svg?style=shield)](https://app.circleci.com/pipelines/gh/E-Kuerschner/useAudioPlayer?branch=main)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/react-use-audio-player)
 <a href="https://buymeacoffee.com/erichk" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
 
