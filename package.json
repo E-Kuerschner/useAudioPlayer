@@ -1,6 +1,6 @@
 {
     "name": "react-use-audio-player",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "React hook for building custom audio playback controls",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
