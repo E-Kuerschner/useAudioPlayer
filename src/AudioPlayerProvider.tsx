@@ -60,6 +60,9 @@ export function AudioPlayerProvider({
                     prevPlayer.current.once("load", () => {
                         prevPlayer.current?.unload()
                     })
+                } else {
+                    prevPlayer.current = playerRef.current
+                    prevPlayer.current?.unload()
                 }
 
                 wasPlaying = playerRef.current.playing()
