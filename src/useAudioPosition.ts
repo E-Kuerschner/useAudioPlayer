@@ -12,7 +12,7 @@ interface AudioPosition {
     duration: number
     percentComplete: number
     seek: (position: number) => number
-    speed: (rate: number | undefined) => number | undefined
+    speed: (rate?: number) => number | undefined
 }
 
 // gives current audio position state - updates in an animation frame loop for animating audio visualizations
