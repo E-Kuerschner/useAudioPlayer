@@ -8,6 +8,9 @@ The currently available hooks allow you to set up an environment in which you ca
 ![npm bundle size](https://img.shields.io/bundlephobia/min/react-use-audio-player)
 <a href="https://buymeacoffee.com/erichk" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
 
+## Fork additions
+- Add playback speed util
+
 ## Install
 
 ```bash
