@@ -12,6 +12,7 @@ interface AudioPosition {
     duration: number
     percentComplete: number
     seek: (position: number) => number
+    speed: (rate: number | undefined) => number | undefined
 }
 
 // gives current audio position state - updates in an animation frame loop for animating audio visualizations
@@ -75,9 +76,19 @@ export const useAudioPosition = (
         [player, setPosition]
     )
 
+    const speed = useCallback(
+        // This should update the playback speed if the rate is provided
+        // It returns the current playback speed
+        (rate: number | undefined) => {
+            if (rate) player?.rate(rate)
+            return player?.rate()
+        },
+        [player]
+    )
+
     const percentComplete = useMemo(() => {
         return (position / duration) * 100 || 0
     }, [duration, position])
 
-    return { position, duration, seek, percentComplete }
+    return { position, duration, seek, percentComplete, speed }
 }
