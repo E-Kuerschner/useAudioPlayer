@@ -30,7 +30,8 @@
         "lint": "tsdx lint",
         "prepare": "tsdx build",
         "preversion": "yarn test && yarn build",
-        "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
+        "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'",
+        "postinstall": "tsc --outDir ./build"
     },
     "devDependencies": {
         "@testing-library/react-hooks": "^3.4.1",
