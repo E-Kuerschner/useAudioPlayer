@@ -79,7 +79,7 @@ export const useAudioPosition = (
     const speed = useCallback(
         // This should update the playback speed if the rate is provided
         // It returns the current playback speed
-        (rate: number | undefined) => {
+        (rate?: number) => {
             if (rate) player?.rate(rate)
             return player?.rate()
         },
