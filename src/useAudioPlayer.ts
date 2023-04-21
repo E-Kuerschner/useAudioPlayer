@@ -12,6 +12,7 @@ export type AudioPlayerControls = AudioPlayerContext & {
     mute: Howl["mute"] | typeof noop
     volume: Howl["volume"] | typeof noop
     fade: Howl["fade"] | typeof noop
+    rate: Howl["rate"] | typeof noop
     togglePlayPause: () => void
 }
 
@@ -40,6 +41,7 @@ export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
 
     const boundHowlerMethods = useMemo(() => {
         return {
+            rate: player ? player.rate.bind(player) : noop,
             play: player ? player.play.bind(player) : noop,
             pause: player ? player.pause.bind(player) : noop,
             stop: player ? player.stop.bind(player) : noop,

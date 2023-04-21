@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, {FunctionComponent, useState} from "react"
 import { Route, Link, RouteChildrenProps, Switch } from "react-router-dom"
 import { AudioPlayerProvider, useAudioPlayer } from "react-use-audio-player"
 import { BackToHome } from "../BackToHome"
@@ -8,21 +8,33 @@ import { TimeLabel } from "../TimeLabel"
 import "./styles.scss"
 
 const PlayBar = () => {
-    const { togglePlayPause, playing, ready } = useAudioPlayer()
+    const { togglePlayPause, playing, ready, rate } = useAudioPlayer()
+    const [speed, setSpeed] = useState<number | void>(rate())
     return (
         <div className="playBar">
-            <button
-                className="playBar__playButton"
-                onClick={togglePlayPause}
-                disabled={!ready}
-            >
-                <i className={`fa ${playing ? "fa-pause" : "fa-play"}`} />
-            </button>
-            <div className="playBar__timeStuff">
-                <AudioSeekBar className="playBar__seek" />
-                <TimeLabel />
+            <div className="playBar__spacer"/>
+            <div className="playBar__mainControls">
+                <button
+                    className="playBar__playButton"
+                    onClick={togglePlayPause}
+                    disabled={!ready}
+                >
+                    <i className={`fa ${playing ? "fa-pause" : "fa-play"}`} />
+                </button>
+                <div className="playBar__timeStuff">
+                    <AudioSeekBar className="playBar__seek" />
+                    <TimeLabel />
+                </div>
+                <VolumeControl />
             </div>
-            <VolumeControl />
+            <div className="playBar__rateControl">
+                <span>Playback Speed:</span>
+                <select className="playBar__rateSelect" name="rateSelect" id="rate" defaultValue="1" onChange={e => rate(Number(e.target.value))}>
+                    <option value="0.5">1/2x</option>
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                </select>
+            </div>
         </div>
     )
 }
