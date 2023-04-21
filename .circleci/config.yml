@@ -4,14 +4,15 @@ orbs:
   cypress: cypress-io/cypress@1
 jobs:
   unit-tests:
-    executor:
-      name: node/default
+    executor: node/default
     steps:
-      - node/with-cache:
-          steps:
-            - checkout
-            - run: yarn install
-            - run: yarn test
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: yarn test
+          name: Run tests
+            
 workflows:
     all-tests:
       jobs:
