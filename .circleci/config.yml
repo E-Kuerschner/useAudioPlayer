@@ -19,8 +19,7 @@ workflows:
         - unit-tests
         - cypress/run:
             package-manager: yarn
-            install-command: cd examples && yarn install
-            start-command: cd examples && yarn start 
+            start-command: cd examples && yarn install && yarn start 
             cypress-command: yarn test:integration
             post-steps:
               - store_artifacts:
