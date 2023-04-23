@@ -3,11 +3,11 @@ import { playerContext, positionContext } from "./context"
 import { Howl } from "howler"
 import useIsomorphicLayoutEffect from "./useIsomorphicLayout"
 
-interface UseAudioPositionConfig {
+export interface UseAudioPositionConfig {
     highRefreshRate?: boolean
 }
 
-interface AudioPosition {
+export interface AudioPosition {
     position: number
     duration: number
     percentComplete: number
