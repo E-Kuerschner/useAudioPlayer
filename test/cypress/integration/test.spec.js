@@ -16,6 +16,7 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
     })
 
     it("can visualize playback time with a seek bar", () => {
+        // eslint-disable-next-line  cypress/unsafe-to-chain-command
         cy.contains("cats")
             .click()
             .then(() => {
@@ -23,6 +24,7 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
                     expect(audioContext.state).to.equal("running")
                     // eslint-disable-next-line cypress/no-unnecessary-waiting
                     cy.wait(4000).then(() => {
+                        // eslint-disable-next-line  cypress/unsafe-to-chain-command
                         cy.get(".playBar__playButton")
                             .click()
                             .then(() => {

@@ -18,6 +18,7 @@ describe("useAudioPosition", () => {
     it("returns a percentage representing the progress of the current audio position", () => {
         const mockHowl = new Howl({ src: "foo" })
         const mockSeek = jest.spyOn(mockHowl, "seek")
+        // @ts-ignore this is a known issue with howler typings
         mockSeek.mockReturnValue(10)
 
         const { result } = renderHook(() => useAudioPosition(), {
@@ -44,6 +45,7 @@ describe("useAudioPosition", () => {
     it("initializes position state from the audio source", () => {
         const mockHowl = new Howl({ src: "foo" })
         const mockSeek = jest.spyOn(mockHowl, "seek")
+        // @ts-ignore this is a known issue with howler typings
         mockSeek.mockReturnValue(90)
 
         const { result } = renderHook(() => useAudioPosition(), {
@@ -71,6 +73,7 @@ describe("useAudioPosition", () => {
         jest.useFakeTimers()
         const mockHowl = new Howl({ src: "foo" })
         const mockSeek = jest.spyOn(mockHowl, "seek")
+        // @ts-ignore this is a known issue with howler typings
         mockSeek.mockReturnValue(0) // doesn't matter what value is mocked for this test case
 
         renderHook(() => useAudioPosition(), {
