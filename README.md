@@ -1,3 +1,5 @@
+# [Version 2.0](https://github.com/E-Kuerschner/useAudioPlayer/discussions/106) On The Way 🎉
+
 # react-use-audio-player
 Custom React hooks for controlling audio in the browser powered by the amazing [howler.js](https://howlerjs.com/) library. 
 The intention of this package is to provide an idiomatic way to use Howler in React while providing a simpler API via custom React hooks.
