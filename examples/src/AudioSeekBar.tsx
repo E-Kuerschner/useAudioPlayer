@@ -6,7 +6,7 @@ import React, {
     FunctionComponent,
     MouseEvent
 } from "react"
-import { useAudioPlayer, useAudioPosition } from "react-use-audio-player"
+import { useGlobalAudioPlayer } from "react-use-audio-player"
 import "./AudioSeekBar.scss"
 
 interface AudioSeekBarProps {
@@ -15,17 +15,28 @@ interface AudioSeekBarProps {
 
 export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
     const { className = "" } = props
-    const { duration, seek, percentComplete } = useAudioPosition({
-        highRefreshRate: true
-    })
-    const { playing } = useAudioPlayer()
-    const [barWidth, setBarWidth] = useState("0%")
+    const { playing, getPosition, duration, seek } = useGlobalAudioPlayer(
+        "AudioSeekBar"
+    )
+    const [pos, setPos] = useState(0)
+    const frameRef = useRef<number>()
 
     const seekBarElem = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        setBarWidth(`${percentComplete}%`)
-    }, [percentComplete])
+        const animate = () => {
+            setPos(getPosition())
+            frameRef.current = requestAnimationFrame(animate)
+        }
+
+        frameRef.current = window.requestAnimationFrame(animate)
+
+        return () => {
+            if (frameRef.current) {
+                cancelAnimationFrame(frameRef.current)
+            }
+        }
+    }, [])
 
     const goTo = useCallback(
         (event: MouseEvent) => {
@@ -41,13 +52,18 @@ export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
         [duration, playing, seek]
     )
 
+    if (duration === Infinity) return null
+
     return (
         <div
             className={`audioSeekBar ${className} `}
             ref={seekBarElem}
             onClick={goTo}
         >
-            <div style={{ width: barWidth }} className="audioSeekBar__tick" />
+            <div
+                style={{ width: `${(pos / duration) * 100}%` }}
+                className="audioSeekBar__tick"
+            />
         </div>
     )
 }

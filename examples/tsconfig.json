@@ -12,7 +12,7 @@
         "strictNullChecks": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "lib": ["es2015", "es2016", "dom"],
+        "lib": ["es2021", "dom"],
         "baseUrl": ".",
         "types": ["node"],
         "paths": {

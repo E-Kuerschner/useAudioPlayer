@@ -1,17 +1,18 @@
 import React from "react"
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom"
-import { BasicExample } from "./BasicExample"
-import { Spotifyish } from "./Spotifyish"
-import { AutoPlayNextSound } from "./AutoPlayNextSound"
-import "./App.css"
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
+import { BasicExample } from "./GlobalAudioSource/BasicExample"
+import { Spotifyish } from "./GlobalAudioSource/Spotifyish"
+import { AutoPlayNextSound } from "./GlobalAudioSource/AutoPlayNextSound"
+import { MultipleSounds } from "./MultipleSounds"
+import { GlobalAudioSource } from "./GlobalAudioSource"
+import "./app.scss"
 
 function ExampleSelect() {
     return (
-        <div className="exampleSelect">
+        <div className="page">
             <h3>Examples</h3>
-            <Link to="/basic">Basic Example</Link>
-            <Link to="/spotifyish/library">Spotify-ish</Link>
-            <Link to="/playNextSound">Auto Play Next Example</Link>
+            <Link to="/globalAudio">useGlobalAudioPlayer examples</Link>
+            <Link to="/multipleSounds">Multiple sound sources</Link>
         </div>
     )
 }
@@ -20,12 +21,18 @@ function App() {
     return (
         <div className="app">
             <BrowserRouter>
-                <Switch>
-                    <Route path="/basic" component={BasicExample} />
-                    <Route path="/spotifyish" component={Spotifyish} />
-                    <Route path="/playNextSound" component={AutoPlayNextSound} />
-                    <Route exact path="/" component={ExampleSelect} />
-                </Switch>
+                <Routes>
+                    <Route index path="/" element={<ExampleSelect />} />
+                    <Route path="globalAudio" element={<GlobalAudioSource />}>
+                        <Route path="basic" element={<BasicExample />} />
+                        <Route path="spotifyish" element={<Spotifyish />} />
+                        <Route
+                            path="playNextSound"
+                            element={<AutoPlayNextSound />}
+                        />
+                    </Route>
+                    <Route path="multipleSounds" element={<MultipleSounds />} />
+                </Routes>
             </BrowserRouter>
         </div>
     )

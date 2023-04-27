@@ -1,0 +1,20 @@
+.basicExample {
+    padding: 20px;
+}
+
+.errorMessage {
+    color: red;
+    font-weight: bold;
+}
+
+.player {
+    &__seek {
+        width: 400px;
+        height: 15px;
+    }
+
+    td {
+        border: solid 1px white;
+        padding: 5px;
+    }
+}
