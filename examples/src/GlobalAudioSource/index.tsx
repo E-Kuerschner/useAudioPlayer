@@ -13,8 +13,8 @@ const ExampleSelect = () => {
                 managed by the playbar at the bottom of the page.
             </p>
             <h4>Examples</h4>
-            <Link to="basic">Basic Example</Link>
-            <Link to="spotifyish">Spotify-ish</Link>
+            <Link to="state">Audio Player State</Link>
+            <Link to="library">Full Sound Library</Link>
             <Link to="playNextSound">Auto Play Next Example</Link>
         </>
     )

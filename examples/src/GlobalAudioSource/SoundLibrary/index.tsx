@@ -1,19 +1,34 @@
 import React from "react"
 import { useGlobalAudioPlayer } from "react-use-audio-player"
+import "./styles.scss"
 
 export const Spotifyish = () => {
-    const sounds = ["/cats.mp3", "/dog.mp3"]
-    const { load, playing } = useGlobalAudioPlayer()
+    const sounds = [
+        "/audio.mp3",
+        "/cats.mp3",
+        "/dog.mp3",
+        "/ch_tunes - baby_seal.wav",
+        "/ch_tunes - jam_2.wav",
+        "/ch_tunes - jam_4.wav",
+        "/ch_tunes - jam_8.wav",
+        "/ch_tunes - jam_10.wav"
+    ]
+    const { load, src: loadedSrc } = useGlobalAudioPlayer()
     return (
         <div className="soundLibrary page">
             <div className="page__title">Sound Library</div>
+            <p>
+                This page lists the full set of sounds available in the demos.
+            </p>
             <div className="soundLibrary__sounds">
                 {sounds.map((src, i) => {
                     return (
                         <div
                             key={i}
-                            className="track"
-                            onClick={() => load(src)}
+                            className={`track ${
+                                src === loadedSrc ? "track--playing" : ""
+                            }`}
+                            onClick={() => load(src, { autoplay: true })}
                         >
                             <i className="fa fa-music track__icon" />
                             <div className="track__title">

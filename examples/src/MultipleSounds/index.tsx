@@ -30,18 +30,37 @@ export const MultipleSounds = () => {
             <Link to="..">go back</Link>
             <div className="multipleSounds__tracks">
                 <div className="multipleSounds__track">
-                    <p>Song A</p>
-                    <p>Volume {song1.volume.toFixed(2)}</p>
+                    <p>{song1.src}</p>
+                    <div className="hstack">
+                        <label htmlFor="song1vol">volume</label>
+                        <input
+                            name="song1vol"
+                            type="range"
+                            readOnly
+                            value={Number(song1.volume.toFixed(2)) * 100}
+                        />
+                    </div>
                 </div>
 
                 <div className="multipleSounds__track">
-                    <p>Song B</p>
-                    <p>Volume {song2.volume.toFixed(2)}</p>
+                    <p>{song2.src}</p>
+                    <div className="hstack">
+                        <label htmlFor="song2vol">volume</label>
+                        <input
+                            name="song2vol"
+                            type="range"
+                            readOnly
+                            value={Number(song2.volume.toFixed(2)) * 100}
+                        />
+                    </div>
                 </div>
             </div>
             <div className="multipleSounds__controls">
-                <button onClick={togglePlayingBoth}>Start</button>
+                <button onClick={togglePlayingBoth}>
+                    {song1.playing ? "Pause" : "Play"}
+                </button>
                 <input type="range" value={xFadeValue} onChange={handleFade} />
+                <p>Adjust the slider to fade between the two songs</p>
             </div>
         </div>
     )

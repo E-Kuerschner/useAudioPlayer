@@ -56,42 +56,10 @@ code {
     }
 }
 
-.soundLibrary {
-    &__sounds {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-    }
-}
-
-
-.track {
-    display: inline-flex;
-    justify-content: center;
+.hstack {
+    display:flex;
     align-items: center;
-    flex-direction: column;
-    width: 250px;
-    height: 250px;
-    border: solid 1px white;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: white;
-        color: black;
-    }
-
-    &__icon {
-        font-size: xx-large;
-    }
-
-    &__title {
-        font-size: xx-large;
-    }
 }
-
-
 
 /*
 #e1fdff
