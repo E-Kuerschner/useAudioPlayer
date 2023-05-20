@@ -12,7 +12,7 @@ export const PlayBar = () => {
         setRate,
         rate,
         src
-    } = useGlobalAudioPlayer()
+    } = useGlobalAudioPlayer("PlayBar")
 
     return (
         <div className="playBar">
@@ -27,7 +27,7 @@ export const PlayBar = () => {
                 </button>
                 <div className="playBar__timeStuff">
                     <AudioSeekBar className="playBar__seek" />
-                    <TimeLabel />
+                    <TimeLabel debugId="PlayBar.TimeLabel" />
                 </div>
             </div>
             <div>

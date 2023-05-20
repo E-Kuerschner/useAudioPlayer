@@ -8,7 +8,8 @@ import { useHowlEventSync } from "./useHowlEventSync"
 import { HowlInstanceManagerSingleton } from "./HowlInstanceManager"
 import { AudioPlayer, LoadArguments } from "./types"
 
-export const useGlobalAudioPlayer = (): AudioPlayer => {
+// @ts-ignore might use this for debugging TODO remove for release
+export const useGlobalAudioPlayer = (debugId?: string): AudioPlayer => {
     const howlManager = useRef(HowlInstanceManagerSingleton.getInstance())
 
     const [state, dispatch] = useHowlEventSync(

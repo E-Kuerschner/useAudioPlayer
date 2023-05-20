@@ -12,11 +12,11 @@
     },
     "dependencies": {
         "react-app-polyfill": "^1.0.0",
-        "react-dom": "^17",
         "react-router-dom": "^6.11.0"
     },
     "alias": {
         "react": "../node_modules/react",
+        "react-dom": "../node_modules/react-dom",
         "scheduler/tracing": "../node_modules/scheduler/tracing-profiling",
         "react-use-audio-player": "../src",
         "typescript": "../node_modules/typescript"

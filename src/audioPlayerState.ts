@@ -22,6 +22,7 @@ export interface AudioEvent {
     type: Omit<keyof typeof ActionTypes, "ON_ERROR">
     howl: Howl
     toggleValue?: boolean
+    debugId?: string
 }
 
 export interface ErrorEvent {
@@ -86,6 +87,11 @@ export function reducer(state: AudioPlayerState, action: Action) {
         case ActionTypes.START_LOAD:
             return state
         case ActionTypes.ON_LOAD:
+            // in React 18 there is a weird race condition where ON_LOAD receives a Howl object that has been unloaded
+            // if we detect this case just return the existing state to wait for another action
+            if ((action as AudioEvent).howl.state() === "unloaded") {
+                return state
+            }
             return initStateFromHowl((action as AudioEvent).howl)
         case ActionTypes.ON_ERROR:
             return {
