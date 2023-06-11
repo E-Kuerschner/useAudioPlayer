@@ -85,7 +85,6 @@ export function useHowlEventSync(
     // using ref bc we don't want identity of dispatch function to change
     // see talk: https://youtu.be/nUzLlHFVXx0?t=1558
     const wrappedDispatch = useRef((action: Action) => {
-        // TODO:  THIS START_LOAD will never be called if the howl if already loaded when the state is initialized
         if (action.type === "START_LOAD") {
             const { howl } = action as AudioEvent
             // set up event listening

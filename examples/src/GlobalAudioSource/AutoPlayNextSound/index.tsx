@@ -20,7 +20,7 @@ export function AutoPlayNextSound() {
         seek,
         duration,
         playing
-    } = useGlobalAudioPlayer("auto.Index")
+    } = useGlobalAudioPlayer()
 
     useEffect(() => {
         load(songs[songIndex], {
@@ -64,7 +64,7 @@ export function AutoPlayNextSound() {
                     </button>
                 </div>
                 <div>
-                    <TimeLabel debugId="auto.TimeLabel" />
+                    <TimeLabel />
                 </div>
             </div>
         </div>

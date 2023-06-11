@@ -8,7 +8,7 @@ import { useGlobalAudioPlayer } from "react-use-audio-player"
 
 export const FileLoader: FunctionComponent = () => {
     const [audioFile, setAudioFile] = useState("/audio.mp3")
-    const { load, isReady, error } = useGlobalAudioPlayer("state.FileLoader")
+    const { load, isReady, error } = useGlobalAudioPlayer()
 
     useEffect(() => {
         load(audioFile, { html5: true })

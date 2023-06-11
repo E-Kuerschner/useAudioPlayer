@@ -15,9 +15,7 @@ interface AudioSeekBarProps {
 
 export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
     const { className = "" } = props
-    const { playing, getPosition, duration, seek } = useGlobalAudioPlayer(
-        "AudioSeekBar"
-    )
+    const { playing, getPosition, duration, seek } = useGlobalAudioPlayer()
     const [pos, setPos] = useState(0)
     const frameRef = useRef<number>()
 

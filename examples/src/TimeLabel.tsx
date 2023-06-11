@@ -17,9 +17,9 @@ const formatTime = (seconds: number) => {
     return new Date(floored * 1000).toISOString().substr(from, length)
 }
 
-export const TimeLabel = ({ debugId = "TimeLabel" }: { debugId?: string }) => {
+export const TimeLabel = () => {
     const [pos, setPos] = useState(0)
-    const { duration, getPosition, playing } = useGlobalAudioPlayer(debugId)
+    const { duration, getPosition, playing } = useGlobalAudioPlayer()
 
     useEffect(() => {
         const i = setInterval(() => {

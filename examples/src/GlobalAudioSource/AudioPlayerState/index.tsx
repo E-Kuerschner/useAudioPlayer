@@ -7,7 +7,7 @@ import { TimeLabel } from "../../TimeLabel"
 import "./styles.scss"
 
 const Player = () => {
-    const state = useGlobalAudioPlayer("state.Player")
+    const state = useGlobalAudioPlayer()
     if (state.isReady) {
         return (
             <div className="player">

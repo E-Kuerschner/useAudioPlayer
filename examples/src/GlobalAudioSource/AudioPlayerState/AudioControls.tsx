@@ -11,7 +11,7 @@ export const AudioControls: FunctionComponent<{}> = () => {
         playing,
         loop,
         looping
-    } = useGlobalAudioPlayer("start.AudioControls")
+    } = useGlobalAudioPlayer()
 
     return (
         <div>
