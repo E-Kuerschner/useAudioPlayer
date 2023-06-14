@@ -1,14 +1,23 @@
 # [Version 2.0](https://github.com/E-Kuerschner/useAudioPlayer/discussions/106) On The Way 🎉
 
 # react-use-audio-player
-Custom React hooks for controlling audio in the browser powered by the amazing [howler.js](https://howlerjs.com/) library. 
-The intention of this package is to provide an idiomatic way to use Howler in React while providing a simpler API via custom React hooks.
-The currently available hooks allow you to set up an environment in which you can distribute the responsibility of managing a single audio source between different components in your React application. 
+
+Typescript package exporting custom React hooks for controlling audio in the browser. Built on top of the amazing [howler.js](https://howlerjs.com/) library.
+
+The intent of this package is to provide an idiomatic way to create and manipulate sounds in a React application.
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
 [![CircleCI](https://circleci.com/gh/E-Kuerschner/useAudioPlayer/tree/main.svg?style=shield)](https://app.circleci.com/pipelines/gh/E-Kuerschner/useAudioPlayer?branch=main)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/react-use-audio-player)
 <a href="https://buymeacoffee.com/erichk" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
+
+## V2 Upgrade/Migration Guide
+
+Note that v2 is a major upgrade and thus contains breaking changes for your applications. Overall the migration to v2 will involve you taking a few refactoring steps:
+
+1. remove all uses of `useAudioPosition` and replace it with your own implementation (see the examples/recipes section below)
+2. replace all uses of `useAudioPlayer` with `useGlobalAudioPlayer` which is exported from the v2 package (alongside a net-new hook using the old name of `useAudioPlayer` - more on that below)
+3. check the docs for `useGlobalAudioPlayer` below since some API improvements have been made. Most notably, the hook is no longer called with any load arguments/options and instead returns an explicit `load` function that you must use.
 
 ## Install
 
@@ -16,250 +25,211 @@ The currently available hooks allow you to set up an environment in which you ca
 yarn add react-use-audio-player
 ```
 
-## TypeScript
-
-For convenience, the library's type definitions are included in the package under `index.d.ts`.
-
 ## Usage
+To play a sound, import either `useAudioPlayer` or `useGlobalAudioPlayer` into a React component. Grab the `load` function from its return and get jamming!
 
-This library exports a context Provider and two hooks for controlling an audio source, giving you the tools you need to build you own audio player or visualization.
+```tsx
+import { useGlobalAudioPlayer } from 'react-use-audio-player';
 
-<br/>
+function MyComponent() {
+  const { load } = useGlobalAudioPlayer();
 
-> #### AudioPlayerProvider
-
-This Provider is required for any of the hooks to function.
-The Provider encapsulates a reference to a single audio source and all the state.
-Besides the initial setup, you will never need to interact with the Provider directly.
-The `useAudioPlayer` and `useAudioPosition` hooks give you an interface to do that.
-The benefit of having a single, shared audio source is that it allows you to compose together multiple components that share knowledge about the audio.
-For example, you may have separate components `PlayPauseButton`, `SeekBar` and `VolumeControls` all working together on the same audio source.
-
-```javascript
-import React from "react"
-import { AudioPlayerProvider } from "react-use-audio-player"
-
-const App = () => {
-    return (
-        <AudioPlayerProvider>
-            <AudioPlayer file="meow.mp3" />
-        </AudioPlayerProvider>
-    )
+  // ... later in a callback, effect, etc.
+  load('/mySound.wav', {
+    autoplay: true
+  });
 }
 ```
 
-<br/>
+## Why Two Hooks?
+`useAudioPlayer` and `useGlobalAudioPlayer` share a lot of similarities. In fact, they return the same `AudioPlayer` interface (see details below).
+Your use-case will determine which hook is the most appropriate for you to use.
 
-> #### useAudioPlayer
+`useGlobalAudioPlayer` has some unique functionality. It's purpose is to manage a single, global sound across your entire app. 
+The inspiration for this came from a desire to easily build applications like SoundCloud or Spotify where no matter where you are in the app you can access and control the sound.
+When you are using this hook you can call it from _anywhere_ in your component tree and it will synchronize with the same audio source as every other instance of useGlobalAudioPlayer.
 
-This is the main hook for controlling your audio instance.
+For example, you could write a _Playlist_ component where clicking a track loads that song and begins playback. 
+Then, on a totally different branch in your component tree, write a _PlaybackControls_ component which calls useGlobalAudioPlayer and uses its _play_ and _pause_ members
+to start and stop the same song previously loaded by _Playlist_.
 
-Example:
+To quickly determine if useGlobalAudioPlayer is right for you, ask yourself these two questions:
+1. **Does your app only need to play a single sound at any given time?**
+2. **Do you want to be able to control this sound from anywhere in your component tree?**
+If the answer is yes to both of these questions, then useGlobalAudioPlayer is the right choice for your application.
 
-```javascript
-import React from "react"
-import { useAudioPlayer } from "react-use-audio-player"
+`useAudioPlayer` is the best choice for when you have a simple use-case. Each instance of the useAudioPlayer hook represents its own sound.
+This means that you can load and play multiple sounds from the same component. 
+For example, you could add separate, unique sound effects for the success and error responses of a fetch request.
 
-const AudioPlayer = ({ file }) => {
-    const { togglePlayPause, ready, loading, playing } = useAudioPlayer({
-        src: file,
-        format: "mp3",
-        autoplay: false,
-        onend: () => console.log("sound has ended!")
-    })
+**Note:** Unlike useGlobalAudioPlayer, when the component which initialized the hook unmounts the sound will stop.
 
-    if (!ready && !loading) return <div>No audio to play</div>
-    if (loading) return <div>Loading audio</div>
+useGlobalAudioPlayer and useAudioPlayer can be used simultaneously without one affecting the other.
 
-    return (
-        <div>
-            <button onClick={togglePlayPause}>{playing ? "Pause" : "Play"}</button>
-        </div>
-    )
-}
-```
 
-#### API
+## AudioPlayer (interface)
 
-#### Arguments
-`useAudioPlayer` optionally accepts some configuration as its only argument.
-The options interface is identical to the [howler options](https://github.com/goldfire/howler.js#options).
-    
-#### Return Value
+This is the interface implemented by the returned object of both _useAudioPlayer_ and _useGlobalAudioPlayer_.
+The interface defines all the state for a sound and a set of methods to manipulate the state/sound.
 
-`useAudioPlayer` returns a single object containing the following members:
+#### State
+- src: `string` (the src used to load the audio)
+- looping: `boolean` (is the audio looping)
+- isReady: `boolean` (is the sound loaded and ready to play)
+- paused: `boolean` (is the sound paused)
+- stopped: `boolean` (is the sound stopped i.e. not playing & position 0)
+- playing: `boolean` (is the sound playing)
+- duration: `number` (the length in seconds)
+- muted: `boolean` (is the sound muted)
+- rate: `number` (the playback rate)
+- volume: `number` (the volume level 0 - 1.0)
+- error: `string |  null` (error message if any, after attempted load)
 
-- `player`: [Howl](https://github.com/goldfire/howler.js/#methods)
-    <br/>an escape hatch to access the underlying Howl object in case you need to use a howler feature which is not supported by this library's simplified API
+#### Methods
+#### play `() => void`
+Plays the loaded sound. You must invoke this to start playback if `autoplay` was set to false
 
-- `load: (config: HowlOptions) => void`
-    <br/>method to lazily load audio. It accepts the same configuration object as useAudioPlayer.
-    <br/>once a sound has already been loaded, calling this method will not do anything unless the `src` property is different from the previously loaded sound
+#### pause `() => void`
+Pauses the playing sound
 
-- `loading: boolean`
-    <br/>true if audio is being fetched
+#### togglePlayPause `() => void`
+Toggles the play/pause state
 
-- `ready: boolean`
-    <br/>true if the audio has been loaded and can be played
+#### stop `() => void`
+Stops the playing sound and resets the position to 0.
 
-- `playing: boolean`
-    <br/>true is the audio is currently playing
+#### setVolume `(volume: number) => void`
+Sets the volume level of the loaded audio. Accepts a floating point number between 0 and 1.0 (muted to loudest)
 
-- `stopped: boolean`
-    <br/>true if the audio has been stopped
-    
-- `ended: boolean`
-    <br/>is true once the currently loaded audio finishes playing. This will be unset if you begin playing again or load a new sound.
+#### mute `(muteOnOff: boolean) => void`
+Mutes/unmutes the loaded sound
 
-- `error: Error`
-    <br/>set when audio has failed to load
+#### fade `(from: number, to: number, duration: number) => void`
+Fades the sound's volume level from the value of the first argument to the value of the second, over a number of seconds as set by the final argument
 
-- `play: () => void`
-    <br/>plays the loaded audio
+#### setRate `(speed: number) => void`
+Sets the playback speed of the loaded sound. Accepts a floating point value between 0.5 and 2.0. Currently half speed is the slowest and double is the fastest supported rates
 
-- `pause: () => void`
-    <br/>pauses the audio
+#### seek `(position: number) => void`
+Sets the playback position of the loaded sound to the argument. The position argument is floating point number representing the time the audio should move to
 
-- `togglePlayPause: () => void`
-    <br/>convenient equivalent to alternating calls to `play` and `pause`
+#### loop `(loopOnOff: boolean) => void`
+Sets or unsets whether the sound should loop once it ends
 
-- `stop: () => void`
-    <br/>stops the audio, returning the position to 0
+#### getPosition `() => number`
+Returns the current position of the loaded sound as a floating point number
 
-- `mute: () => void`
-    <br/>mutes the audio
-    
-- `volume: (value: number) => number`
-    <br/>get/set the volume of the current sound. Volume values between 0.0 and 1.0
+#### load `(src: string, options?: AudioLoadOptions) => void`
+Downloads and loads a new sound. The first argument, src is a URI of the sound to be played. The second argument is a set of options applied to the sound once it loads.
+These options can be used to initialize certain pieces of state on the `AudioPlayer` interface or be used to set up lifecycle callbacks if needed.
 
-- `fade: (start: number, end: number, duration: number) => Howl`
-    <br/>fades the sound from volume _start_ to volume _end_ over _duration_ ms
-<br/>
+`AudioLoadOptions`
+- loop?: boolean (sets the initial loop state once the sound loads)
+- autoplay?: boolean (sets if the sound will automatically begin playing after load)
+- initialVolume?: number (sets the initial volume level once the sound loads)
+- initialMute?: number (sets the initial mute state once the sound loads)
+- initialRate?: number (sets the initial playback rate once the sound loads)
+- format?: string (sets the format of the loaded sound - should be set if your URI does not contain an extension)
+- html5?: boolean (loads the sound in an HTML5 audio tag as opposed to using the Web Audio API)
+- onplay?: () => void (callback for when audio begins playing)
+- onstop?: () => void (callback for when audio is stopped)
+- onpause?: () => void (callback for when audio is paused)
+- onload?: () => void (callback for when audio finishes loading)
+- onend?: () => void (callback for when audio has reached its end)
 
-> #### useAudioPosition
 
-This hooks exposes the current position and duration of the audio instance as its playing in real time.
-This data may be useful when animating a visualization for your audio like a seek bar.
-A separate hook was created to manage this state in order to avoid many rerenders of components that don't need the live data feed.
-For example a component which renders a play/pause button may use `useAudioPlayer` but does not need to rerender every time the position of the playing audio changes.
+## Quick Recipes & Gotchas
+For full, example applications see the [runnable examples](https://github.com/E-Kuerschner/useAudioPlayer/tree/main/examples) in the repo.
+Below are a few snippets to help with some of the trickier use-cases.
 
-```javascript
-import React from "react"
-import { useAudioPosition } from "react-use-audio-player"
+### Recipe: Switching between sounds on a single audio player
 
-const PlayBar = () => {
-    const { percentComplete, duration, seek } = useAudioPosition({ highRefreshRate: true })
-    
-    const goToPosition = React.useCallback((percentage) => {
-        seek(duration * percentage)
-    }, [duration, seek])
-
-    return <ProgressBar percentComplete={percentComplete} onBarPositionClick={goToPosition} />
-}
-```
-
-#### API
-
-#### Arguments
--   `(optional) config: { highRefreshRate: boolean }`
-    <br/>`highRefreshRate` will allow useAudioPosition to update state at a smooth 60fps rate
-    via the browser's requestAnimationFrame API. This is ideal for when you want smoother animations.
-
-#### Return Value
-
-`useAudioPosition` returns an object containing the following members:
-
--   `position: number`
-    <br/>the current playback position of the audio in seconds
-
--   `duration: number`
-    <br/>the total length of the audio in seconds
-
--   `percentComplete: number`
-    <br/>the percentage of the duration the current position represents    
-    
--   `seek: (position: number) => number`
-    <br/>sets the position of the audio to position (seconds)
-
-## Gotchas & Quick Gudies
-
-### Guide: Switching sounds
 Switching from one sound the next is a common use-case (i.e. a playlist queue). This can be done in a couple of different ways:
 
-#### 1) calling #load in response to a user interaction
 ```tsx
-const { load } = useAudioPlayer({
-    src: songA,
-    autoplay: true
-})
+// the same solution will work with useGlobalAudioPlayer
+const { load } = useAudioPlayer();
 
 const nextTrack = () => {
-    load({
-        src: songB,
-        autoplay: true
-    })
-}
+  load(nextSong, { autoPlay: true });
+};
 
-return <button onClick={nextTrack}>Start next track</button>
+return <button onClick={nextTrack}>Start next track</button>;
 ```
 
-#### 2) updating the src property in the options object
-```tsx
-const songs = [songA, songB]
-const [songIndex, setSongIndex] = useState(0)
+Alternatively, you can queue up the next song to play when the current sound ends. You can see a full, working example of this in the `AutoPlayNextSong` component in /examples.
 
-const audioApi = useAudioPlayer({
-    src: songs[songIndex],
+```tsx
+const songs = [songA, songB];
+const [songIndex, setSongIndex] = useState(0);
+
+const { load } = useAudioPlayer();
+
+useEffect(() => {
+  load(songs[songIndex], {
     autoplay: true,
     onend: () => setSongIndex(songIndex + 1)
-})
+  });
+}, [songIndex, load]);
 ```
 
-### Gotcha: Using event listeners
-Unfortunately, due to the current implementation there are some not-so-clear restraints applied to the use of event listeners.
+### Recipe: Syncing React state to live audio position
 
-Currently, the options for `useAudioPlayer` matches the options for a [Howl object](https://github.com/goldfire/howler.js/#options) one-to-one, including all of Howler's event listeners.
-However, setting the event listeners in the hook's options has some negative consequences when trying to invoke any of the hook's own methods which manipulate the audio (togglePlayPause, volume, fade, etc.).
+In previous 1.x versions of the library, a separate hook was exported from the package which tracked state representing the current seek time of a playing sound.
+While this was helpful it ultimately fell outside the scope of the hook as the v2 rewrite took shape.
+This is mainly due to the difficulty of supporting the feature for both forms of the hook useAudioPlayer/useGlobalAudioPlayer.
 
-Internally, those methods are memoized React callbacks with a dependency on the howler audio player object that is created when your sound loads. Initially, this player object is null.
-Therefore, when trying to use one of the hook's own methods inside the option's event listeners, a stale reference to the player object will be captured (for more on this problem [check out this article](https://dmitripavlutin.com/react-hooks-stale-closures/))
-
-For a recommended workaround, see the code snippet below:
+Luckily, even without a dedicated hook, it is trivial to implement the same functionality yourself. Below is one method for how you might write your own hook for tracking seek time.
 
 ```tsx
-    const { fade } = useAudioPlayer({
-        src: mySong,
-        autoplay: true,
-        volume: 0, //set to 0 expecting to fade in below
-        onplay: () => {
-            // BAD! Internally fade maintains a reference to player which is initially null
-            // this will introduce a stale reference
-            fade(0, 1, 5000)
-        },
-    });
-
-    // BETTER! Guarantees that the latest reference to fade is used
+function useAudioTime() {
+    const frameRef = useRef<number>()
+    const [pos, setPos] = useState(0)
+    const { getPosition } = useGlobalAudioPlayer()
+    
     useEffect(() => {
-        fade(0,1,5000)
-    }, [fade])
+        const animate = () => {
+            setPos(getPosition())
+            frameRef.current = requestAnimationFrame(animate)
+        }
+
+        frameRef.current = window.requestAnimationFrame(animate)
+
+        return () => {
+            if (frameRef.current) {
+                cancelAnimationFrame(frameRef.current)
+            }
+        }
+    }, [getPosition])
+    
+    return pos;
+}
 ```
 
 ### Gotcha: Streaming audio
-In order for streamed audio content to work, make sure to force the audio source to use html5 and specify the format of the audio as shown below:
+
+To stream or play large audio files, the audio player must be forced to use HTML5 as opposed to the Web Audio API which is Howler's default.
+This is because the Web Audio API must download the entirety of the sound before playing anything.
+
+When streaming or working with large files make sure to use the `html5` option of the `#load` function.
+
+Also, if your sound _src_ string does not contain an extension (like if you are fetching a stream from an API), be sure to set it with the `format` option of the `#load` function.
 
 More information in this Howler [thread](https://github.com/goldfire/howler.js/issues/378)
+
 ```typescript jsx
-const { pause } = useAudioPlayer({
-    autoplay: true,
-    src: "https://stream.toohotradio.net/128",
-    html5: true,
-    format: ["mp3"]
-})
+const { load } = useAudioPlayer();
+
+load('https://stream.toohotradio.net/128', {
+  autoplay: true,
+  html5: true,
+  format: 'mp3'
+});
 ```
 
 ## Examples
 
-To run the example applications follow the following steps:
+Eventually I would like to host & run the examples somewhere on the web, but for now to run them yourself locally, follow the following steps:
 
 1. `git clone` the repository
 2. `cd useAudioPlayer/examples`
@@ -267,11 +237,16 @@ To run the example applications follow the following steps:
 4. `yarn start`
 5. follow the local README for further assistance
 
+## Contributing
+
+Please consider opening an Issue or Pull Request on the Github and I will do my best to respond to these in a timely manner.
+
 ## Release
 
 The most basic npm release strategy is being followed for now. A good explanation can be found [here](https://cloudfour.com/thinks/how-to-publish-an-updated-version-of-an-npm-package/).
 
 Steps
+
 1. commit work & tests
 2. `yarn/npm version` (preversion script will ensure code is tested and built)
 3. `yarn/npm publish`

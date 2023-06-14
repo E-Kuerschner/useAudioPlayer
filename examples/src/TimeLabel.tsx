@@ -1,7 +1,10 @@
-import React from "react"
-import { useAudioPosition } from "react-use-audio-player"
+import React, { useEffect, useState } from "react"
+import { useGlobalAudioPlayer } from "react-use-audio-player"
 
 const formatTime = (seconds: number) => {
+    if (seconds === Infinity) {
+        return "--"
+    }
     const floored = Math.floor(seconds)
     let from = 14
     let length = 5
@@ -15,9 +18,16 @@ const formatTime = (seconds: number) => {
 }
 
 export const TimeLabel = () => {
-    const { duration, position } = useAudioPosition({ highRefreshRate: true })
-    if (duration === Infinity) return null
-    const elapsed = typeof position === "number" ? position : 0
+    const [pos, setPos] = useState(0)
+    const { duration, getPosition, playing } = useGlobalAudioPlayer()
 
-    return <div>{`${formatTime(elapsed)} / ${formatTime(duration)}`}</div>
+    useEffect(() => {
+        const i = setInterval(() => {
+            setPos(getPosition())
+        }, 500)
+
+        return () => clearInterval(i)
+    }, [getPosition])
+
+    return <div>{`${formatTime(pos)} / ${formatTime(duration)}`}</div>
 }

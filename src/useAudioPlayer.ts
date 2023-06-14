@@ -1,63 +1,157 @@
-import { useCallback, useContext, useEffect, useMemo } from "react"
-import { Howl, HowlOptions } from "howler"
-import { playerContext } from "./context"
-import { AudioPlayerContext } from "./types"
+import { useCallback, useEffect, useReducer, useRef } from "react"
+import {
+    initStateFromHowl,
+    reducer as audioStateReducer
+} from "./audioPlayerState"
+import { useHowlEventSync } from "./useHowlEventSync"
+import { HowlInstanceManager } from "./HowlInstanceManager"
+import { AudioPlayer, LoadArguments } from "./types"
 
-const noop = () => {}
-
-export type AudioPlayerControls = AudioPlayerContext & {
-    play: Howl["play"] | typeof noop
-    pause: Howl["pause"] | typeof noop
-    stop: Howl["stop"] | typeof noop
-    mute: Howl["mute"] | typeof noop
-    volume: Howl["volume"] | typeof noop
-    fade: Howl["fade"] | typeof noop
-    rate: Howl["rate"] | typeof noop
-    togglePlayPause: () => void
-}
-
-export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
-    const { player, load, ...rest } = useContext(playerContext)!
+export const useAudioPlayer = (): AudioPlayer => {
+    const howlManager = useRef(new HowlInstanceManager())
+    const [state, dispatch] = useHowlEventSync(
+        howlManager.current,
+        useReducer(
+            audioStateReducer,
+            howlManager.current.getHowl(),
+            initStateFromHowl
+        )
+    )
 
     useEffect(() => {
-        const { src, ...restOptions } = options || {}
-        // if useAudioPlayer is called without arguments
-        // don't do anything: the user will have access
-        // to the current context
-        if (!src) return
-        // todo: could improve perf even more by not calling load if the options haven't really changed across renders of the calling component
-        load({ src, ...restOptions })
-    }, [options, load])
+        // stop/delete the sound object when the hook unmounts
+        return () => {
+            howlManager.current.destroyHowl()
+        }
+    }, [])
+
+    const load = useCallback((...[src, options = {}]: LoadArguments) => {
+        const howl = howlManager.current.createHowl({
+            src,
+            ...options
+        })
+
+        dispatch({ type: "START_LOAD", howl })
+    }, [])
+
+    const seek = useCallback((seconds: number) => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        howl.seek(seconds)
+    }, [])
+
+    const getPosition = useCallback(() => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return 0
+        }
+
+        return howl.seek() ?? 0
+    }, [])
+
+    const play = useCallback(() => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        howl.play()
+    }, [])
+
+    const pause = useCallback(() => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        howl.pause()
+    }, [])
 
     const togglePlayPause = useCallback(() => {
-        if (!player) return
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
 
-        if (player.playing()) {
-            player.pause()
+        if (state.playing) {
+            howl.pause()
         } else {
-            player.play()
+            howl.play()
         }
-    }, [player])
+    }, [state])
 
-    const boundHowlerMethods = useMemo(() => {
-        return {
-            rate: player ? player.rate.bind(player) : noop,
-            play: player ? player.play.bind(player) : noop,
-            pause: player ? player.pause.bind(player) : noop,
-            stop: player ? player.stop.bind(player) : noop,
-            mute: player ? player.mute.bind(player) : noop,
-            volume: player ? player.volume.bind(player) : noop,
-            fade: player ? player.fade.bind(player) : noop
+    const stop = useCallback(() => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
         }
-    }, [player])
 
-    return useMemo(() => {
-        return {
-            ...rest,
-            ...boundHowlerMethods,
-            player,
-            load,
-            togglePlayPause
+        howl.stop()
+    }, [])
+
+    const fade = useCallback((from: number, to: number, duration: number) => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
         }
-    }, [rest, player, boundHowlerMethods, load, togglePlayPause])
+
+        howl.fade(from, to, duration)
+    }, [])
+
+    const setRate = useCallback((speed: number) => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        howl.rate(speed)
+    }, [])
+
+    const setVolume = useCallback((vol: number) => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        howl.volume(vol)
+    }, [])
+
+    const mute = useCallback((muteOnOff: boolean) => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        howl.mute(muteOnOff)
+    }, [])
+
+    const loop = useCallback((loopOnOff: boolean) => {
+        const howl = howlManager.current.getHowl()
+        if (howl === undefined) {
+            return
+        }
+
+        // this differs from the implementation in useGlobalAudioPlayer which needs to broadcast the action to itself and all other instances of the hook
+        // maybe these two behaviors could be abstracted with one interface in the future
+        dispatch({ type: "ON_LOOP", howl, toggleValue: loopOnOff })
+    }, [])
+
+    return {
+        ...state,
+        load,
+        seek,
+        getPosition,
+        play,
+        pause,
+        togglePlayPause,
+        stop,
+        mute,
+        fade,
+        setRate,
+        setVolume,
+        loop
+    }
 }
