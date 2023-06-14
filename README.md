@@ -1,5 +1,3 @@
-# [Version 2.0](https://github.com/E-Kuerschner/useAudioPlayer/discussions/106) On The Way 🎉
-
 # react-use-audio-player
 
 Typescript package exporting custom React hooks for controlling audio in the browser. Built on top of the amazing [howler.js](https://howlerjs.com/) library.
@@ -11,7 +9,7 @@ The intent of this package is to provide an idiomatic way to create and manipula
 ![npm bundle size](https://img.shields.io/bundlephobia/min/react-use-audio-player)
 <a href="https://buymeacoffee.com/erichk" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
 
-## V2 Upgrade/Migration Guide
+## [Version 2.0](https://github.com/E-Kuerschner/useAudioPlayer/discussions/106) Upgrade/Migration Guide
 
 Note that v2 is a major upgrade and thus contains breaking changes for your applications. Overall the migration to v2 will involve you taking a few refactoring steps:
 
