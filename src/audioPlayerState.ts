@@ -74,7 +74,7 @@ export function initStateFromHowl(howl?: Howl): AudioPlayerState {
         duration: howl.duration(),
         rate: howl.rate(),
         volume: howl.volume(),
-        muted: false,
+        muted: howl.mute(),
         playing,
         paused: !playing,
         stopped: !playing && position === 0,

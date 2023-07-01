@@ -11,7 +11,7 @@ export const FileLoader: FunctionComponent = () => {
     const { load, isReady, error } = useGlobalAudioPlayer()
 
     useEffect(() => {
-        load(audioFile, { html5: true })
+        load(audioFile, { html5: true, initialVolume: 0.5 })
     }, [audioFile, load])
 
     const selectAudioFile = (e: ChangeEvent<HTMLSelectElement>) => {

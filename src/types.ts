@@ -27,11 +27,10 @@ export interface AudioLoadOptions extends UserListeners {
     loop?: boolean
     autoplay?: boolean
     initialVolume?: number
-    initialMute?: number
+    initialMute?: boolean
     initialRate?: number
     format?: string
     html5?: boolean
 }
 
 export type LoadArguments = [src: string, options?: AudioLoadOptions]
-// export type LoadArguments = (src: string, options?: AudioLoadOptions) => unknown
