@@ -6,6 +6,7 @@ import { AutoPlayNextSound } from "./GlobalAudioSource/AutoPlayNextSound"
 import { MultipleSounds } from "./MultipleSounds"
 import { GlobalAudioSource } from "./GlobalAudioSource"
 import "./app.scss"
+import { Streaming } from "./Streaming"
 
 function ExampleSelect() {
     return (
@@ -13,6 +14,7 @@ function ExampleSelect() {
             <h3>Examples</h3>
             <Link to="/globalAudio">useGlobalAudioPlayer examples</Link>
             <Link to="/multipleSounds">Multiple sound sources</Link>
+            <Link to="/streaming">Streaming example</Link>
         </div>
     )
 }
@@ -32,6 +34,7 @@ function App() {
                         />
                     </Route>
                     <Route path="multipleSounds" element={<MultipleSounds />} />
+                    <Route path="streaming" element={<Streaming />} />
                 </Routes>
             </BrowserRouter>
         </div>

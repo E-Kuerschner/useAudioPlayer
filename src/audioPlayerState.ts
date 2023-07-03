@@ -36,6 +36,7 @@ export interface AudioPlayerState {
     src: string | null
     looping: boolean
     isReady: boolean
+    isLoading: boolean
     paused: boolean
     stopped: boolean
     playing: boolean
@@ -51,6 +52,7 @@ export function initStateFromHowl(howl?: Howl): AudioPlayerState {
         return {
             src: null,
             isReady: false,
+            isLoading: false,
             looping: false,
             duration: 0,
             rate: 1,
@@ -68,6 +70,7 @@ export function initStateFromHowl(howl?: Howl): AudioPlayerState {
 
     return {
         isReady: howl.state() === "loaded",
+        isLoading: howl.state() === "loading",
         // @ts-ignore _src exists
         src: howl._src,
         looping: howl.loop(),
@@ -85,7 +88,11 @@ export function initStateFromHowl(howl?: Howl): AudioPlayerState {
 export function reducer(state: AudioPlayerState, action: Action) {
     switch (action.type) {
         case ActionTypes.START_LOAD:
-            return state
+            return {
+                // when called without a Howl object it will return an empty/init state object
+                ...initStateFromHowl(),
+                isLoading: true
+            }
         case ActionTypes.ON_LOAD:
             // in React 18 there is a weird race condition where ON_LOAD receives a Howl object that has been unloaded
             // if we detect this case just return the existing state to wait for another action
