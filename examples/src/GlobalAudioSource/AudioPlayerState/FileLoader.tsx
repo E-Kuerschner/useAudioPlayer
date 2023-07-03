@@ -4,14 +4,20 @@ import React, {
     ChangeEvent,
     useEffect
 } from "react"
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { AudioLoadOptions, useGlobalAudioPlayer } from "react-use-audio-player"
 
 export const FileLoader: FunctionComponent = () => {
     const [audioFile, setAudioFile] = useState("/audio.mp3")
     const { load, isReady, error } = useGlobalAudioPlayer()
 
     useEffect(() => {
-        load(audioFile, { html5: true, initialVolume: 0.5 })
+        const loadOptions: AudioLoadOptions = { initialVolume: 0.5 }
+        if (audioFile.includes("stream")) {
+            loadOptions.html5 = true
+            loadOptions.format = "mp3"
+        }
+
+        load(audioFile, loadOptions)
     }, [audioFile, load])
 
     const selectAudioFile = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -27,7 +33,7 @@ export const FileLoader: FunctionComponent = () => {
             <select onChange={selectAudioFile} value={audioFile}>
                 <option value="/audio.mp3">audio</option>
                 <option value="/cats.mp3">cats</option>
-                <option value="/dogs.mp3">dog</option>
+                <option value="/dog.mp3">dog</option>
                 <option value="/ch_tunes - baby_seal.wav">
                     ch_tunes - baby_seal
                 </option>

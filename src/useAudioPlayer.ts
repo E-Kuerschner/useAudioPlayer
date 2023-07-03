@@ -8,12 +8,22 @@ import { HowlInstanceManager } from "./HowlInstanceManager"
 import { AudioPlayer, LoadArguments } from "./types"
 
 export const useAudioPlayer = (): AudioPlayer => {
-    const howlManager = useRef(new HowlInstanceManager())
+    const howlManager = useRef<HowlInstanceManager | null>(null)
+    function getHowlManager() {
+        if (howlManager.current !== null) {
+            return howlManager.current
+        }
+
+        const manager = new HowlInstanceManager()
+        howlManager.current = manager
+        return manager
+    }
+
     const [state, dispatch] = useHowlEventSync(
-        howlManager.current,
+        getHowlManager(),
         useReducer(
             audioStateReducer,
-            howlManager.current.getHowl(),
+            getHowlManager().getHowl(),
             initStateFromHowl
         )
     )
@@ -21,12 +31,12 @@ export const useAudioPlayer = (): AudioPlayer => {
     useEffect(() => {
         // stop/delete the sound object when the hook unmounts
         return () => {
-            howlManager.current.destroyHowl()
+            getHowlManager().destroyHowl()
         }
     }, [])
 
     const load = useCallback((...[src, options = {}]: LoadArguments) => {
-        const howl = howlManager.current.createHowl({
+        const howl = getHowlManager().createHowl({
             src,
             ...options
         })
@@ -35,7 +45,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const seek = useCallback((seconds: number) => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -44,7 +54,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const getPosition = useCallback(() => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return 0
         }
@@ -53,7 +63,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const play = useCallback(() => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -62,7 +72,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const pause = useCallback(() => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -71,7 +81,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const togglePlayPause = useCallback(() => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -84,7 +94,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [state])
 
     const stop = useCallback(() => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -93,7 +103,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const fade = useCallback((from: number, to: number, duration: number) => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -102,7 +112,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const setRate = useCallback((speed: number) => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -111,7 +121,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const setVolume = useCallback((vol: number) => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -120,7 +130,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const mute = useCallback((muteOnOff: boolean) => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
@@ -129,7 +139,7 @@ export const useAudioPlayer = (): AudioPlayer => {
     }, [])
 
     const loop = useCallback((loopOnOff: boolean) => {
-        const howl = howlManager.current.getHowl()
+        const howl = getHowlManager().getHowl()
         if (howl === undefined) {
             return
         }
