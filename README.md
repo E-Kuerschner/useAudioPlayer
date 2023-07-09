@@ -36,6 +36,9 @@ function MyComponent() {
   load('/mySound.wav', {
     autoplay: true
   });
+
+  // the howler instance is exposed from load() as well
+  const howler = load('/mySound.wav', {})
 }
 ```
 
@@ -117,9 +120,13 @@ Sets or unsets whether the sound should loop once it ends
 #### getPosition `() => number`
 Returns the current position of the loaded sound as a floating point number
 
-#### load `(src: string, options?: AudioLoadOptions) => void`
+#### getHowl `() => Howl`
+Returns the current Howler instance being used
+
+#### load `(src: string, options?: AudioLoadOptions) => Howl`
 Downloads and loads a new sound. The first argument, src is a URI of the sound to be played. The second argument is a set of options applied to the sound once it loads.
 These options can be used to initialize certain pieces of state on the `AudioPlayer` interface or be used to set up lifecycle callbacks if needed.
+This method returns the Howler instance being used.
 
 `AudioLoadOptions`
 - loop?: boolean (sets the initial loop state once the sound loads)
