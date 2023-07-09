@@ -41,10 +41,12 @@ export function useGlobalAudioPlayer(): AudioPlayer {
     }, [])
 
     const load = useCallback((...[src, options = {}]: LoadArguments) => {
-        howlManager.current.createHowl({
+        const howl = howlManager.current.createHowl({
             src,
             ...options
         })
+
+        return howl
     }, [])
 
     const seek = useCallback((seconds: number) => {
@@ -154,11 +156,16 @@ export function useGlobalAudioPlayer(): AudioPlayer {
         })
     }, [])
 
+    const getHowl = useCallback(() => {
+        return howlManager.current.getHowl()
+    }, [])
+
     return {
         ...state,
         load,
         seek,
         getPosition,
+        getHowl,
         play,
         pause,
         togglePlayPause,

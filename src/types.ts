@@ -1,4 +1,5 @@
 import { AudioPlayerState } from "./audioPlayerState"
+import { Howl } from "howler"
 
 export interface AudioPlayer extends AudioPlayerState {
     play: () => void
@@ -12,6 +13,7 @@ export interface AudioPlayer extends AudioPlayerState {
     mute: (muteOnOff: boolean) => void
     loop: (loopOnOff: boolean) => void
     getPosition: () => number
+    getHowl: () => Howl | undefined
     load: (...args: LoadArguments) => void
 }
 
