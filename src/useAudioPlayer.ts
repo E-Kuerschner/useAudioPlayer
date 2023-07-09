@@ -42,6 +42,8 @@ export const useAudioPlayer = (): AudioPlayer => {
         })
 
         dispatch({ type: "START_LOAD", howl })
+
+        return howl
     }, [])
 
     const seek = useCallback((seconds: number) => {
@@ -149,11 +151,16 @@ export const useAudioPlayer = (): AudioPlayer => {
         dispatch({ type: "ON_LOOP", howl, toggleValue: loopOnOff })
     }, [])
 
+    const getHowl = useCallback(() => {
+        return getHowlManager().getHowl()
+    }, [])
+
     return {
         ...state,
         load,
         seek,
         getPosition,
+        getHowl,
         play,
         pause,
         togglePlayPause,
