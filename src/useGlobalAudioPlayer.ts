@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useReducer, useRef } from "react"
 import {
     Action,
+    ActionTypes,
     initStateFromHowl,
     reducer as audioStateReducer
 } from "./audioPlayerState"
@@ -23,9 +24,9 @@ export function useGlobalAudioPlayer(): AudioPlayer {
     useEffect(() => {
         const howlOnMount = howlManager.current.getHowl()
         if (howlOnMount !== undefined) {
-            dispatch({ type: "START_LOAD", howl: howlOnMount })
+            dispatch({ type: ActionTypes.START_LOAD, howl: howlOnMount })
             if (howlOnMount.state() === "loaded") {
-                dispatch({ type: "ON_LOAD", howl: howlOnMount })
+                dispatch({ type: ActionTypes.ON_LOAD, howl: howlOnMount })
             }
         }
 
@@ -148,7 +149,7 @@ export function useGlobalAudioPlayer(): AudioPlayer {
         }
 
         howlManager.current.broadcast({
-            type: "ON_LOOP",
+            type: ActionTypes.ON_LOOP,
             howl,
             toggleValue: loopOnOff
         })

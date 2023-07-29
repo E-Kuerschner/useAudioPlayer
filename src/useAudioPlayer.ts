@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef } from "react"
 import {
+    ActionTypes,
     initStateFromHowl,
     reducer as audioStateReducer
 } from "./audioPlayerState"
@@ -41,7 +42,7 @@ export const useAudioPlayer = (): AudioPlayer => {
             ...options
         })
 
-        dispatch({ type: "START_LOAD", howl })
+        dispatch({ type: ActionTypes.START_LOAD, howl })
     }, [])
 
     const seek = useCallback((seconds: number) => {
@@ -146,7 +147,7 @@ export const useAudioPlayer = (): AudioPlayer => {
 
         // this differs from the implementation in useGlobalAudioPlayer which needs to broadcast the action to itself and all other instances of the hook
         // maybe these two behaviors could be abstracted with one interface in the future
-        dispatch({ type: "ON_LOOP", howl, toggleValue: loopOnOff })
+        dispatch({ type: ActionTypes.ON_LOOP, howl, toggleValue: loopOnOff })
     }, [])
 
     return {
