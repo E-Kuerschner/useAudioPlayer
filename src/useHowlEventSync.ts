@@ -8,8 +8,8 @@ import {
 } from "react"
 import {
     Action,
+    ActionTypes,
     AudioPlayerState,
-    AudioEvent,
     reducer
 } from "./audioPlayerState"
 import { HowlInstanceManager } from "./HowlInstanceManager"
@@ -21,49 +21,61 @@ export function useHowlEventSync(
 ): [ReducerState<typeof reducer>, Dispatch<ReducerAction<typeof reducer>>] {
     const onLoad = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_LOAD", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_LOAD, howl })
     }, [dispatch, howlManager])
 
     const onError: HowlErrorCallback = useCallback(
         (_: number, errorCode: unknown) => {
-            dispatch({ type: "ON_ERROR", message: errorCode as string })
+            dispatch({
+                type: ActionTypes.ON_ERROR,
+                message: errorCode as string
+            })
         },
         [dispatch]
     )
 
     const onPlay = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_PLAY", howl })
+        // TODO since this is the sync layer i should really extract the info from the howl here and pass that in with the action payload
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_PLAY, howl })
     }, [dispatch, howlManager])
 
     const onPause = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_PAUSE", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_PAUSE, howl })
     }, [dispatch, howlManager])
 
     const onEnd = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_END", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_END, howl })
     }, [dispatch, howlManager])
 
     const onStop = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_STOP", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_STOP, howl })
     }, [dispatch, howlManager])
 
     const onMute = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_MUTE", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_MUTE, howl })
     }, [dispatch, howlManager])
 
     const onVolume = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_VOLUME", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_VOLUME, howl })
     }, [dispatch, howlManager])
 
     const onRate = useCallback(() => {
         const howl = howlManager.getHowl()
-        dispatch({ type: "ON_RATE", howl })
+        if (howl === undefined) return
+        dispatch({ type: ActionTypes.ON_RATE, howl })
     }, [dispatch, howlManager])
 
     useEffect(() => {
@@ -86,7 +98,7 @@ export function useHowlEventSync(
     // see talk: https://youtu.be/nUzLlHFVXx0?t=1558
     const wrappedDispatch = useRef((action: Action) => {
         if (action.type === "START_LOAD") {
-            const { howl } = action as AudioEvent
+            const { howl } = action
             // set up event listening
             howl.once("load", onLoad)
             howl.on("loaderror", onError)

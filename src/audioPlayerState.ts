@@ -1,36 +1,38 @@
 import { Howl } from "howler"
 
-export const ActionTypes = {
-    START_LOAD: "START_LOAD",
-    ON_LOAD: "ON_LOAD",
-    ON_ERROR: "ON_ERROR",
-    ON_PLAY: "ON_PLAY",
-    ON_PAUSE: "ON_PAUSE",
-    ON_STOP: "ON_STOP",
-    ON_END: "ON_END",
-    ON_RATE: "ON_RATE",
-    ON_MUTE: "ON_MUTE",
-    ON_VOLUME: "ON_VOLUME",
-    ON_LOOP: "ON_LOOP"
+export enum ActionTypes {
+    START_LOAD = "START_LOAD",
+    ON_LOAD = "ON_LOAD",
+    ON_ERROR = "ON_ERROR",
+    ON_PLAY = "ON_PLAY",
+    ON_PAUSE = "ON_PAUSE",
+    ON_STOP = "ON_STOP",
+    ON_END = "ON_END",
+    ON_RATE = "ON_RATE",
+    ON_MUTE = "ON_MUTE",
+    ON_VOLUME = "ON_VOLUME",
+    ON_LOOP = "ON_LOOP"
 }
 
-interface BaseAction {
-    type: keyof typeof ActionTypes
+export type StartLoadAction = {
+    type: ActionTypes.START_LOAD
+    linkMediaSession?: boolean
+    howl: Howl
 }
 
-export interface AudioEvent {
-    type: Omit<keyof typeof ActionTypes, "ON_ERROR">
+export type AudioEventAction = {
+    type: Exclude<ActionTypes, ActionTypes.START_LOAD | ActionTypes.ON_ERROR>
     howl: Howl
     toggleValue?: boolean
     debugId?: string
 }
 
-export interface ErrorEvent {
-    type: "ON_ERROR"
+export type ErrorEvent = {
+    type: ActionTypes.ON_ERROR
     message: string
 }
 
-export type Action = BaseAction | AudioEvent | ErrorEvent
+export type Action = StartLoadAction | AudioEventAction | ErrorEvent
 
 export interface AudioPlayerState {
     src: string | null
@@ -87,39 +89,40 @@ export function initStateFromHowl(howl?: Howl): AudioPlayerState {
 
 export function reducer(state: AudioPlayerState, action: Action) {
     switch (action.type) {
-        case ActionTypes.START_LOAD:
+        case "START_LOAD":
             return {
                 // when called without a Howl object it will return an empty/init state object
                 ...initStateFromHowl(),
-                isLoading: true
+                isLoading: true,
+                linkMediaSession: action.linkMediaSession ?? false
             }
-        case ActionTypes.ON_LOAD:
+        case "ON_LOAD":
             // in React 18 there is a weird race condition where ON_LOAD receives a Howl object that has been unloaded
             // if we detect this case just return the existing state to wait for another action
-            if ((action as AudioEvent).howl.state() === "unloaded") {
+            if (action.howl.state() === "unloaded") {
                 return state
             }
-            return initStateFromHowl((action as AudioEvent).howl)
-        case ActionTypes.ON_ERROR:
+            return initStateFromHowl(action.howl)
+        case "ON_ERROR":
             return {
                 // this essentially resets state when called with undefined
                 ...initStateFromHowl(),
-                error: (action as ErrorEvent).message
+                error: action.message
             }
-        case ActionTypes.ON_PLAY:
+        case "ON_PLAY":
             return {
                 ...state,
                 playing: true,
                 paused: false,
                 stopped: false
             }
-        case ActionTypes.ON_PAUSE:
+        case "ON_PAUSE":
             return {
                 ...state,
                 playing: false,
                 paused: true
             }
-        case ActionTypes.ON_STOP: {
+        case "ON_STOP": {
             return {
                 ...state,
                 playing: false,
@@ -127,33 +130,33 @@ export function reducer(state: AudioPlayerState, action: Action) {
                 stopped: true
             }
         }
-        case ActionTypes.ON_END: {
+        case "ON_END": {
             return {
                 ...state,
                 playing: state.looping,
                 stopped: !state.looping
             }
         }
-        case ActionTypes.ON_MUTE: {
+        case "ON_MUTE": {
             return {
                 ...state,
-                muted: (action as AudioEvent).howl.mute() ?? false
+                muted: action.howl.mute() ?? false
             }
         }
-        case ActionTypes.ON_RATE: {
+        case "ON_RATE": {
             return {
                 ...state,
-                rate: (action as AudioEvent).howl?.rate() ?? 1.0
+                rate: action.howl?.rate() ?? 1.0
             }
         }
-        case ActionTypes.ON_VOLUME: {
+        case "ON_VOLUME": {
             return {
                 ...state,
-                volume: (action as AudioEvent).howl?.volume() ?? 1.0
+                volume: action.howl?.volume() ?? 1.0
             }
         }
-        case ActionTypes.ON_LOOP: {
-            const { toggleValue = false, howl } = action as AudioEvent
+        case "ON_LOOP": {
+            const { toggleValue = false, howl } = action
             howl.loop(toggleValue)
             return {
                 ...state,
