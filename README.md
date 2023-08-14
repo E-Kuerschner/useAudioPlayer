@@ -77,7 +77,7 @@ The interface defines all the state for a sound and a set of methods to manipula
 - paused: `boolean` (is the sound paused)
 - stopped: `boolean` (is the sound stopped i.e. not playing & position 0)
 - playing: `boolean` (is the sound playing)
-- duration: `number` (the length in milliseconds)
+- duration: `number` (the length in seconds)
 - muted: `boolean` (is the sound muted)
 - rate: `number` (the playback rate)
 - volume: `number` (the volume level 0 - 1.0)
@@ -103,7 +103,7 @@ Sets the volume level of the loaded audio. Accepts a floating point number betwe
 Mutes/unmutes the loaded sound
 
 #### fade `(from: number, to: number, duration: number) => void`
-Fades the sound's volume level from the value of the first argument to the value of the second, over a number of seconds as set by the final argument
+Fades the sound's volume level from the value of the first argument to the value of the second, over a number of milliseconds as set by the final argument
 
 #### setRate `(speed: number) => void`
 Sets the playback speed of the loaded sound. Accepts a floating point value between 0.5 and 2.0. Currently half speed is the slowest and double is the fastest supported rates
