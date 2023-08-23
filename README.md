@@ -103,7 +103,7 @@ Sets the volume level of the loaded audio. Accepts a floating point number betwe
 Mutes/unmutes the loaded sound
 
 #### fade `(from: number, to: number, duration: number) => void`
-Fades the sound's volume level from the value of the first argument to the value of the second, over a number of seconds as set by the final argument
+Fades the sound's volume level from the value of the first argument to the value of the second, over a number of milliseconds as set by the final argument
 
 #### setRate `(speed: number) => void`
 Sets the playback speed of the loaded sound. Accepts a floating point value between 0.5 and 2.0. Currently half speed is the slowest and double is the fastest supported rates
