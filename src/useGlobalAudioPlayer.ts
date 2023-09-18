@@ -42,6 +42,7 @@ export function useGlobalAudioPlayer(): AudioPlayer {
     }, [])
 
     const load = useCallback((...[src, options = {}]: LoadArguments) => {
+        // the HowlInstanceManager will intercept this newly created howl and broadcast it to registered hooks
         howlManager.current.createHowl({
             src,
             ...options
