@@ -27,7 +27,15 @@ export const MultipleSounds = () => {
 
     return (
         <div className="page multipleSounds">
-            <Link to="..">go back</Link>
+            <Link
+                to=".."
+                onClick={() => {
+                    song1.cleanup()
+                    song2.cleanup()
+                }}
+            >
+                go back
+            </Link>
             <div className="multipleSounds__tracks">
                 <div className="multipleSounds__track">
                     <p>{song1.src}</p>

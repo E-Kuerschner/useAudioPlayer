@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from "react"
+import { useCallback, useReducer, useRef } from "react"
 import {
     ActionTypes,
     initStateFromHowl,
@@ -8,7 +8,9 @@ import { useHowlEventSync } from "./useHowlEventSync"
 import { HowlInstanceManager } from "./HowlInstanceManager"
 import { AudioPlayer, LoadArguments } from "./types"
 
-export const useAudioPlayer = (): AudioPlayer => {
+export const useAudioPlayer = (): AudioPlayer & {
+    cleanup: VoidFunction
+} => {
     const howlManager = useRef<HowlInstanceManager | null>(null)
     function getHowlManager() {
         if (howlManager.current !== null) {
@@ -29,14 +31,9 @@ export const useAudioPlayer = (): AudioPlayer => {
         )
     )
 
-    useEffect(() => {
-        // stop/delete the sound object when the hook unmounts
-        return () => {
-            getHowlManager().destroyHowl()
-        }
-    }, [])
-
     const load = useCallback((...[src, options = {}]: LoadArguments) => {
+        // TODO investigate: if we try to avoid loading the same sound (existing howl & same src in call)
+        // then there are some bugs like in the MultipleSounds demo, the "play" button will not switch to "pause"
         const howl = getHowlManager().createHowl({
             src,
             ...options
@@ -150,6 +147,10 @@ export const useAudioPlayer = (): AudioPlayer => {
         dispatch({ type: ActionTypes.ON_LOOP, howl, toggleValue: loopOnOff })
     }, [])
 
+    const cleanup = useCallback(() => {
+        getHowlManager()?.destroyHowl()
+    }, [])
+
     return {
         ...state,
         load,
@@ -163,6 +164,7 @@ export const useAudioPlayer = (): AudioPlayer => {
         fade,
         setRate,
         setVolume,
-        loop
+        loop,
+        cleanup
     }
 }
