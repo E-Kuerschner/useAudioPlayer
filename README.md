@@ -60,7 +60,8 @@ If the answer is yes to both of these questions, then useGlobalAudioPlayer is th
 This means that you can load and play multiple sounds from the same component. 
 For example, you could add separate, unique sound effects for the success and error responses of a fetch request.
 
-**Note:** Unlike useGlobalAudioPlayer, when the component which initialized the hook unmounts the sound will stop.
+**Note:** Unlike useGlobalAudioPlayer, useAudioPlayer returns an additional method for cleaning up audio if you wish to stop playing and destroy the sound after some interaction (i.e. component unmount, user navigates to a different route, etc.). 
+Without cleaning up, sounds may live on even after the components that created them unmount possibly leading to memory leaks.
 
 useGlobalAudioPlayer and useAudioPlayer can be used simultaneously without one affecting the other.
 

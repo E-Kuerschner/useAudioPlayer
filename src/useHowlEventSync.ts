@@ -97,7 +97,7 @@ export function useHowlEventSync(
     // using ref bc we don't want identity of dispatch function to change
     // see talk: https://youtu.be/nUzLlHFVXx0?t=1558
     const wrappedDispatch = useRef((action: Action) => {
-        if (action.type === "START_LOAD") {
+        if (action.type === ActionTypes.START_LOAD) {
             const { howl } = action
             // set up event listening
             howl.once("load", onLoad)
