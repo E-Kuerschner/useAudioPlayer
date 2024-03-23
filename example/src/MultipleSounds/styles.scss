@@ -1,0 +1,27 @@
+.multipleSounds {
+  &__tracks {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__track {
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 50px;
+
+    input[type="range"] {
+      margin: 10px 0;
+      width: 500px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

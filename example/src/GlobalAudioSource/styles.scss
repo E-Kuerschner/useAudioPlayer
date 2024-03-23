@@ -1,0 +1,67 @@
+.globalAudioSourceExamples {
+}
+
+.globalAudioSourceExamples__header {
+}
+
+.playBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #1c192f;
+  display: flex;
+  align-items: flex-start;
+  padding: 25px 50px;
+
+  &__track {
+    align-self: flex-start;
+    max-width: 150px;
+  }
+
+  &__mainControls {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__playButton {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding-top: 5px;
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 10px;
+  }
+
+  &__timeStuff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__seek {
+    width: 400px;
+    height: 10px;
+    border-radius: 12px;
+    margin-right: 10px;
+  }
+
+  &__rateControl {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  &__rateControl span {
+    padding-right: 10px;
+  }
+
+  &__rateSelect {
+    width: 100px;
+  }
+}
