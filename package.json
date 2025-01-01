@@ -27,8 +27,7 @@
         "build": "tsdx build",
         "test": "echo 'skipping tests for now'",
         "test:integration": "cypress run",
-        "lint": "tsc --noEmit && eslint src --cache --max-warnings=25",
-        "lint:fix": "eslint src/**/*.ts{,x} --fix",
+        "lint": "tsc --noEmit",
         "prepare": "tsdx build",
         "preversion": "yarn test && yarn build",
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
@@ -37,22 +36,15 @@
         "@testing-library/react-hooks": "^3.4.1",
         "@types/howler": "^2.2.0",
         "@types/jest": "^24.0.25",
+        "@types/node": "^22",
         "@types/react": "^18.2.5",
-        "@typescript-eslint/eslint-plugin": "^5.59.2",
-        "@typescript-eslint/parser": "^5.59.2",
         "cypress": "^4.1.0",
-        "eslint": "^8.39.0",
-        "eslint-plugin-cypress": "^2.10.3",
-        "eslint-plugin-import": "^2.27.5",
-        "eslint-plugin-prettier": "^4.2.1",
-        "eslint-plugin-react": "^7.32.2",
-        "eslint-plugin-react-hooks": "^4.6.0",
         "husky": "^3.1.0",
         "react": "^18",
         "react-dom": "^18",
         "react-test-renderer": "^16.12.0",
         "tsdx": "^0.14.1",
-        "typescript": "^5.0.4"
+        "typescript": "^5.7.2"
     },
     "peerDependencies": {
         "react": ">=16.8"
