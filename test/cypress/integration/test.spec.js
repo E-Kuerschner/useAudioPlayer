@@ -3,7 +3,7 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
     beforeEach(() => {
         audioContext = null
         cy.visit("http://localhost:1234", {
-            onBeforeLoad: win => {
+            onBeforeLoad: (win) => {
                 const originalAudio = win.AudioContext
                 cy.stub(win, "AudioContext", () => {
                     const aud = new originalAudio()
@@ -12,10 +12,11 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
                 })
             }
         })
-        cy.contains("Spotify-ish").click()
+        cy.contains("useGlobalAudioPlayer examples").click()
     })
 
     it("can visualize playback time with a seek bar", () => {
+        cy.contains("Full Sound Library").click()
         // eslint-disable-next-line  cypress/unsafe-to-chain-command
         cy.contains("cats")
             .click()

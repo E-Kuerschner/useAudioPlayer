@@ -7,13 +7,12 @@
         "last 1 Chrome version"
     ],
     "scripts": {
-        "start": "parcel index.html",
+        "start": "parcel serve -p 1234 index.html",
         "build": "parcel build.html"
     },
     "dependencies": {
         "react-app-polyfill": "^1.0.0",
-        "react-router-dom": "^6.11.0",
-        "react-use-audio-player": "2.3.0-alpha.1"
+        "react-router-dom": "^6.11.0"
     },
     "alias": {
         "react": "../node_modules/react",

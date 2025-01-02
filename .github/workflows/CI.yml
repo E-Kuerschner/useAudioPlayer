@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - upgrade-devx
+  pull_request:
+    types: [opened]
+    branches:
+      - "*"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install Deps
+        run: yarn install
+      - name: Typecheck
+        run: yarn run tsc
+
+  cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Dev Server Setup
+        run: yarn --cwd ./examples install
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn --cwd ./examples run start
+          wait-on: http://localhost:1234/
