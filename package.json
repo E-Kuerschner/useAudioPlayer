@@ -1,16 +1,23 @@
 {
     "name": "react-use-audio-player",
-    "version": "2.2.1",
+    "version": "2.3.0-alpha.1",
+    "sideEffects": false,
     "description": "React hook for building custom audio playback controls",
     "main": "dist/index.js",
+    "module": "dist/index.mjs",
     "typings": "dist/index.d.ts",
-    "module": "dist/react-use-audio-player.esm.js",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
     "files": [
         "dist"
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/E-Kuerschner/useAudioPlayer.git"
+        "url": "https://github.com/E-Kuerschner/useAudioPlayer"
     },
     "author": "Erich Kuerschner",
     "license": "MIT",
@@ -26,12 +33,11 @@
         "howler.js"
     ],
     "scripts": {
-        "start": "tsdx watch",
-        "build": "tsdx build",
+        "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --minify --target es6",
         "test": "echo 'skipping tests for now'",
         "test:integration": "cypress run",
         "lint": "tsc --noEmit",
-        "prepare": "tsdx build",
+        "prepublishOnly": "echo 'TODO prepare'",
         "preversion": "yarn test && yarn build",
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
@@ -47,7 +53,7 @@
         "react": "^18",
         "react-dom": "^18",
         "react-test-renderer": "^16.12.0",
-        "tsdx": "^0.14.1",
+        "tsup": "^8.3.5",
         "typescript": "^5.7.2"
     },
     "peerDependencies": {

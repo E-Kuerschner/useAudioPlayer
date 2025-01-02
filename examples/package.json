@@ -12,7 +12,8 @@
     },
     "dependencies": {
         "react-app-polyfill": "^1.0.0",
-        "react-router-dom": "^6.11.0"
+        "react-router-dom": "^6.11.0",
+        "react-use-audio-player": "2.3.0-alpha.1"
     },
     "alias": {
         "react": "../node_modules/react",

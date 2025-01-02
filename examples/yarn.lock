@@ -2505,6 +2505,11 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+howler@^2.2.3:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/howler/-/howler-2.2.4.tgz#bd3df4a4f68a0118a51e4bd84a2bfc2e93e6e5a1"
+  integrity sha512-iARIBPgcQrwtEr+tALF+rapJ8qSc+Set2GJQl7xT1MQzWaVkFebdJhR3alVlSiUf5U7nAANKuj3aWpwerocD5w==
+
 hsl-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/hsl-regex/-/hsl-regex-1.0.0.tgz#d49330c789ed819e276a4c0d272dffa30b18fe6e"
@@ -4206,6 +4211,13 @@ react-router@6.11.0:
   integrity sha512-hTm6KKNpj9SDG4syIWRjCU219O0RZY8RUPobCFt9p+PlF7nnkRgMoh2DieTKvw3F3Mw6zg565HGnSv8BuoY5oQ==
   dependencies:
     "@remix-run/router" "1.6.0"
+
+react-use-audio-player@2.3.0-alpha.1:
+  version "2.3.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/react-use-audio-player/-/react-use-audio-player-2.3.0-alpha.1.tgz#f60dc97d7b1f7828dc8135c6f6f784b2f62650b1"
+  integrity sha512-VrfRQcG2Hosl5TzOfYTwf40o7LRmUp41w8/g4Mbzta3pOxxU8K8dZ7pM5P9wCa77bW1vZeImUgsRTQd85ZXWNw==
+  dependencies:
+    howler "^2.2.3"
 
 readable-stream@^2.0.2, readable-stream@^2.2.2, readable-stream@^2.3.3, readable-stream@^2.3.6, readable-stream@~2.3.3, readable-stream@~2.3.6:
   version "2.3.7"
