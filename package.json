@@ -8,7 +8,10 @@
     "files": [
         "dist"
     ],
-    "repository": "https://github.com/E-Kuerschner/useAudioPlayer",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/E-Kuerschner/useAudioPlayer.git"
+    },
     "author": "Erich Kuerschner",
     "license": "MIT",
     "keywords": [
@@ -40,6 +43,7 @@
         "@types/react": "^18.2.5",
         "cypress": "^4.1.0",
         "husky": "^3.1.0",
+        "prettier": "^3.4.2",
         "react": "^18",
         "react-dom": "^18",
         "react-test-renderer": "^16.12.0",
