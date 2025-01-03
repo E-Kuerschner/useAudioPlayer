@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install Deps
         run: yarn install
       - name: Typecheck
@@ -35,6 +37,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+      - name: Enable Corepack
+        run: corepack enable
       - name: Dev Server Setup
         run: yarn --cwd ./examples install
       - name: Cypress run

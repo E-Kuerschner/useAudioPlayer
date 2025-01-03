@@ -1,6 +1,7 @@
 {
     "name": "react-use-audio-player",
     "version": "2.3.0-alpha.1",
+    "packageManager": "yarn@4.6.0",
     "sideEffects": false,
     "description": "React hook for building custom audio playback controls",
     "files": [
