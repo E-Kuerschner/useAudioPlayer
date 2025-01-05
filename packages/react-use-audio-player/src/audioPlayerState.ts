@@ -1,4 +1,4 @@
-import { Howl } from "howler"
+import { type Howl } from "howler"
 
 export enum ActionTypes {
     START_LOAD = "START_LOAD",

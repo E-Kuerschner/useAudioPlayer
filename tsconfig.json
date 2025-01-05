@@ -1,27 +1,21 @@
 {
-    "include": [
-        "packages/react-use-audio-player/src"
-    ],
+    // this config is only for extending in child apps/packages
+    // in the future we could consider including Typescript Project References
+    "files": [],
     "compilerOptions": {
         "noEmit": true,
-        "target": "es5",
-        "module": "esnext",
-        "lib": ["dom", "esnext"],
-        "declaration": true,
-        "sourceMap": true,
+        "declaration": false,
+        "esModuleInterop": true,
+        "alwaysStrict": true,
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true,
         "strictPropertyInitialization": true,
         "noImplicitThis": true,
-        "alwaysStrict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "moduleResolution": "node",
-        "jsx": "react",
-        "esModuleInterop": true
+        "noFallthroughCasesInSwitch": true
     }
 }

@@ -1,19 +1,19 @@
 import {
-    Dispatch,
-    ReducerAction,
-    ReducerState,
+    type Dispatch,
+    type ReducerAction,
+    type ReducerState,
     useCallback,
     useEffect,
     useRef
 } from "react"
+import { type HowlErrorCallback } from "howler"
 import {
-    Action,
+    type Action,
     ActionTypes,
-    AudioPlayerState,
+    type AudioPlayerState,
     reducer
 } from "./audioPlayerState"
 import { HowlInstanceManager } from "./HowlInstanceManager"
-import { HowlErrorCallback } from "howler"
 
 export function useHowlEventSync(
     howlManager: HowlInstanceManager,

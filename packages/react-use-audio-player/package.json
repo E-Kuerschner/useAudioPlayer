@@ -35,6 +35,7 @@
   ],
   "scripts": {
     "build": "tsup ./src/index.ts --format esm,cjs --dts --sourcemap --minify --target es6",
+    "lint": "tsc",
     "g:build-package": "yarn --cwd $PROJECT_CWD/packages/react-use-audio-player build",
     "prepublishOnly": "echo 'TODO prepare'",
     "preversion": "yarn test && yarn build",

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useReducer, useRef } from "react"
 import {
-    Action,
+    type Action,
     ActionTypes,
     initStateFromHowl,
     reducer as audioStateReducer
 } from "./audioPlayerState"
 import { useHowlEventSync } from "./useHowlEventSync"
 import { HowlInstanceManagerSingleton } from "./HowlInstanceManager"
-import { AudioPlayer, LoadArguments } from "./types"
+import type { AudioPlayer, LoadArguments } from "./types"
 
 export function useGlobalAudioPlayer(): AudioPlayer {
     const howlManager = useRef(HowlInstanceManagerSingleton.getInstance())

@@ -1,7 +1,7 @@
-import { Howl, HowlOptions } from "howler"
+import { Howl, type HowlOptions } from "howler"
 
-import { AudioLoadOptions } from "./types"
-import { Action, ActionTypes } from "./audioPlayerState"
+import type { AudioLoadOptions } from "./types"
+import { type Action, ActionTypes } from "./audioPlayerState"
 
 export type AudioActionCallback = (action: Action) => void
 
@@ -33,12 +33,8 @@ export class HowlInstanceManager {
         this.destroyHowl()
 
         this.options = options
-        const {
-            initialVolume,
-            initialRate,
-            initialMute,
-            ...rest
-        } = this.options
+        const { initialVolume, initialRate, initialMute, ...rest } =
+            this.options
         const newHowl = new Howl({
             mute: initialMute,
             volume: initialVolume,
@@ -46,7 +42,7 @@ export class HowlInstanceManager {
             ...rest
         } as HowlOptions)
 
-        this.callbacks.forEach(cb =>
+        this.callbacks.forEach((cb) =>
             cb({ type: ActionTypes.START_LOAD, howl: newHowl })
         )
         this.howl = newHowl
@@ -78,7 +74,7 @@ export class HowlInstanceManager {
     }
 
     public broadcast(action: Action) {
-        this.callbacks.forEach(cb => cb(action))
+        this.callbacks.forEach((cb) => cb(action))
     }
 }
 

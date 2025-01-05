@@ -24,8 +24,10 @@ jobs:
         run: corepack enable
       - name: Install Deps
         run: yarn install
+      - name: Build package
+        run: yarn g:build-package
       - name: Typecheck
-        run: yarn lint
+        run: yarn lint-all
 
   cypress:
     runs-on: ubuntu-latest
@@ -39,7 +41,7 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Enable Corepack
         run: corepack enable
-      - name: Dev Server Setup
+      - name: Install Deps
         run: yarn install
       - name: Build package
         run: yarn g:build-package

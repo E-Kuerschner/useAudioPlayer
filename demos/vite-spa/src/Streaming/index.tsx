@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useAudioPlayer } from "react-use-audio-player"
 import "./styles.scss"
 

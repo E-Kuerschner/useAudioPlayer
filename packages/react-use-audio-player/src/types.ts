@@ -1,4 +1,4 @@
-import { AudioPlayerState } from "./audioPlayerState"
+import { type AudioPlayerState } from "./audioPlayerState"
 
 export interface AudioPlayer extends AudioPlayerState {
     play: () => void

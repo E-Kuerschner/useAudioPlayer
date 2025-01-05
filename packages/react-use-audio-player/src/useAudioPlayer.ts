@@ -6,7 +6,7 @@ import {
 } from "./audioPlayerState"
 import { useHowlEventSync } from "./useHowlEventSync"
 import { HowlInstanceManager } from "./HowlInstanceManager"
-import { AudioPlayer, LoadArguments } from "./types"
+import type { AudioPlayer, LoadArguments } from "./types"
 
 export const useAudioPlayer = (): AudioPlayer & {
     cleanup: VoidFunction

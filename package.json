@@ -12,7 +12,7 @@
         "url": "https://github.com/E-Kuerschner/useAudioPlayer"
     },
     "scripts": {
-        "lint": "tsc --noEmit",
+        "lint-all": "yarn workspaces foreach --all run lint",
         "prepublishOnly": "echo 'TODO prepare'",
         "preversion": "yarn packages/react-use-audio-player/test && yarn build",
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
@@ -24,7 +24,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "yarn lint"
+            "pre-commit": "yarn lint-all"
         }
     },
     "prettier": {
