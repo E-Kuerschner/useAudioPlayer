@@ -1,9 +1,4 @@
-import React, {
-    useState,
-    FunctionComponent,
-    ChangeEvent,
-    useEffect
-} from "react"
+import { useState, FunctionComponent, ChangeEvent, useEffect } from "react"
 import { AudioLoadOptions, useGlobalAudioPlayer } from "react-use-audio-player"
 
 export const FileLoader: FunctionComponent = () => {

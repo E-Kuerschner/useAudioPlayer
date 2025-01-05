@@ -1,12 +1,11 @@
-import React from "react"
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
 import { BasicExample } from "./GlobalAudioSource/AudioPlayerState"
 import { Spotifyish } from "./GlobalAudioSource/SoundLibrary"
 import { AutoPlayNextSound } from "./GlobalAudioSource/AutoPlayNextSound"
 import { MultipleSounds } from "./MultipleSounds"
 import { GlobalAudioSource } from "./GlobalAudioSource"
-import "./app.scss"
 import { Streaming } from "./Streaming"
+import "./app.scss"
 
 function ExampleSelect() {
     return (

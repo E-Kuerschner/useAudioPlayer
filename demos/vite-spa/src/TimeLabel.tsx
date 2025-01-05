@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useGlobalAudioPlayer } from "react-use-audio-player"
 
 const formatTime = (seconds: number) => {
@@ -19,7 +19,7 @@ const formatTime = (seconds: number) => {
 
 export const TimeLabel = () => {
     const [pos, setPos] = useState(0)
-    const { duration, getPosition, playing } = useGlobalAudioPlayer()
+    const { duration, getPosition } = useGlobalAudioPlayer()
 
     useEffect(() => {
         const i = setInterval(() => {

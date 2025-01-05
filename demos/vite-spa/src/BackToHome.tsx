@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { Link } from "react-router-dom"
 
 interface BackToHomeProps {
@@ -6,5 +6,9 @@ interface BackToHomeProps {
 }
 
 export const BackToHome: FunctionComponent<BackToHomeProps> = (props) => {
-    return <Link className={ props.className || "" } to="/">{"< -"} Example Select</Link>
+    return (
+        <Link className={props.className || ""} to="/">
+            {"< -"} Example Select
+        </Link>
+    )
 }

@@ -1,12 +1,14 @@
 {
-    "include": ["src"],
+    "include": [
+        "packages/react-use-audio-player/src"
+    ],
     "compilerOptions": {
+        "noEmit": true,
         "target": "es5",
         "module": "esnext",
         "lib": ["dom", "esnext"],
         "declaration": true,
         "sourceMap": true,
-        "rootDir": "./src",
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,

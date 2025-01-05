@@ -1,7 +1,6 @@
-import React from "react"
 import { Link, Outlet, useMatch } from "react-router-dom"
-import "./styles.scss"
 import { PlayBar } from "./PlayBar"
+import "./styles.scss"
 
 const ExampleSelect = () => {
     return (

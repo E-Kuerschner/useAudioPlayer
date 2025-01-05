@@ -1,17 +1,9 @@
-import React, { useEffect, useState, FunctionComponent } from "react"
+import { type FunctionComponent } from "react"
 import { useGlobalAudioPlayer } from "react-use-audio-player"
 
 export const AudioControls: FunctionComponent<{}> = () => {
-    const {
-        play,
-        pause,
-        stop,
-        mute,
-        muted,
-        playing,
-        loop,
-        looping
-    } = useGlobalAudioPlayer()
+    const { play, pause, stop, mute, muted, playing, loop, looping } =
+        useGlobalAudioPlayer()
 
     return (
         <div>

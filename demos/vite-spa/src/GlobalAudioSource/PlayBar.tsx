@@ -1,18 +1,11 @@
-import React from "react"
 import { useGlobalAudioPlayer } from "react-use-audio-player"
 import { AudioSeekBar } from "../AudioSeekBar"
 import { TimeLabel } from "../TimeLabel"
 import { VolumeControl } from "../VolumeControl"
 
 export const PlayBar = () => {
-    const {
-        togglePlayPause,
-        playing,
-        isReady,
-        setRate,
-        rate,
-        src
-    } = useGlobalAudioPlayer()
+    const { togglePlayPause, playing, isReady, setRate, rate, src } =
+        useGlobalAudioPlayer()
 
     return (
         <div className="playBar">
@@ -38,7 +31,7 @@ export const PlayBar = () => {
                         name="rateSelect"
                         id="rate"
                         value={rate}
-                        onChange={e => setRate(Number(e.target.value))}
+                        onChange={(e) => setRate(Number(e.target.value))}
                     >
                         <option value="0.5">1/2x</option>
                         <option value="1">1x</option>

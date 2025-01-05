@@ -1,67 +1,26 @@
 {
-    "name": "react-use-audio-player",
-    "version": "2.3.0-alpha.1",
-    "packageManager": "yarn@4.6.0",
-    "sideEffects": false,
-    "description": "React hook for building custom audio playback controls",
-    "files": [
-        "dist"
+    "workspaces": [
+        "packages/*",
+        "demos/*"
     ],
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "typings": "dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
-        }
-    },
+    "private": true,
+    "packageManager": "yarn@4.6.0",
+    "description": "monorepo for react-use-audio-player",
     "author": "E-Kuerschner",
     "repository": {
         "type": "git",
         "url": "https://github.com/E-Kuerschner/useAudioPlayer"
     },
-    "license": "MIT",
-    "keywords": [
-        "react",
-        "hooks",
-        "react-hooks",
-        "audio",
-        "player",
-        "howler",
-        "sound",
-        "react-howler",
-        "howler.js"
-    ],
     "scripts": {
-        "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --minify --target es6",
-        "test": "echo 'skipping tests for now'",
-        "test:integration": "cypress run",
         "lint": "tsc --noEmit",
         "prepublishOnly": "echo 'TODO prepare'",
-        "preversion": "yarn test && yarn build",
+        "preversion": "yarn packages/react-use-audio-player/test && yarn build",
         "release": "yarn version && yarn publish --non-interactive && echo 'Remember to push new commit/tags to Github'"
     },
     "devDependencies": {
-        "@testing-library/react-hooks": "^3.4.1",
-        "@types/howler": "^2.2.0",
-        "@types/jest": "^24.0.25",
-        "@types/node": "^22",
-        "@types/react": "^18.2.5",
-        "cypress": "^4.1.0",
         "husky": "^3.1.0",
         "prettier": "^3.4.2",
-        "react": "^18",
-        "react-dom": "^18",
-        "react-test-renderer": "^16.12.0",
-        "tsup": "^8.3.5",
         "typescript": "^5.7.2"
-    },
-    "peerDependencies": {
-        "react": ">=16.8"
-    },
-    "dependencies": {
-        "howler": "^2.2.3"
     },
     "husky": {
         "hooks": {
@@ -73,11 +32,5 @@
         "printWidth": 80,
         "semi": false,
         "trailingComma": "none"
-    },
-    "jest": {
-        "testPathIgnorePatterns": [
-            "/node_modules/",
-            "/test/cypress/"
-        ]
     }
 }

@@ -25,7 +25,7 @@ jobs:
       - name: Install Deps
         run: yarn install
       - name: Typecheck
-        run: yarn run tsc
+        run: yarn lint
 
   cypress:
     runs-on: ubuntu-latest
@@ -40,9 +40,12 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Dev Server Setup
-        run: yarn --cwd ./examples install
+        run: yarn install
+      - name: Build package
+        run: yarn g:build-package
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: yarn --cwd ./examples run start
+          working-directory: packages/react-use-audio-player
+          start: yarn g:demo-vite-start
           wait-on: http://localhost:1234/

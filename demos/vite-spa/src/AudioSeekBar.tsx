@@ -1,4 +1,4 @@
-import React, {
+import {
     useCallback,
     useEffect,
     useRef,
@@ -13,7 +13,7 @@ interface AudioSeekBarProps {
     className?: string
 }
 
-export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = props => {
+export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = (props) => {
     const { className = "" } = props
     const { playing, getPosition, duration, seek } = useGlobalAudioPlayer()
     const [pos, setPos] = useState(0)

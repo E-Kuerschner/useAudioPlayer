@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useGlobalAudioPlayer } from "react-use-audio-player"
 import { TimeLabel } from "../../TimeLabel"
-import "./styles"
-import { Howl } from "howler"
+import "./styles.css"
 
 const songs = [
     "/ch_tunes - jam_10.wav",
@@ -13,20 +12,14 @@ const songs = [
 export function AutoPlayNextSound() {
     const [songIndex, setSongIndex] = useState(0)
 
-    const {
-        togglePlayPause,
-        isReady,
-        load,
-        seek,
-        duration,
-        playing
-    } = useGlobalAudioPlayer()
+    const { togglePlayPause, isReady, load, seek, duration, playing } =
+        useGlobalAudioPlayer()
 
     useEffect(() => {
         load(songs[songIndex], {
             autoplay: true,
             onend: () => {
-                setSongIndex(index => {
+                setSongIndex((index) => {
                     if (index === songs.length - 1) {
                         return 0
                     }

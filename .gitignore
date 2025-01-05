@@ -15,13 +15,5 @@ dist
 !.yarn/sdks
 !.yarn/versions
 
-examples/.pnp.*
-examples/.yarn/*
-!examples/.yarn/patches
-!examples/.yarn/plugins
-!examples/.yarn/releases
-!examples/.yarn/sdks
-!examples/.yarn/versions
-
-test/cypress/videos
-test/cypress/screenshots
+packages/react-use-audio-player/test/cypress/videos
+packages/react-use-audio-player/test/cypress/screenshots

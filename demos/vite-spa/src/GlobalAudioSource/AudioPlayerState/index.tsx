@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { useGlobalAudioPlayer } from "react-use-audio-player"
 import { FileLoader } from "./FileLoader"
 import { AudioControls } from "./AudioControls"

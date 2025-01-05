@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, ChangeEvent } from "react"
 import { Link } from "react-router-dom"
 import { useAudioPlayer } from "react-use-audio-player"
 import "./styles.scss"
@@ -18,9 +18,10 @@ export const MultipleSounds = () => {
         song2.togglePlayPause()
     }, [song1.togglePlayPause, song2.togglePlayPause])
 
-    const handleFade = useCallback(e => {
-        setXFadeValue(e.target.value)
-        const ratio = e.target.value / 100
+    const handleFade = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const value = Number(e.target.value)
+        setXFadeValue(value)
+        const ratio = value / 100
         song1.setVolume(1 - ratio)
         song2.setVolume(ratio)
     }, [])
