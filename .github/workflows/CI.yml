@@ -1,0 +1,53 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - upgrade-devx
+  pull_request:
+    types: [opened]
+    branches:
+      - "*"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install Deps
+        run: yarn install
+      - name: Build package
+        run: yarn g:build-package
+      - name: Typecheck
+        run: yarn lint-all
+
+  cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install Deps
+        run: yarn install
+      - name: Build package
+        run: yarn g:build-package
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: packages/react-use-audio-player
+          start: yarn g:demo-vite-start
+          wait-on: http://localhost:1234/

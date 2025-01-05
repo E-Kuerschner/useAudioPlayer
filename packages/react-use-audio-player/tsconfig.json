@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["./src"],
+  "compilerOptions": {
+    "target": "ES6",
+    // tsup handles the module resolution and outputs so can use full modern features in TS
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "verbatimModuleSyntax": true
+  }
+}

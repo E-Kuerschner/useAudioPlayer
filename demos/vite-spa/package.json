@@ -1,0 +1,27 @@
+{
+  "name": "vite-spa",
+  "packageManager": "yarn@4.6.0",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 1234",
+    "lint": "tsc --project ./tsconfig.app.json",
+    "g:demo-vite-start": "yarn --cwd $PROJECT_CWD/demos/vite-spa dev"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.11.0",
+    "react-use-audio-player": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "globals": "^15.14.0",
+    "sass": "^1.83.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5"
+  }
+}
