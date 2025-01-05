@@ -1,6 +1,6 @@
 {
   "name": "react-use-audio-player",
-  "version": "2.3.0-alpha.2",
+  "version": "3.0.0",
   "type": "module",
   "packageManager": "yarn@4.6.0",
   "sideEffects": false,
@@ -75,6 +75,5 @@
       "/node_modules/",
       "/test/cypress/"
     ]
-  },
-  "stableVersion": "2.3.0-alpha.1"
+  }
 }
