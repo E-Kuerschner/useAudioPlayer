@@ -1,6 +1,6 @@
 {
   "name": "react-use-audio-player",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "packageManager": "yarn@4.6.0",
   "sideEffects": false,
