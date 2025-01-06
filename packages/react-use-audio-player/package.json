@@ -1,6 +1,6 @@
 {
   "name": "react-use-audio-player",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "type": "module",
   "packageManager": "yarn@4.6.0",
   "sideEffects": false,
@@ -8,8 +8,8 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
