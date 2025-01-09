@@ -43,9 +43,7 @@
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^3.4.1",
-    "@types/howler": "^2.2.0",
-    "@types/jest": "^24.0.25",
-    "@types/node": "^22",
+    "@types/howler": "^2.2.12",
     "cypress": "^4.1.0",
     "husky": "^3.1.0",
     "prettier": "^3.4.2",
@@ -69,11 +67,5 @@
     "printWidth": 80,
     "semi": false,
     "trailingComma": "none"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/test/cypress/"
-    ]
   }
 }
