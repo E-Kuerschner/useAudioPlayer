@@ -42,30 +42,14 @@
     "release": "yarn npm publish && echo 'Remember to push new commit/tags to Github'"
   },
   "devDependencies": {
-    "@testing-library/react-hooks": "^3.4.1",
     "@types/howler": "^2.2.12",
     "cypress": "^4.1.0",
-    "husky": "^3.1.0",
-    "prettier": "^3.4.2",
-    "react-test-renderer": "^16.12.0",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "tsup": "^8.3.5"
   },
   "dependencies": {
     "howler": "^2.2.3"
   },
   "peerDependencies": {
     "react": ">=16.8"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
-  },
-  "prettier": {
-    "tabWidth": 4,
-    "printWidth": 80,
-    "semi": false,
-    "trailingComma": "none"
   }
 }
