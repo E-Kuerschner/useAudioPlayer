@@ -10,18 +10,18 @@
     "g:demo-vite-start": "yarn --cwd $PROJECT_CWD/demos/vite-spa start"
   },
   "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-router-dom": "^6.11.0",
     "react-use-audio-player": "workspace:^"
   },
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "@types/react": "^16.8.0",
+    "@types/react-dom": "^16.8.0",
     "@vitejs/plugin-react": "^4.3.4",
     "globals": "^15.14.0",
     "sass": "^1.83.1",
-    "typescript": "~5.6.2",
+    "typescript": "^5.7.3",
     "vite": "^6.0.5"
   }
 }

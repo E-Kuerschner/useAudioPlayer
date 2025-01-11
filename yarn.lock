@@ -896,23 +896,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^17.0.0":
-  version: 17.0.26
-  resolution: "@types/react-dom@npm:17.0.26"
+"@types/react-dom@npm:^16.8.0":
+  version: 16.9.25
+  resolution: "@types/react-dom@npm:16.9.25"
   peerDependencies:
-    "@types/react": ^17.0.0
-  checksum: 10c0/8363921f08afe3f2ef82fe293301a0809ec646975fe9f5bfeb2e823f7237b97e47d27e1c6c2ffff27d15c12ab3cad1de6c77a737e37499fcc52793b0fd674f3f
+    "@types/react": ^16.0.0
+  checksum: 10c0/e36fc1227becf9415661dbd5e0d3af6c922d266a005629a64431610b7757863c981f19fe8e2877f6f1eb7d83d8bc06327b17d3952a0afdeb581815b482dc9da1
   languageName: node
   linkType: hard
 
-"@types/react@npm:^17.0.0":
-  version: 17.0.83
-  resolution: "@types/react@npm:17.0.83"
+"@types/react@npm:^16.8.0":
+  version: 16.14.62
+  resolution: "@types/react@npm:16.14.62"
   dependencies:
     "@types/prop-types": "npm:*"
     "@types/scheduler": "npm:^0.16"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/c8f76790190a9df42099f5f78d08dd4095f2da3bd97ff7cce0001d5a97ff3ffb31f703575acf2c457606e0d0b229ca8d1ba0ff459b77a4e44c5ea5154fe3fb4b
+  checksum: 10c0/3c913ae6c49b3ee8504e2e6f603db6440a0b99d737b607b2df8f39a50484b089c547f239294615de6b877f5db5217f23bc2610b232034612985afd4621ca8ace
   languageName: node
   linkType: hard
 
@@ -949,6 +949,15 @@ __metadata:
   peerDependencies:
     vite: ^4.2.0 || ^5.0.0 || ^6.0.0
   checksum: 10c0/38a47a1dbafae0b97142943d83ee3674cb3331153a60b1a3fd29d230c12c9dfe63b7c345b231a3450168ed8a9375a9a1a253c3d85e9efdc19478c0d56b98496c
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/types@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@yarnpkg/types@npm:4.0.0"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 10c0/41f67a4aa5c414c1e228f51453451fa15e0dd70c5cf2b1ae1ca142a3f018f25e4a37e60372cd0f5970c755e1804a2e31e208bff427add1cf13f899b0b9adc1e0
   languageName: node
   linkType: hard
 
@@ -2836,7 +2845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0":
+"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -3490,6 +3499,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:^15.6.2":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: "npm:^1.4.0"
+    object-assign: "npm:^4.1.1"
+    react-is: "npm:^16.13.1"
+  checksum: 10c0/59ece7ca2fb9838031d73a48d4becb9a7cc1ed10e610517c7d8f19a1e02fa47f7c27d557d8a5702bec3cfeccddc853579832b43f449e54635803f277b1c78077
+  languageName: node
+  linkType: hard
+
 "psl@npm:^1.1.33":
   version: 1.15.0
   resolution: "psl@npm:1.15.0"
@@ -3555,16 +3575,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
+"react-dom@npm:^16.8.0":
+  version: 16.14.0
+  resolution: "react-dom@npm:16.14.0"
   dependencies:
     loose-envify: "npm:^1.1.0"
     object-assign: "npm:^4.1.1"
-    scheduler: "npm:^0.20.2"
+    prop-types: "npm:^15.6.2"
+    scheduler: "npm:^0.19.1"
   peerDependencies:
-    react: 17.0.2
-  checksum: 10c0/51abbcb72450fe527ebf978c3bc989ba266630faaa53f47a2fae5392369729e8de62b2e4683598cbe651ea7873cd34ec7d5127e2f50bf4bfe6bd0c3ad9bddcb0
+    react: ^16.14.0
+  checksum: 10c0/ca146e780631672a2d57c8d77775d38f394a6cd67db30c6af7964d0b3574ef7edccb1de8d592e990b98f4f5f8d1c8460b0691f04e7a45799962a51dcbaaa1371
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^16.13.1":
+  version: 16.13.1
+  resolution: "react-is@npm:16.13.1"
+  checksum: 10c0/33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1
   languageName: node
   linkType: hard
 
@@ -3604,21 +3632,24 @@ __metadata:
   resolution: "react-use-audio-player@workspace:packages/react-use-audio-player"
   dependencies:
     "@types/howler": "npm:^2.2.12"
+    "@types/react": "npm:^16.8.0"
     cypress: "npm:^4.1.0"
     howler: "npm:^2.2.3"
     tsup: "npm:^8.3.5"
+    typescript: "npm:^5.7.3"
   peerDependencies:
-    react: ">=16.8"
+    react: ">=16.8.0"
   languageName: unknown
   linkType: soft
 
-"react@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "react@npm:17.0.2"
+"react@npm:^16.8.0":
+  version: 16.14.0
+  resolution: "react@npm:16.14.0"
   dependencies:
     loose-envify: "npm:^1.1.0"
     object-assign: "npm:^4.1.1"
-  checksum: 10c0/07ae8959acf1596f0550685102fd6097d461a54a4fd46a50f88a0cd7daaa97fdd6415de1dcb4bfe0da6aa43221a6746ce380410fa848acc60f8ac41f6649c148
+    prop-types: "npm:^15.6.2"
+  checksum: 10c0/df8faae43e01387013900e8f8fb3c4ce9935b7edbcbaa77e12999c913eb958000a0a8750bf9a0886dae0ad768dd4a4ee983752d5bade8d840adbe0ce890a2438
   languageName: node
   linkType: hard
 
@@ -3837,9 +3868,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@yarnpkg/types": "npm:^4.0.0"
     husky: "npm:^3.1.0"
     prettier: "npm:^3.4.2"
-    typescript: "npm:^5.7.2"
   languageName: unknown
   linkType: soft
 
@@ -3899,13 +3930,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "scheduler@npm:0.20.2"
+"scheduler@npm:^0.19.1":
+  version: 0.19.1
+  resolution: "scheduler@npm:0.19.1"
   dependencies:
     loose-envify: "npm:^1.1.0"
     object-assign: "npm:^4.1.1"
-  checksum: 10c0/b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
+  checksum: 10c0/9658932a73148a93d791c064b331d9690ddfecc4de25bcd6c9b89f5f1166e3d23d9c31c1595d66565e5ffbb34d47035cb14841aba6444bc266bfcd215cefe9c0
   languageName: node
   linkType: hard
 
@@ -4443,6 +4474,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.4.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
+  languageName: node
+  linkType: hard
+
 "tsup@npm:^8.3.5":
   version: 8.3.5
   resolution: "tsup@npm:8.3.5"
@@ -4514,43 +4552,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.7.2":
-  version: 5.7.2
-  resolution: "typescript@npm:5.7.2"
+"typescript@npm:^5.7.3":
+  version: 5.7.3
+  resolution: "typescript@npm:5.7.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/a873118b5201b2ef332127ef5c63fb9d9c155e6fdbe211cbd9d8e65877283797cca76546bad742eea36ed7efbe3424a30376818f79c7318512064e8625d61622
+  checksum: 10c0/b7580d716cf1824736cc6e628ab4cd8b51877408ba2be0869d2866da35ef8366dd6ae9eb9d0851470a39be17cbd61df1126f9e211d8799d764ea7431d5435afa
   languageName: node
   linkType: hard
 
-"typescript@npm:~5.6.2":
-  version: 5.6.3
-  resolution: "typescript@npm:5.6.3"
+"typescript@patch:typescript@npm%3A^5.7.3#optional!builtin<compat/typescript>":
+  version: 5.7.3
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
-  version: 5.7.2
-  resolution: "typescript@patch:typescript@npm%3A5.7.2#optional!builtin<compat/typescript>::version=5.7.2&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/f3b8082c9d1d1629a215245c9087df56cb784f9fb6f27b5d55577a20e68afe2a889c040aacff6d27e35be165ecf9dca66e694c42eb9a50b3b2c451b36b5675cb
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A~5.6.2#optional!builtin<compat/typescript>":
-  version: 5.6.3
-  resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/7c9d2e07c81226d60435939618c91ec2ff0b75fbfa106eec3430f0fcf93a584bc6c73176676f532d78c3594fe28a54b36eb40b3d75593071a7ec91301533ace7
+  checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
   languageName: node
   linkType: hard
 
@@ -4668,16 +4686,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vite-spa@workspace:demos/vite-spa"
   dependencies:
-    "@types/react": "npm:^17.0.0"
-    "@types/react-dom": "npm:^17.0.0"
+    "@types/react": "npm:^16.8.0"
+    "@types/react-dom": "npm:^16.8.0"
     "@vitejs/plugin-react": "npm:^4.3.4"
     globals: "npm:^15.14.0"
-    react: "npm:^17.0.0"
-    react-dom: "npm:^17.0.0"
+    react: "npm:^16.8.0"
+    react-dom: "npm:^16.8.0"
     react-router-dom: "npm:^6.11.0"
     react-use-audio-player: "workspace:^"
     sass: "npm:^1.83.1"
-    typescript: "npm:~5.6.2"
+    typescript: "npm:^5.7.3"
     vite: "npm:^6.0.5"
   languageName: unknown
   linkType: soft
