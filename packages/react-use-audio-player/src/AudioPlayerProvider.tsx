@@ -1,6 +1,5 @@
 import { type ComponentProps, createContext, useContext } from "react"
-import { useAudioPlayer } from "./useAudioPlayer"
-import { type AudioPlayer } from "./types"
+import { type AudioPlayer, useAudioPlayer } from "./useAudioPlayer"
 
 export const context = createContext<AudioPlayer | null>(null)
 

@@ -1,168 +1,132 @@
-import { useCallback, useReducer, useRef } from "react"
-import {
-    ActionTypes,
-    initStateFromHowl,
-    reducer as audioStateReducer
-} from "./audioPlayerState"
-import { useHowlEventSync } from "./useHowlEventSync"
-import { HowlInstanceManager } from "./HowlInstanceManager"
-import type { AudioPlayer, LoadArguments } from "./types"
+import { useCallback, useEffect, useRef, useSyncExternalStore } from "react"
+import type { Howl } from "howler"
+import { type Snapshot, HowlStore } from "./HowlStore"
+import type { AudioControls, AudioLoadOptions } from "./types"
 
-export const useAudioPlayer = (): AudioPlayer => {
-    const howlManager = useRef<HowlInstanceManager | null>(null)
-    function getHowlManager() {
-        if (howlManager.current !== null) {
-            return howlManager.current
-        }
-
-        const manager = new HowlInstanceManager()
-        howlManager.current = manager
-        return manager
+export type AudioPlayer = AudioControls &
+    Snapshot & {
+        /** A reference to the underlying Howl object.
+         * Use as an escape hatch for behavior not provided by useAudioPlayer. Please refer to Howler [documentation](https://github.com/goldfire/howler.js#documentation)
+         * Manipulating the audio directly through the Howl may cause state to desynchronize
+         * */
+        player: Howl | null
+        src: string | null
+        /** A way to explicitly load an audio resource */
+        load: (...args: [string, AudioLoadOptions | undefined]) => void
+        /** Removes event listeners, resets state and unloads the internal Howl object */
+        cleanup: () => void
     }
 
-    const [state, dispatch] = useHowlEventSync(
-        getHowlManager(),
-        useReducer(
-            audioStateReducer,
-            getHowlManager().getHowl(),
-            initStateFromHowl
-        )
+export function useAudioPlayer(
+    src: string,
+    options: AudioLoadOptions
+): AudioPlayer
+export function useAudioPlayer(): AudioPlayer
+
+/**
+ * @param {string} src - The src path of the audio resource. Changing this will cause a new sound to immediately load
+ * @param {AudioLoadOptions} options - Options for the loaded audio including initial properties and configruation. These can later be changed through the API.
+ * @return {AudioPlayer} The audio player instance with methods for controlling playback and state.
+ */
+export function useAudioPlayer(
+    src?: string,
+    options?: AudioLoadOptions
+): AudioPlayer {
+    const audioRef = useRef<HowlStore>()
+    // signal used to forcefully recreate the store after a imperative unload
+    const hasStaleRef = useRef(false)
+
+    function getAudio() {
+        if (!audioRef.current || hasStaleRef.current) {
+            if (!src) {
+                audioRef.current = new HowlStore()
+            } else {
+                audioRef.current = new HowlStore({
+                    src,
+                    format: options?.format,
+                    html5: options?.html5,
+                    autoplay: options?.autoplay,
+                    loop: options?.loop,
+                    volume: options?.initialVolume,
+                    mute: options?.initialMute,
+                    rate: options?.initialRate,
+                    // event callbacks
+                    ...options
+                })
+            }
+
+            hasStaleRef.current = false
+        }
+
+        return audioRef.current
+    }
+
+    // destroy and unset the current sound if the src option changes
+    // subsequent calls to getAudio() will create the audio instance with the new src and options
+    if (src && audioRef.current && src !== audioRef.current.src) {
+        audioRef.current!.destroy()
+        hasStaleRef.current = true
+    }
+
+    // lazily create/get the HowlStore for use below
+    const audio = getAudio()
+
+    // need to bind functions back to the howl since they will be called from the context of React
+    const state = useSyncExternalStore(
+        audio.subscribe.bind(audio),
+        audio.getSnapshot.bind(audio)
     )
 
-    const load = useCallback((...[src, options = {}]: LoadArguments) => {
-        // TODO investigate: if we try to avoid loading the same sound (existing howl & same src in call)
-        // then there are some bugs like in the MultipleSounds demo, the "play" button will not switch to "pause"
-        const howl = getHowlManager().createHowl({
-            src,
-            ...options
-        })
-
-        dispatch({ type: ActionTypes.START_LOAD, howl })
+    useEffect(() => {
+        // cleans up the sound when hook unmounts
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.destroy()
+                hasStaleRef.current = true
+            }
+        }
     }, [])
 
-    const seek = useCallback((seconds: number) => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.seek(seconds)
-    }, [])
-
-    const getPosition = useCallback(() => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return 0
-        }
-
-        return howl.seek() ?? 0
-    }, [])
-
-    const play = useCallback(() => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.play()
-    }, [])
-
-    const pause = useCallback(() => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.pause()
-    }, [])
-
-    const togglePlayPause = useCallback(() => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        if (state.playing) {
-            howl.pause()
-        } else {
-            howl.play()
-        }
-    }, [state])
-
-    const stop = useCallback(() => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.stop()
-    }, [])
-
-    const fade = useCallback((from: number, to: number, duration: number) => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.fade(from, to, duration)
-    }, [])
-
-    const setRate = useCallback((speed: number) => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.rate(speed)
-    }, [])
-
-    const setVolume = useCallback((vol: number) => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.volume(vol)
-    }, [])
-
-    const mute = useCallback((muteOnOff: boolean) => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        howl.mute(muteOnOff)
-    }, [])
-
-    const loop = useCallback((loopOnOff: boolean) => {
-        const howl = getHowlManager().getHowl()
-        if (howl === undefined) {
-            return
-        }
-
-        // this differs from the implementation in useGlobalAudioPlayer which needs to broadcast the action to itself and all other instances of the hook
-        // maybe these two behaviors could be abstracted with one interface in the future
-        dispatch({ type: ActionTypes.ON_LOOP, howl, toggleValue: loopOnOff })
-    }, [])
-
-    const cleanup = useCallback(() => {
-        getHowlManager()?.destroyHowl()
-    }, [])
+    const load: AudioPlayer["load"] = useCallback(
+        (src, options) => {
+            hasStaleRef.current = false
+            audio.load({
+                src,
+                format: options?.format,
+                html5: options?.html5,
+                autoplay: options?.autoplay,
+                loop: options?.loop,
+                volume: options?.initialVolume,
+                mute: options?.initialMute,
+                rate: options?.initialRate,
+                // event callbacks
+                ...options
+            })
+        },
+        [audio]
+    )
 
     return {
         ...state,
+        player: audio.howl,
+        src: audio.src,
         load,
-        seek,
-        getPosition,
-        play,
-        pause,
-        togglePlayPause,
-        stop,
-        mute,
-        fade,
-        setRate,
-        setVolume,
-        loop,
-        cleanup
+        // AudioControls interface
+        play: audio.play.bind(audio),
+        pause: audio.pause.bind(audio),
+        togglePlayPause: audio.togglePlayPause.bind(audio),
+        stop: audio.stop.bind(audio),
+        setVolume: audio.setVolume.bind(audio),
+        fade: audio.fade.bind(audio),
+        mute: audio.mute.bind(audio),
+        unmute: audio.unmute.bind(audio),
+        toggleMute: audio.toggleMute.bind(audio),
+        setRate: audio.setRate.bind(audio),
+        seek: audio.seek.bind(audio),
+        loopOn: audio.loopOn.bind(audio),
+        loopOff: audio.loopOff.bind(audio),
+        toggleLoop: audio.toggleLoop.bind(audio),
+        getPosition: audio.getPosition.bind(audio),
+        cleanup: audio.destroy.bind(audio)
     }
 }

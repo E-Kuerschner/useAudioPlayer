@@ -12,21 +12,21 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
                 })
             }
         })
-        cy.contains("useAudioPlayerContext examples").click()
+        cy.contains("Sound Library").click()
     })
 
     it("can visualize playback time with a seek bar", () => {
-        cy.contains("Full Sound Library").click()
+        cy.contains("Sound Library").click()
         // eslint-disable-next-line  cypress/unsafe-to-chain-command
         cy.contains("cats")
             .click()
             .then(() => {
-                cy.get(".fa-pause").then(() => {
+                cy.get("#pauseButton").then(() => {
                     expect(audioContext.state).to.equal("running")
                     // eslint-disable-next-line cypress/no-unnecessary-waiting
                     cy.wait(4000).then(() => {
                         // eslint-disable-next-line  cypress/unsafe-to-chain-command
-                        cy.get(".playBar__playButton")
+                        cy.get("#playButton")
                             .click()
                             .then(() => {
                                 expect(

@@ -1,0 +1,9 @@
+.volumeControl {
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    color: white;
+    margin-left: 5px;
+  }
+}
