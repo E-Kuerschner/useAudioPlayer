@@ -1,9 +1,9 @@
 import { ChangeEvent, useCallback } from "react"
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { useAudioPlayerContext } from "react-use-audio-player"
 import "./VolumeControl.scss"
 
 export const VolumeControl = () => {
-    const { setVolume, volume } = useGlobalAudioPlayer()
+    const { setVolume, volume } = useAudioPlayerContext()
 
     const handleChange = useCallback(
         (slider: ChangeEvent<HTMLInputElement>) => {

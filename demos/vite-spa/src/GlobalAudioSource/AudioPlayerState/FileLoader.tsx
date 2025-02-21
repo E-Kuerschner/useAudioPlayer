@@ -1,9 +1,9 @@
 import { useState, FunctionComponent, ChangeEvent, useEffect } from "react"
-import { AudioLoadOptions, useGlobalAudioPlayer } from "react-use-audio-player"
+import { AudioLoadOptions, useAudioPlayerContext } from "react-use-audio-player"
 
 export const FileLoader: FunctionComponent = () => {
     const [audioFile, setAudioFile] = useState("/audio.mp3")
-    const { load, isReady, error } = useGlobalAudioPlayer()
+    const { load, isReady, error } = useAudioPlayerContext()
 
     useEffect(() => {
         const loadOptions: AudioLoadOptions = { initialVolume: 0.5 }

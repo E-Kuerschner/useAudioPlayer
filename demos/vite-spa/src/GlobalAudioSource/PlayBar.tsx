@@ -1,11 +1,11 @@
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { useAudioPlayerContext } from "react-use-audio-player"
 import { AudioSeekBar } from "../AudioSeekBar"
 import { TimeLabel } from "../TimeLabel"
 import { VolumeControl } from "../VolumeControl"
 
 export const PlayBar = () => {
     const { togglePlayPause, playing, isReady, setRate, rate, src } =
-        useGlobalAudioPlayer()
+        useAudioPlayerContext()
 
     return (
         <div className="playBar">

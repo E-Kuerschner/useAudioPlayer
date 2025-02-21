@@ -9,6 +9,9 @@ import { useHowlEventSync } from "./useHowlEventSync"
 import { HowlInstanceManagerSingleton } from "./HowlInstanceManager"
 import type { AudioPlayer, LoadArguments } from "./types"
 
+/**
+ * @deprecated Please render an <AudioPlayerProvider> and use useAudioPlayerContext instead. useGlobalAudioPlayer will be removed in the next major version
+ */
 export function useGlobalAudioPlayer(): AudioPlayer {
     const howlManager = useRef(HowlInstanceManagerSingleton.getInstance())
 
@@ -156,6 +159,10 @@ export function useGlobalAudioPlayer(): AudioPlayer {
         })
     }, [])
 
+    const cleanup = useCallback(() => {
+        howlManager.current.destroyHowl()
+    }, [])
+
     return {
         ...state,
         load,
@@ -169,6 +176,7 @@ export function useGlobalAudioPlayer(): AudioPlayer {
         fade,
         setRate,
         setVolume,
-        loop
+        loop,
+        cleanup
     }
 }

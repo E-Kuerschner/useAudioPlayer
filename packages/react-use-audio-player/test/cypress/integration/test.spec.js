@@ -12,7 +12,7 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
                 })
             }
         })
-        cy.contains("useGlobalAudioPlayer examples").click()
+        cy.contains("useAudioPlayerContext examples").click()
     })
 
     it("can visualize playback time with a seek bar", () => {

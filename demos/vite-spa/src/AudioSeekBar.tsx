@@ -6,7 +6,7 @@ import {
     FunctionComponent,
     MouseEvent
 } from "react"
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { useAudioPlayerContext } from "react-use-audio-player"
 import "./AudioSeekBar.scss"
 
 interface AudioSeekBarProps {
@@ -15,7 +15,7 @@ interface AudioSeekBarProps {
 
 export const AudioSeekBar: FunctionComponent<AudioSeekBarProps> = (props) => {
     const { className = "" } = props
-    const { playing, getPosition, duration, seek } = useGlobalAudioPlayer()
+    const { playing, getPosition, duration, seek } = useAudioPlayerContext()
     const [pos, setPos] = useState(0)
     const frameRef = useRef<number>()
 

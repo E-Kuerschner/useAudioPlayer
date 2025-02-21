@@ -8,9 +8,7 @@ import { useHowlEventSync } from "./useHowlEventSync"
 import { HowlInstanceManager } from "./HowlInstanceManager"
 import type { AudioPlayer, LoadArguments } from "./types"
 
-export const useAudioPlayer = (): AudioPlayer & {
-    cleanup: VoidFunction
-} => {
+export const useAudioPlayer = (): AudioPlayer => {
     const howlManager = useRef<HowlInstanceManager | null>(null)
     function getHowlManager() {
         if (howlManager.current !== null) {
