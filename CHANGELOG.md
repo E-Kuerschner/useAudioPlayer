@@ -2,6 +2,14 @@
 
 All notable changes made to this project from v3.0.0 and up will be documented in this file. This project uses semver standards.
 
+## 3.1.0 (2025-01-05)
+
+### New Features
+
+- deprecates `useGlobalAudioPlayer` in favor of new additions
+- exports new component: `AudioPlayerProvider` and companion hook: `useAudioPlayerContext`
+  - See GitHub [Discussion](https://github.com/E-Kuerschner/useAudioPlayer/discussions/157)
+
 ## [3.0.2](https://github.com/E-Kuerschner/useAudioPlayer/commits/v3.0.2) (2025-01-05)
 
 ### Fixes
