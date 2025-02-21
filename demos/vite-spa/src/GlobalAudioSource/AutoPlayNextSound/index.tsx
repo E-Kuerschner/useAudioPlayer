@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { useAudioPlayerContext } from "react-use-audio-player"
 import { TimeLabel } from "../../TimeLabel"
 import "./styles.css"
 
@@ -13,7 +13,7 @@ export function AutoPlayNextSound() {
     const [songIndex, setSongIndex] = useState(0)
 
     const { togglePlayPause, isReady, load, seek, duration, playing } =
-        useGlobalAudioPlayer()
+        useAudioPlayerContext()
 
     useEffect(() => {
         load(songs[songIndex], {

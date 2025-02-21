@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react"
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { useAudioPlayerContext } from "react-use-audio-player"
 import { FileLoader } from "./FileLoader"
 import { AudioControls } from "./AudioControls"
 import { AudioSeekBar } from "../../AudioSeekBar"
@@ -7,7 +7,7 @@ import { TimeLabel } from "../../TimeLabel"
 import "./styles.scss"
 
 const Player = () => {
-    const state = useGlobalAudioPlayer()
+    const state = useAudioPlayerContext()
     if (state.isReady) {
         return (
             <div className="player">
@@ -17,8 +17,8 @@ const Player = () => {
                 <br />
                 <p>
                     Below are all the fields available on the result of
-                    useGlobalAudioPlayer/useAudioPlayer which can be used to
-                    help build user interfaces for your sounds
+                    useAudioPlayer which can be used to help build user
+                    interfaces for your sounds
                 </p>
                 <h3>Audio state:</h3>
                 <table>

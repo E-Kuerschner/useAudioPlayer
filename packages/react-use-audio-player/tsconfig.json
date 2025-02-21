@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["./src"],
   "compilerOptions": {
+    "jsx": "react-jsx",
     "target": "ES6",
     // tsup handles the module resolution and outputs so can use full modern features in TS
     "module": "esnext",

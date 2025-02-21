@@ -13,6 +13,7 @@ export interface AudioPlayer extends AudioPlayerState {
     loop: (loopOnOff: boolean) => void
     getPosition: () => number
     load: (...args: LoadArguments) => void
+    cleanup: () => void
 }
 
 export interface UserListeners {

@@ -1,4 +1,8 @@
 import { Link, Outlet, useMatch } from "react-router-dom"
+import {
+    AudioPlayerProvider,
+    useAudioPlayerContext
+} from "react-use-audio-player"
 import { PlayBar } from "./PlayBar"
 import "./styles.scss"
 
@@ -7,7 +11,7 @@ const ExampleSelect = () => {
         <>
             <Link to="..">go back</Link>
             <p>
-                The following examples leverage useGlobalAudioPlayer to control
+                The following examples leverage useAudioPlayerContext to control
                 a single, global audio source. At any time, this audio can be
                 managed by the playbar at the bottom of the page.
             </p>
@@ -20,8 +24,9 @@ const ExampleSelect = () => {
 }
 
 const ExitExample = () => {
+    const { cleanup } = useAudioPlayerContext()
     return (
-        <Link to=".." relative="path">
+        <Link to=".." relative="path" onClick={cleanup}>
             Exit Example
         </Link>
     )
@@ -30,12 +35,14 @@ const ExitExample = () => {
 export const GlobalAudioSource = () => {
     const matches = useMatch("/globalAudio")
     return (
-        <div className="page globalAudioSourceExamples">
-            <div className="globalAudioSourceExamples__header">
-                {matches !== null ? <ExampleSelect /> : <ExitExample />}
+        <AudioPlayerProvider>
+            <div className="page globalAudioSourceExamples">
+                <div className="globalAudioSourceExamples__header">
+                    {matches !== null ? <ExampleSelect /> : <ExitExample />}
+                </div>
+                <Outlet />
+                <PlayBar />
             </div>
-            <Outlet />
-            <PlayBar />
-        </div>
+        </AudioPlayerProvider>
     )
 }

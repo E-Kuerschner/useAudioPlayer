@@ -11,7 +11,7 @@ function ExampleSelect() {
     return (
         <div className="page">
             <h3>Examples</h3>
-            <Link to="/globalAudio">useGlobalAudioPlayer examples</Link>
+            <Link to="/globalAudio">useAudioPlayerContext examples</Link>
             <Link to="/multipleSounds">Multiple sound sources</Link>
             <Link to="/streaming">Streaming example</Link>
         </div>

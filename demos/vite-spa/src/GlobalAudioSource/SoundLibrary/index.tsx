@@ -1,4 +1,4 @@
-import { useGlobalAudioPlayer } from "react-use-audio-player"
+import { useAudioPlayerContext } from "react-use-audio-player"
 import "./styles.scss"
 
 export const Spotifyish = () => {
@@ -12,7 +12,7 @@ export const Spotifyish = () => {
         "/ch_tunes - jam_8.wav",
         "/ch_tunes - jam_10.wav"
     ]
-    const { load, src: loadedSrc } = useGlobalAudioPlayer()
+    const { load, src: loadedSrc } = useAudioPlayerContext()
     return (
         <div className="soundLibrary page">
             <div className="page__title">Sound Library</div>
