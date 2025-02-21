@@ -2,8 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - main
-      - upgrade-devx
+      - "*"
   pull_request:
     types: [opened]
     branches:
