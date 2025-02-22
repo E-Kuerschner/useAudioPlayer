@@ -35,15 +35,16 @@
     "howler.js"
   ],
   "scripts": {
-    "build": "tsup ./src/index.ts --format esm,cjs --dts --sourcemap --minify --target es6",
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --minify --target es6",
     "g:build-package": "yarn --cwd $PROJECT_CWD/packages/react-use-audio-player build",
+    "build-watch": "tsup src/index.ts --format esm,cjs --dts --sourcemap --target es6 --watch",
     "lint": "tsc",
     "prepublish": "yarn build",
     "release": "yarn npm publish && echo 'Remember to push new commit/tags to Github'"
   },
   "devDependencies": {
     "@types/howler": "^2.2.12",
-    "@types/react": "^16.8.0",
+    "@types/react": "^18.0.0",
     "cypress": "^4.1.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.3"
@@ -52,6 +53,6 @@
     "howler": "^2.2.3"
   },
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": ">=18.0.0"
   }
 }

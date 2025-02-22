@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #272a51;
+    color: #e1fdff;
+    font-weight: 400;
+
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    display: block;
+    color: #79b7c0;
+}
+a:hover {
+    color: #5593aa;
+}
+
+h4, h5, h6 {
+    margin-bottom: 0;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+}
+
+.page {
+    width: 100%;
+    height: calc(100% - 125px);
+    padding: 25px;
+
+    &__title {
+        font-size: xx-large;
+        font-weight: 200;
+        margin-bottom: 50px;
+    }
+}
+
+.hstack {
+    display:flex;
+    align-items: center;
+}
+
+.globalAudioSourceExamples {
+
+}
+
+.globalAudioSourceExamples__header {
+
+}
+
+
+.playBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #1c192f;
+    display: flex;
+    align-items: flex-start;
+    padding: 25px 50px;
+
+    &__icon {
+        width: 100%;
+        height: 100%;
+        fill: black;
+    }
+
+    &__track {
+        align-self: flex-start;
+        max-width: 150px;
+    }
+
+    &__mainControls {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    &__playButton {
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        outline: none;
+        margin-bottom: 10px;
+    }
+
+    &__timeStuff {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__seek {
+        width: 400px;
+        height: 10px;
+        border-radius: 12px;
+        margin-right: 10px;
+    }
+
+    &__rateControl {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    &__rateControl span {
+        padding-right: 10px;
+    }
+
+    &__rateSelect {
+        width: 100px;
+    }
+}

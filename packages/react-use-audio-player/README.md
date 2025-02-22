@@ -1,8 +1,7 @@
 # react-use-audio-player
 
-Typescript package exporting custom React hooks for controlling audio in the browser. Built on top of the amazing [howler.js](https://howlerjs.com/) library.
-
-The intent of this package is to provide an idiomatic way to create and manipulate sounds in a React application.
+A custom React hook for keeping state in sync with your application's audio.
+Built on top of the reliable [howler.js](https://howlerjs.com/) package.
 
 ![Version](https://img.shields.io/npm/v/react-use-audio-player)
 ![CI](https://github.com/E-Kuerschner/useAudioPlayer/actions/workflows/CI.yml/badge.svg)
@@ -17,190 +16,167 @@ yarn add react-use-audio-player
 npm install react-use-audio-player
 ```
 
-## Usage
+## Getting Started
 
-To play a sound, import `useAudioPlayer` into a React component. Grab the `load` function from its return and get jamming!
+You want to add sound to your beautiful new React application; where do you start? From React's persective, audio is a _side effect_, meaning it does not live within nor affect the React component lifecycle.
+This makes keeping your application's state in sync with your audio non-trivial.
+Managing side-effects in React is tricky, but luckily with each major version of React, new APIs and techniques are added to make this task easier.
+`react-use-audio-player` abtracts away all the complexities of keeping your React state in sync with your audio (in this case, [howler.js](https://howlerjs.com/) specifically).
+For the curious-minded developer, this latest version of the package makes use of React's newer `useSyncExternalStore` hook to track the changes made to audio resources.
+
+Below is an example of the simplest use case: requesting an audio resource and playing it once it finishes loading:
 
 ```tsx
 import { useAudioPlayer } from "react-use-audio-player"
 
-function MyComponent() {
-    const { load } = useAudioPlayer()
-
-    // ... later in a callback, effect, etc.
-    load("/mySound.wav", {
-        autoplay: true
-    })
-}
-```
-
-## AudioPlayer (interface)
-
-This is the interface implemented by the AudioPlayer object returned by _useAudioPlayer_ .
-The AudioPlayer object encapsulates all the state for a sound and a set of methods to manipulate the state/sound.
-
-#### State
-
-- src: `string` (the src used to load the audio)
-- looping: `boolean` (is the audio looping)
-- isReady: `boolean` (is the sound loaded and ready to play)
-- paused: `boolean` (is the sound paused)
-- stopped: `boolean` (is the sound stopped i.e. not playing & position 0)
-- playing: `boolean` (is the sound playing)
-- duration: `number` (the length in seconds)
-- muted: `boolean` (is the sound muted)
-- rate: `number` (the playback rate)
-- volume: `number` (the volume level 0 - 1.0)
-- error: `string |  null` (error message if any, after attempted load)
-
-#### Methods
-
-#### play `() => void`
-
-Plays the loaded sound. You must invoke this to start playback if `autoplay` was set to false
-
-#### pause `() => void`
-
-Pauses the playing sound
-
-#### togglePlayPause `() => void`
-
-Toggles the play/pause state
-
-#### stop `() => void`
-
-Stops the playing sound and resets the position to 0.
-
-#### setVolume `(volume: number) => void`
-
-Sets the volume level of the loaded audio. Accepts a floating point number between 0 and 1.0 (muted to loudest)
-
-#### mute `(muteOnOff: boolean) => void`
-
-Mutes/unmutes the loaded sound
-
-#### fade `(from: number, to: number, duration: number) => void`
-
-Fades the sound's volume level from the value of the first argument to the value of the second, over a number of milliseconds as set by the final argument
-
-#### setRate `(speed: number) => void`
-
-Sets the playback speed of the loaded sound. Accepts a floating point value between 0.5 and 2.0. Currently half speed is the slowest and double is the fastest supported rates
-
-#### seek `(position: number) => void`
-
-Sets the playback position of the loaded sound to the argument. The position argument is floating point number representing the time the audio should move to
-
-#### loop `(loopOnOff: boolean) => void`
-
-Sets or unsets whether the sound should loop once it ends
-
-#### getPosition `() => number`
-
-Returns the current position of the loaded sound as a floating point number
-
-#### load `(src: string, options?: AudioLoadOptions) => void`
-
-Downloads and loads a new sound. The first argument, src is a URI of the sound to be played. The second argument is a set of options applied to the sound once it loads.
-These options can be used to initialize certain pieces of state on the `AudioPlayer` interface or be used to set up lifecycle callbacks if needed.
-
-`AudioLoadOptions`
-
-- loop?: boolean (sets the initial loop state once the sound loads)
-- autoplay?: boolean (sets if the sound will automatically begin playing after load)
-- initialVolume?: number (sets the initial volume level once the sound loads)
-- initialMute?: number (sets the initial mute state once the sound loads)
-- initialRate?: number (sets the initial playback rate once the sound loads)
-- format?: string (sets the format of the loaded sound - should be set if your URI does not contain an extension)
-- html5?: boolean (loads the sound in an HTML5 audio tag as opposed to using the Web Audio API)
-- onplay?: () => void (callback for when audio begins playing)
-- onstop?: () => void (callback for when audio is stopped)
-- onpause?: () => void (callback for when audio is paused)
-- onload?: () => void (callback for when audio finishes loading)
-- onend?: () => void (callback for when audio has reached its end)
-
-#### unload `() => void`
-
-Resets the state of the hook and unloads the current audio resource
-
-
-## AudioPlayerProvider
-
-To share a single AudioPlayer across many React components in your application you may render an `AudioPlayerProvider`.
-Then, in any components that require access to the shared audio, import the `useAudioPlayerContext` hook.
-
-### Deprecating `useGlobalAudioPlayer`
-
-Going forward, `AudioPlayerProvider` & `useAudioPlayerContext` are meant to replace `useGlobalAudioPlayer` which has been deprecated.
-You can read more about this change, the reasons behind it and some guidance on how to migrate [here](https://github.com/E-Kuerschner/useAudioPlayer/discussions/157).
-
-### Example Usage
-```tsx
-// App.tsx
-import {AudioPlayerProvider} from "react-use-audio-player"
-
-const MyApplication = () => {
-    return (
-        <AudioPlayerProvider>
-            <>
-                <PlayButton/>
-                <SeekBar/>
-                <VolumeControl/>
-            </>
-        </AudioPlayerProvider>
-    )
-}
-
-// PlayButton.tsx
-import {useAudioPlayerContext } from "react-use-audio-player";
-
-export function PlayButton() {
-    const { isPlaying, togglePlayPause } = useAudioPlayerContext()
+function PlayButton() {
+    const { togglePlayPause, isPlaying } = useAudioPlayer("/mySong.wav", { autoplay: true })
     
-    return (
-        <button onClick={togglePlayPause}>
-            {isPlaying ? <PauseIcon /> : <PlayIcon />}
-        </button>
-    )
+    return <button onClick={togglePlayPause}>{ isPlaying ? "Pause" : "Play" }</button>
 }
 ```
+
+## Loading Audio Files
+
+If you prefer a delcarative style, useAudioPlayer optionally accepts 2 arguments. 
+This style is best suited for when you have several predetermined audio files that you need to switch between with state.
+The first argument is the path or URL that will be used to load audio into the player.
+When you change the value passed to this argument, the hook will stop and unload the current audio and immediately begin loading the new audio.
+
+```tsx
+const [songSrc, setSongSrc] = useState("/mySong.wav")
+
+const { togglePlayPause } = useAudioPlayer(songSrc, { autoplay: true })
+```
+
+Altneratively, if you need a more imperative style, you may call useAudioPlayer without any arguments and invoke the retunred `load` method.
+This lets you control precisesly when and where your audio file is requested.
+
+```tsx
+const { load, togglePlayPause } = useAudioPlayer()
+
+// maybe after some user interaction
+load("/mySound.wav", { autoplay: true })
+```
+
+For simplicity, both the hook itself and the load method implement the same interace.
+Both approaches ultimately behave the same way so it is up to you to decide which model better meets the needs of your component.
+
+### Load Parameters
+
+```ts
+type LoadParams = [src: string, options: AudioLoadOptions]
+
+function load(...args: LoadParams): void
+```
+
+**src** `string` - a path or URL to your audio. When the value of `src` changes, the hook will begin loading the new resource with the `options` provided
+
+**options** `AudioLoadOptions` - (all options are ...wait for it... 🥁 _optional_):
+
+- **autoplay** `boolean` Defaults to `false`. Sets if the sound will automatically begin playing after load)
+- **loop** `boolean` Defaults to `false`. sets whether the sound should loop after it finishes playing
+- **format** `string` Sets the audio format if the URI does not contain an extension (e.g., 'mp3', 'wav')
+- **html5** `boolean` Defaults to `false`. Forces the use of HTML5 audio instead of the Web Audio API
+- **initialVolume** `number` Defaults to `1`. Sets the initial volume level once the sound loads (range: 0 to 1.0)
+- **initialMute** `boolean` Defaults to `false`. Sets whether the sound should be muted initially
+- **initialRate** `number` Defaults to `1`. Sets the initial playback rate once the sound loads
+- **onplay** `() => void` callback executed when audio begins playing
+- **onstop** `() => void` callback executed when audio is stopped
+- **onpause** `() => void` callback executed when audio is paused
+- **onload** `() => void` callback executed when audio finishes loading
+- **onend** `() => void` callback executed when audio has reached its end
+
+```tsx
+// example:
+useAudioPlayer("/mySong.wav", {
+    initialVolume: 0.5,
+    loop: true,
+    autoplay: true,
+    onend: () => {
+        alert("the song has ended")
+    }
+})
+
+// OR:
+const { load } = useAudioPlayer()
+load("/mySong.wav", {
+    initialVolume: 0.5,
+    loop: true,
+    autoplay: true,
+    onend: () => {
+        alert("the song has ended")
+    }
+})
+```
+
+## AudioPlayer Interface
+
+The `useAudioPlayer` hook returns an AudioPlayer object which includes many helpful properties and functions for building user interfaces with audio.
+
+- **src** `string` The src of the current file loaded into the player
+- **load** `(...args: LoadParams) => void` Loads a new audio file into the player. For load options and behavior see the **Load Params** section further up.
+- **unload** `() => void` Stops the current audio if it's playing and deletes the resource from internal cache and references
+- **play** `() => void` Begins or resumes playback of the audio.
+- **pause** `() => void` Pauses the audio at its current playhead.
+- **togglePlayPause** `() => void` Toggles between playing and pausing the audio.
+- **stop** `() => void` Stops the audio and resets the playhead to the beginning (position 0).
+- **setVolume** `(volume: number) => void` Sets the volume of the audio. Accepts a float between 0.1 and 1, where 1 is full volume.
+- **setRate** `(rate: number) => void` Sets the playback rate of the audio. Accepts a float, where 1 is normal speed.
+- **mute** `() => void` Mutes the audio.
+- **unmute** `() => void` Unmutes the audio.
+- **toggleMute** `() => void` Toggles between muted and unmuted states.
+- **loopOn** `() => void` Enables looping of the audio upon completion.
+- **loopOff** `() => void` Disables looping; the audio will stop upon completion.
+- **toggleLoop** `() => void` Toggles between looping and non-looping behaviors.
+- **fade** `(startVol: number, endVol: number, durationMs: number) => void` Fades the audio volume between a starting volume (startVol) and an ending volume (endVol) over the specified duration (durationMs) in milliseconds.
+- **seek** `(position: number) => void` Moves the audio playhead to the specified position in seconds.
+- **getPosition** `() => number` Returns the current position of the audio playhead in seconds.
+
+The following fields will automatically update to stay in sync with the audio, triggering your component to rerender.
+- **isUnloaded** `boolean` Indicates whether the audio is in an unloaded state.
+- **isLoading** `boolean` Indicates whether the audio is currently loading.
+- **isReady** `boolean` Indicates whether the audio is loaded and ready to play.
+- **duration** `number` Represents the total duration of the audio in seconds. The value will be 0 until a sound is loaded.
+- **rate** `number` The playback rate of the audio. A value of 1 indicates normal playback speed.
+- **volume** `number` The volume level of the audio, typically between 0 (muted) and 1 (full volume).
+- **error** `string | null` An error message, if an issue occurred with the audio.
+- **isLooping** `boolean` Indicates whether the audio is set to loop after reaching its end.
+- **isPaused** `boolean` Indicates whether the audio is currently paused.
+- **isStopped** `boolean` Indicates whether the audio is currently stopped.
+- **isPlaying** `boolean` Indicates whether the audio is currently playing.
+- **isMuted** `boolean` Indicates whether the audio is currently muted.
+
+## Demo Applications
+
+To see full, realistic examples using the package check out the [demos](https://github.com/E-Kuerschner/useAudioPlayer/tree/main/demos).
+
+At this time, these demos are not hosted anywhere, but you can run them locally in a few easy steps:
+
+1. `git clone` the repo
+2. `cd` into the project
+2. `yarn install` from the root to install all dependencies
+3. `yarn workspace showcase start` to start the _showcase_ demo
 
 ## Quick Recipes & Gotchas
 
-For full, example applications see the [runnable demos](https://github.com/E-Kuerschner/useAudioPlayer/tree/main/demos) in the repo.
-Below are a few snippets to help with some of the trickier use-cases.
+cBelow are a few snippets to help with some of the trickier use-cases.
 
-### Recipe: Switching between sounds on a single audio player
+### Recipe: Pending states
 
-Switching from one sound the next is a common use-case (i.e. a playlist queue). This can be done in a couple of different ways:
-
-```tsx
-const { load } = useAudioPlayer()
-
-const nextTrack = () => {
-    load(nextSong, { autoPlay: true })
-}
-
-return <button onClick={nextTrack}>Start next track</button>
-```
-
-Alternatively, you can queue up the next song to play when the current sound ends. You can see a full, working example of this in the `AutoPlayNextSong` component in /examples.
+The `isLoading`, `isReady`, or `isUnloaded` state properties can be used to present a pending UI to your users.
 
 ```tsx
-const songs = [songA, songB]
-const [songIndex, setSongIndex] = useState(0)
+const { isReady, isLoading, togglePlayPause } = useAudioPlayer('/mySong.wav', { autoplay: true })
 
-const { load } = useAudioPlayer()
-
-useEffect(() => {
-    load(songs[songIndex], {
-        autoplay: true,
-        onend: () => setSongIndex(songIndex + 1)
-    })
-}, [songIndex, load])
+return isLoading ? (
+    <LoadingSpinner />
+) : (
+    <PlayButton disabled={!isReady} onClick={togglePlayPause} />
+)
 ```
 
-### Recipe: Syncing React state to live audio position
+### Recipe: Tracking the current audio playhead
 
 Below is an example of how you might write a custom hook that keeps state for the current playhead position of the audio.
 
@@ -208,7 +184,7 @@ Below is an example of how you might write a custom hook that keeps state for th
 function useAudioTime() {
     const frameRef = useRef<number>()
     const [pos, setPos] = useState(0)
-    const { getPosition } = useAudioPlayer()
+    const { getPosition } = useAudioPlayer("/mySong.wav", { autoplay: true })
 
     useEffect(() => {
         const animate = () => {
@@ -231,10 +207,8 @@ function useAudioTime() {
 
 ### Gotcha: Streaming audio
 
-To stream or play large audio files, the audio player must be forced to use HTML5 as opposed to the Web Audio API which is Howler's default.
-This is because the Web Audio API must download the entirety of the sound before playing anything.
-
-When streaming or working with large files make sure to use the `html5` option of the `#load` function.
+To stream or play large audio files, the audio player must be forced to use an HTML5 `<audio>` as opposed to the Web Audio API which is Howler's default.
+This is mainly because the Web Audio API must download the entirety of the sound it can play anything.
 
 Also, if your sound _src_ string does not contain an extension (like if you are fetching a stream from an API), be sure to set it with the `format` option of the `#load` function.
 
@@ -250,7 +224,21 @@ load("https://stream.toohotradio.net/128", {
 })
 ```
 
-## Examples
+### Recipe: Howl escape hatch
 
-You can view example applications using the package in the [demos](https://github.com/E-Kuerschner/useAudioPlayer/tree/main/demos) directory.
-If you would like to run any of these yourself, please follow the setup instructions in the [root README](/README.md).
+The goal of this hook was always to provide an idiomatic _React_ way of maintaining state synced to an audio file. 
+To remain focused on that goal, not every Howler API has been supported completely (spatial and sprite features for example).
+
+If you believe this package should support these features please feel free to open a feature request in GitHub with your justification. I am always happy to discuss and collaborate.
+
+For anything that this package does not support, an _escape hatch_ is available via the `player` object returned from the hook. The player is the underlying `Howl` instance that is being managed by the hook.
+
+Be warned that certain operations performed directly through the `Howl` API may cause the state to desynchronize from the audio.
+
+```tsx
+const { player } = useAudioPlayer()
+
+player.once("seek", () => {
+    console.log("I just seeked!")
+})
+```

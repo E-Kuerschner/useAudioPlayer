@@ -1,0 +1,10 @@
+.audioSeekBar {
+    cursor: pointer;
+    background-color: white;
+    overflow: hidden;
+
+    &__tick {
+        background-color: #a1d0d1;
+        height: 100%;
+    }
+}

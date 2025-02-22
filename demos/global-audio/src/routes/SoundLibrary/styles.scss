@@ -1,0 +1,36 @@
+.soundLibrary {
+  &__sounds {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.track {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 10px;
+  margin-bottom:25px;
+  border: solid 1px white;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+
+  &--playing {
+    background-color: white;
+    color: black;
+  }
+
+  &__icon {
+    font-size: medium;
+    margin-right: 15px;
+  }
+
+  &__title {
+    font-size: medium;
+  }
+}

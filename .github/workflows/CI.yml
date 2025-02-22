@@ -48,5 +48,5 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: packages/react-use-audio-player
-          start: yarn g:demo-vite-start
+          start: yarn demo:global-audio:start
           wait-on: http://localhost:1234/
