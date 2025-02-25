@@ -19,19 +19,16 @@ export type AudioPlayer = AudioControls &
 
 export function useAudioPlayer(
     src: string,
-    options: AudioLoadOptions
-): AudioPlayer
+    options?: AudioLoadOptions
+): Omit<AudioPlayer, "load">
 export function useAudioPlayer(): AudioPlayer
 
 /**
  * @param {string} src - The src path of the audio resource. Changing this will cause a new sound to immediately load
- * @param {AudioLoadOptions} options - Options for the loaded audio including initial properties and configruation. These can later be changed through the API.
+ * @param {AudioLoadOptions} options - Options for the loaded audio including initial properties and configuration. These can later be changed through the API.
  * @return {AudioPlayer} The audio player instance with methods for controlling playback and state.
  */
-export function useAudioPlayer(
-    src?: string,
-    options?: AudioLoadOptions
-): AudioPlayer {
+export function useAudioPlayer(src?: string, options?: AudioLoadOptions) {
     const audioRef = useRef<HowlStore>()
     // signal used to forcefully recreate the store after a imperative unload
     const hasStaleRef = useRef(false)
@@ -110,7 +107,7 @@ export function useAudioPlayer(
         ...state,
         player: audio.howl,
         src: audio.src,
-        load,
+        load: src ? undefined : load,
         // AudioControls interface
         play: audio.play.bind(audio),
         pause: audio.pause.bind(audio),
