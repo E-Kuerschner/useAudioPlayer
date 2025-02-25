@@ -18,9 +18,9 @@ export const PlayBar = () => {
                     disabled={!isReady}
                 >
                     {isPlaying ? (
-                        <Pause id="playButton" className="playBar__icon" />
+                        <Pause id="pauseButton" className="playBar__icon" />
                     ) : (
-                        <Play id="pauseButton" className="playBar__icon" />
+                        <Play id="playButton" className="playBar__icon" />
                     )}
                 </button>
                 <div className="playBar__timeStuff">

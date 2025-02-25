@@ -21,19 +21,17 @@ context("useAudioPlayer use cases for Spotify-like application", () => {
         cy.contains("cats")
             .click()
             .then(() => {
-                cy.get("#pauseButton").then(() => {
-                    expect(audioContext.state).to.equal("running")
-                    // eslint-disable-next-line cypress/no-unnecessary-waiting
-                    cy.wait(4000).then(() => {
-                        // eslint-disable-next-line  cypress/unsafe-to-chain-command
-                        cy.get("#playButton")
-                            .click()
-                            .then(() => {
-                                expect(
-                                    audioContext.currentTime
-                                ).to.be.approximately(4, 0.5)
-                            })
-                    })
+                expect(audioContext.state).to.equal("running")
+                // eslint-disable-next-line cypress/no-unnecessary-waiting
+                cy.wait(4000).then(() => {
+                    // eslint-disable-next-line  cypress/unsafe-to-chain-command
+                    cy.get("#pauseButton")
+                        .click()
+                        .then(() => {
+                            expect(
+                                audioContext.currentTime
+                            ).to.be.approximately(4, 0.5)
+                        })
                 })
             })
     })
