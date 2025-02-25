@@ -20,7 +20,7 @@ npm install react-use-audio-player
 1. #### [Intro](#intro)
 2. #### [useAudioPlayer](#useaudioplayer)
 3. #### [useAudioPlayerContext](#useaudioplayercontext--audioplayerprovider)
-4. #### [_AudioPlayer API_](#_audioplayer_-interface)
+4. #### [_AudioPlayer API_](#audioplayer-interface)
 5. #### [Running Demos](#demo-applications)
 6. #### [Short Guides](#quick-recipes--gotchas)
 
@@ -53,7 +53,7 @@ function PlayButton() {
 
 ## useAudioPlayer
 
-`useAudioPlayer` returns a new instance of an [AudioPlayer](#_audioplayer_-interface).
+`useAudioPlayer` returns a new instance of an [AudioPlayer](#audioplayer-interface).
 This hook is particularly suited for **basic use cases** involving a single, or a small number of components.
 The behavior of the hook is scoped to the component in which it is rendered, meaning when that component unmounts,
 the associated audio resource is automatically stopped and cleaned up.
@@ -61,7 +61,7 @@ the associated audio resource is automatically stopped and cleaned up.
 ### Example
 
 Whatever your use case, it will likely require fetching an audio file from your server or from the internet. 
-In react-use-audio-player, this can be done with the [AudioPlayer](#_audioplayer_-interface)'s `load` method.
+In react-use-audio-player, this can be done with the [AudioPlayer](#audioplayer-interface)'s `load` method.
 This function accepts a URL to the audio resource and a set of options which can alter the loading behavior and set initial state for the player.
 For specific details on loading audio resources, visit the [Loading Audio](#loading-audio) section. 
 
@@ -114,7 +114,7 @@ function Example() {
 
 ## useAudioPlayerContext & AudioPlayerProvider
 
-`useAudioPlayerContext` returns a shared instance of an [AudioPlayer](#_audioplayer_-interface).
+`useAudioPlayerContext` returns a shared instance of an [AudioPlayer](#audioplayer-interface).
 It's designed to provide access to a shared audio resource across multiple components within your application. 
 This is made possible by wrapping your component tree with the `AudioPlayerProvider` component.
 
@@ -127,7 +127,7 @@ that all components can share the same audio source, state, and API.
 
 To start using `useAudioPlayerContext`, wrap the root of your React component tree (or a specific subtree where shared
 audio control is desired) with the `AudioPlayerProvider`. Then, any child component within this provider can call
-`useAudioPlayerContext` to access the shared instance of an [AudioPlayer](#the-_audioplayer_-interface).
+`useAudioPlayerContext` to access the shared instance of an [AudioPlayer](#audioplayer-interface).
 
 ### Example Usage
 
