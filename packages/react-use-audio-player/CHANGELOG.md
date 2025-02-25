@@ -2,7 +2,7 @@
 
 All notable changes made to this project from v3.0.0 and up will be documented in this file. This project uses semver standards.
 
-## 4.0.0
+## 4.0.0 (2025-02-25)
 
 Version 4.0 marks a big shift for the react-use-audio-player package.
 In this version, we've adopted a modern version of React, 
