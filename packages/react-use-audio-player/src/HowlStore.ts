@@ -37,7 +37,7 @@ export type Snapshot = {
     readonly isMuted: boolean
 }
 
-const defaultState: Snapshot = {
+export const defaultState: Snapshot = {
     isUnloaded: true,
     isLoading: false,
     isReady: false,
@@ -127,6 +127,10 @@ export class HowlStore implements AudioControls {
     }
 
     private getSnapshotFromHowl(howl: Howl): Snapshot {
+        if (howl.state() === "unloaded") {
+            return defaultState
+        }
+
         const isPlaying = howl.playing()
         const muteReturn = howl.mute()
         return {

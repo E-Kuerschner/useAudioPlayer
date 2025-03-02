@@ -2,6 +2,17 @@
 
 All notable changes made to this project from v3.0.0 and up will be documented in this file. This project uses semver standards.
 
+## 4.0.1 (2025-03-02)
+
+### Fixes 🐛
+
+- Fixes an issue where while using the optional arguments of `useAudioPlayer`, the audio could be left stuck in an unloaded state due to React StrictMode
+- Stabilizes the hook state during hydration to better support server-side rendered frameworks
+
+### Other
+
+- Add new `remix-app` example to the demos folder. To run: `yarn workspace remix-app start`
+
 ## 4.0.0 (2025-02-25)
 
 Version 4.0 marks a big shift for the react-use-audio-player package.
