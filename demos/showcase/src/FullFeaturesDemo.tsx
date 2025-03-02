@@ -5,11 +5,9 @@ import { Label } from "@/components/ui/label"
 
 import { VolumeControl } from "./VolumeControl"
 import { PlaybackRateControl } from "./PlaybackRateControl"
-import { MuteButton } from "./MuteButton.tsx"
-import { SeekBar } from "./SeekBar.tsx"
 import { TrackSelect } from "./TrackSelect"
-import { PlaybackControls } from "./PlaybackControls"
 import { Link } from "react-router-dom"
+import { Player } from "@/Player.tsx"
 
 const tracks = [
     "/ch_tunes - baby_seal.wav",
@@ -139,56 +137,27 @@ export function FullFeaturesDemo() {
                 {error && <div className="text-2xl text-red-800">{error}</div>}
                 {isLoading && <div className="text-2xl">Loading...</div>}
                 {isReady && (
-                    <>
-                        <div className="flex items-center justify-between">
-                            <div className="text-lg font-semibold">
-                                {src ?? ""}
-                            </div>
-                            <span className="flex items-center gap-2">
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="loop"
-                                        checked={isLooping}
-                                        onCheckedChange={toggleLoop}
-                                    />
-                                    <Label htmlFor="loop">Loop</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        disabled={playerFadeOut}
-                                        id="fade"
-                                        checked={playerFadeOut}
-                                        onCheckedChange={handleFadeOutToEnd}
-                                    />
-                                    <Label htmlFor="fade">Fade out</Label>
-                                </div>
-                            </span>
-                        </div>
-                        <SeekBar
-                            onSeek={seek}
-                            getPosition={getPosition}
-                            duration={duration}
-                        />
-                        <div className="flex items-center space-x-4">
-                            <PlaybackControls
-                                isPlaying={isPlaying}
-                                onPlayPause={togglePlayPause}
-                                onStop={stop}
-                            />
-                            <VolumeControl
-                                onChange={setVolume}
-                                volume={volume}
-                                initialVolume={initialVolume}
-                            />
-                            <MuteButton muted={isMuted} onChange={toggleMute} />
-                            <PlaybackRateControl
-                                rate={rate.toString()}
-                                onChange={setRate}
-                                initialRate={initialPlaybackRate.toString()}
-                                inputId="initial-rate"
-                            />
-                        </div>
-                    </>
+                    <Player
+                        isFading={playerFadeOut}
+                        onFadeOut={handleFadeOutToEnd}
+                        src={src}
+                        isPlaying={isPlaying}
+                        isMuted={isMuted}
+                        toggleMute={toggleMute}
+                        togglePlayPause={togglePlayPause}
+                        rate={rate}
+                        setRate={setRate}
+                        volume={volume}
+                        setVolume={setVolume}
+                        getPosition={getPosition}
+                        duration={duration}
+                        seek={seek}
+                        isLooping={isLooping}
+                        toggleLoop={toggleLoop}
+                        stop={stop}
+                        initialVolume={initialVolume}
+                        initialRate={initialPlaybackRate}
+                    />
                 )}
             </div>
         </div>

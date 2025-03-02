@@ -14,10 +14,11 @@ interface Track {
 
 type Props = {
     tracks: string[] | Track[]
+    selectedTrack?: string
     onSelect: (track: Track | null) => void
 }
 
-export function TrackSelect({ tracks, onSelect }: Props) {
+export function TrackSelect({ tracks, onSelect, selectedTrack }: Props) {
     const trackList: Track[] = tracks.map((t, i) => {
         if (typeof t === "string") {
             return { id: t, name: `Track ${i + 1}`, url: t }
@@ -30,6 +31,7 @@ export function TrackSelect({ tracks, onSelect }: Props) {
             onValueChange={(value) =>
                 onSelect(trackList.find((t) => t.id === value) || null)
             }
+            value={selectedTrack}
         >
             <SelectTrigger>
                 <SelectValue placeholder="Select a track" />

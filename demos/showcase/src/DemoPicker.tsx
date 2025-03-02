@@ -15,6 +15,9 @@ const NavigationLinks = () => {
                     <li>
                         <Link to="/streaming">Streaming</Link>
                     </li>
+                    <li>
+                        <Link to="/declarative">Declarative</Link>
+                    </li>
                 </ul>
             </nav>
         </div>

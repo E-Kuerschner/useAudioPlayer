@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react"
 import type { Howl } from "howler"
-import { type Snapshot, HowlStore } from "./HowlStore"
+
+import { type Snapshot, HowlStore, defaultState } from "./HowlStore"
 import type { AudioControls, AudioLoadOptions } from "./types"
 
 export type AudioPlayer = AudioControls &
@@ -29,65 +30,36 @@ export function useAudioPlayer(): AudioPlayer
  * @return {AudioPlayer} The audio player instance with methods for controlling playback and state.
  */
 export function useAudioPlayer(src?: string, options?: AudioLoadOptions) {
-    const audioRef = useRef<HowlStore>()
-    // signal used to forcefully recreate the store after a imperative unload
-    const hasStaleRef = useRef(false)
+    const audioRef = useRef(new HowlStore())
 
-    function getAudio() {
-        if (!audioRef.current || hasStaleRef.current) {
-            if (!src) {
-                audioRef.current = new HowlStore()
-            } else {
-                audioRef.current = new HowlStore({
-                    src,
-                    format: options?.format,
-                    html5: options?.html5,
-                    autoplay: options?.autoplay,
-                    loop: options?.loop,
-                    volume: options?.initialVolume,
-                    mute: options?.initialMute,
-                    rate: options?.initialRate,
-                    // event callbacks
-                    ...options
-                })
-            }
-
-            hasStaleRef.current = false
-        }
-
-        return audioRef.current
-    }
-
-    // destroy and unset the current sound if the src option changes
-    // subsequent calls to getAudio() will create the audio instance with the new src and options
+    // when the src param is used, load a new sound whenever the value changes
     if (src && audioRef.current && src !== audioRef.current.src) {
-        audioRef.current!.destroy()
-        hasStaleRef.current = true
+        audioRef.current.load({
+            src,
+            format: options?.format,
+            html5: options?.html5,
+            autoplay: options?.autoplay,
+            loop: options?.loop,
+            volume: options?.initialVolume,
+            mute: options?.initialMute,
+            rate: options?.initialRate,
+            // event callbacks
+            ...options
+        })
     }
-
-    // lazily create/get the HowlStore for use below
-    const audio = getAudio()
 
     // need to bind functions back to the howl since they will be called from the context of React
     const state = useSyncExternalStore(
-        audio.subscribe.bind(audio),
-        audio.getSnapshot.bind(audio)
+        audioRef.current.subscribe.bind(audioRef.current),
+        audioRef.current.getSnapshot.bind(audioRef.current),
+        () => defaultState
     )
 
     useEffect(() => {
-        // cleans up the sound when hook unmounts
-        return () => {
-            if (audioRef.current) {
-                audioRef.current.destroy()
-                hasStaleRef.current = true
-            }
-        }
-    }, [])
-
-    const load: AudioPlayer["load"] = useCallback(
-        (src, options) => {
-            hasStaleRef.current = false
-            audio.load({
+        // load the sound on mount if the src param is being used
+        // this is required for StrictMode when React may remount the hook
+        if (src && audioRef.current.src === null) {
+            audioRef.current.load({
                 src,
                 format: options?.format,
                 html5: options?.html5,
@@ -99,31 +71,54 @@ export function useAudioPlayer(src?: string, options?: AudioLoadOptions) {
                 // event callbacks
                 ...options
             })
-        },
-        [audio]
-    )
+        }
+
+        // cleans up the sound when hook unmounts
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.destroy()
+            }
+        }
+    }, [])
+
+    const load: AudioPlayer["load"] = useCallback((src, options) => {
+        audioRef.current.load({
+            src,
+            format: options?.format,
+            html5: options?.html5,
+            autoplay: options?.autoplay,
+            loop: options?.loop,
+            volume: options?.initialVolume,
+            mute: options?.initialMute,
+            rate: options?.initialRate,
+            // event callbacks
+            ...options
+        })
+    }, [])
 
     return {
         ...state,
-        player: audio.howl,
-        src: audio.src,
+        player: audioRef.current.howl,
+        src: audioRef.current.src,
         load: src ? undefined : load,
         // AudioControls interface
-        play: audio.play.bind(audio),
-        pause: audio.pause.bind(audio),
-        togglePlayPause: audio.togglePlayPause.bind(audio),
-        stop: audio.stop.bind(audio),
-        setVolume: audio.setVolume.bind(audio),
-        fade: audio.fade.bind(audio),
-        mute: audio.mute.bind(audio),
-        unmute: audio.unmute.bind(audio),
-        toggleMute: audio.toggleMute.bind(audio),
-        setRate: audio.setRate.bind(audio),
-        seek: audio.seek.bind(audio),
-        loopOn: audio.loopOn.bind(audio),
-        loopOff: audio.loopOff.bind(audio),
-        toggleLoop: audio.toggleLoop.bind(audio),
-        getPosition: audio.getPosition.bind(audio),
-        cleanup: audio.destroy.bind(audio)
+        play: audioRef.current.play.bind(audioRef.current),
+        pause: audioRef.current.pause.bind(audioRef.current),
+        togglePlayPause: audioRef.current.togglePlayPause.bind(
+            audioRef.current
+        ),
+        stop: audioRef.current.stop.bind(audioRef.current),
+        setVolume: audioRef.current.setVolume.bind(audioRef.current),
+        fade: audioRef.current.fade.bind(audioRef.current),
+        mute: audioRef.current.mute.bind(audioRef.current),
+        unmute: audioRef.current.unmute.bind(audioRef.current),
+        toggleMute: audioRef.current.toggleMute.bind(audioRef.current),
+        setRate: audioRef.current.setRate.bind(audioRef.current),
+        seek: audioRef.current.seek.bind(audioRef.current),
+        loopOn: audioRef.current.loopOn.bind(audioRef.current),
+        loopOff: audioRef.current.loopOff.bind(audioRef.current),
+        toggleLoop: audioRef.current.toggleLoop.bind(audioRef.current),
+        getPosition: audioRef.current.getPosition.bind(audioRef.current),
+        cleanup: audioRef.current.destroy.bind(audioRef.current)
     }
 }
