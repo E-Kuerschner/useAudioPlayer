@@ -1,3 +1,13 @@
+// module augmentation to get access to the fields/types I need from Howl interface
+declare module "howler" {
+    interface Howl {
+        _html5: boolean
+        _sounds: Array<{
+            _node?: HTMLAudioElement
+        }>
+    }
+}
+
 /**
  * Describes the full API of state-mutating actions one can perform on the audio
  */

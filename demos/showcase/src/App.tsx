@@ -3,6 +3,7 @@ import { FullFeaturesDemo } from "./FullFeaturesDemo.tsx"
 import { CrossFaderDemo } from "./CrossFaderDemo.tsx"
 import { StreamingDemo } from "./StreamingDemo.tsx"
 import { DeclarativeDemo } from "./DeclarativeDemo.tsx"
+import { DebuggingRoute } from "./DebuggingRoute.tsx"
 import DemoPicker from "./DemoPicker.tsx"
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
                     <Route path="streaming" element={<StreamingDemo />} />
                     <Route path="fullFeatures" element={<FullFeaturesDemo />} />
                     <Route path="declarative" element={<DeclarativeDemo />} />
+                    <Route path="debugging" element={<DebuggingRoute />} />
                 </Routes>
             </BrowserRouter>
         </div>

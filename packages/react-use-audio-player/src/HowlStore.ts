@@ -97,6 +97,21 @@ export class HowlStore implements AudioControls {
             error: undefined
         })
 
+        /*
+            Howler places the Howl in a "loading" state when HTML5 audio is seeked.
+            This is likely done in case the user agent needs to buffer more of the resource.
+            However, it may be a bug in Howler that the load event is not emitted following this state change.
+            This leaves this hook hanging in an "isLoading" state.
+            As a temporary (hopefully) workaround we can hijack the HTML5 Audio element from Howler
+             and trigger a state update once the Audio element has buffered.
+         */
+        if (newHowl._html5 && newHowl._sounds[0]?._node) {
+            const htmlAudioNode = newHowl._sounds[0]?._node
+            htmlAudioNode.addEventListener("canplaythrough", () => {
+                this.updateSnapshotFromHowlState(newHowl)
+            })
+        }
+
         // Howl event listeners and state mutations
         newHowl.on("load", () => this.updateSnapshotFromHowlState(newHowl))
         newHowl.on("play", () => this.updateSnapshotFromHowlState(newHowl))
@@ -131,12 +146,13 @@ export class HowlStore implements AudioControls {
             return defaultState
         }
 
+        const howlState = howl.state()
         const isPlaying = howl.playing()
         const muteReturn = howl.mute()
         return {
-            isUnloaded: howl.state() === "unloaded",
-            isLoading: howl.state() === "loading",
-            isReady: howl.state() === "loaded",
+            isUnloaded: howlState === "unloaded",
+            isLoading: howlState === "loading",
+            isReady: howlState === "loaded",
             isLooping: howl.loop(),
             isPlaying,
             isStopped: !isPlaying && howl.seek() === 0,
@@ -289,8 +305,8 @@ export class HowlStore implements AudioControls {
     }
 
     public seek(seconds: number) {
-        if (this.howl) {
-            // TODO if unloaded set initial start time?
+        // if audio resource is being streamed then it's duration will be Infinity
+        if (this.howl && this.snapshot.duration !== Infinity) {
             this.howl.seek(seconds)
         }
     }

@@ -2,6 +2,17 @@
 
 All notable changes made to this project from v3.0.0 and up will be documented in this file. This project uses semver standards.
 
+## 4.0.2 (2025-03-16)
+
+### Fixes 🐛
+
+- Fixes issue [#166](https://github.com/E-Kuerschner/useAudioPlayer/issues/166) in which the hook can get stuck in a loading state after seeking on an audio resource loaded via HTML5 audio elements 
+- Fixes issue [#105](https://github.com/E-Kuerschner/useAudioPlayer/issues/105) in which seeking on streaming audio would cause an error
+
+### Other
+
+- Add page for debugging to the showcase demo app
+
 ## 4.0.1 (2025-03-02)
 
 ### Fixes 🐛

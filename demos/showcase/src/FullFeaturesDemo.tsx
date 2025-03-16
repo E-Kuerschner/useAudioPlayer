@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react"
+import { useLocation } from "react-router-dom"
 import { useAudioPlayer } from "react-use-audio-player"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -64,9 +65,12 @@ export function FullFeaturesDemo() {
         setPlayerFadeOut(false)
     }, [setVolume, initialVolume, setPlayerFadeOut])
 
+    const location = useLocation()
+    const params = new URLSearchParams(location.search)
     const handleTrackSelect = (src?: string) => {
         if (src) {
             load(src, {
+                html5: params.get("html5") === "true",
                 autoplay,
                 initialVolume: initialVolume,
                 initialRate: initialPlaybackRate,
