@@ -289,8 +289,8 @@ export class HowlStore implements AudioControls {
     }
 
     public seek(seconds: number) {
-        if (this.howl) {
-            // TODO if unloaded set initial start time?
+        // if audio resource is being streamed then it's duration will be Infinity
+        if (this.howl && this.snapshot.duration !== Infinity) {
             this.howl.seek(seconds)
         }
     }
