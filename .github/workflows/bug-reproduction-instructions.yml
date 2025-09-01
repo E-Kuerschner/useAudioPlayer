@@ -8,7 +8,7 @@
 name: Bug Report Reproduction Check
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled]
 
 permissions:
   contents: read

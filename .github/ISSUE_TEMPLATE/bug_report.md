@@ -7,21 +7,30 @@ assignees: E-Kuerschner
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Description:**
+A clear and concise description of what the unexpected behavior is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
+**Expected behavior:**
+A clear, concise description of what you expected to happen.
+
+**Environment:**
+- Browser/ browser version:
+- Library version:
+- React version:
+- Bundler/framework: 
+
+**Steps To Reproduce:**
+Please take a moment to document clear steps instructing how to reproduce the issue you are experiencing.
+
+For even faster results, please [create a branch](https://github.com/E-Kuerschner/useAudioPlayer/branches) off of `main` and include a minimal example application in [demos](https://github.com/E-Kuerschner/useAudioPlayer/tree/main/demos) that reproduces the issue.
+
+```
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
+```
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+> [!WARNING]
+> If your issue cannot be reproduced it will be closed.
 
-**Environment (please complete the following information):**
- - Browser/ browser version: 
- - Library version: 
- - React version: 
- - Node version:
