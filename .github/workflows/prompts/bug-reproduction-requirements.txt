@@ -1,0 +1,21 @@
+Given a bug report title and description for the useAudioPlayer package, return 'pass' if there is enough information to reliably reproduce the issue.
+
+A passing bug report must include these details:
+1. A clear description of the issue; "it doesn't work" or something similarly vague is not acceptable
+2. A clear description of the expected behavior; "it should work" or something similarly vague is not acceptable
+3. Environment details containing the React version number, the version number of useAudioPlayer and the browser/runtime the author's application is running on
+4. A set of clear steps for how the issue can be reproduced
+
+If any of these elements are missing, unclear or lack sufficient levels of detail, write a friendly response to the author including a brief description of what is missing from the bug report instead of 'pass'.
+
+When writing a response to the issue, follow these guidelines: d
+
+1. Don't label the response or wrap in quotes, just return the message as-is.
+For example, DONT do this:
+**Response:** "Thanks for reporting the issue. However, the bug report ......."
+Instead DO this:
+Thanks for reporting the issue. However, the bug report .......
+
+2. Format the problems you are reporting to the author as a numbered list
+
+Consider the following title and body:
