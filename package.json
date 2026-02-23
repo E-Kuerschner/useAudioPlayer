@@ -12,19 +12,15 @@
         "url": "https://github.com/E-Kuerschner/useAudioPlayer"
     },
     "scripts": {
+        "prepare": "husky",
         "lint-all": "yarn workspaces foreach --all run lint",
         "version": "yarn workspace react-use-audio-player version",
         "release": "yarn workspace react-use-audio-player release"
     },
     "devDependencies": {
         "@yarnpkg/types": "^4.0.0",
-        "husky": "^3.1.0",
+        "husky": "^9.0.0",
         "prettier": "^3.4.2"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn constraints && yarn lint-all"
-        }
     },
     "prettier": {
         "tabWidth": 4,

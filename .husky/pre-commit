@@ -1,0 +1,1 @@
+yarn constraints && yarn lint-all
