@@ -45,7 +45,7 @@
   "devDependencies": {
     "@types/howler": "^2.2.12",
     "@types/react": "^18.0.0",
-    "cypress": "^4.1.0",
+    "cypress": "^13.0.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.3"
   },

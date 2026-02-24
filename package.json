@@ -23,7 +23,8 @@
         "prettier": "^3.4.2"
     },
     "resolutions": {
-        "cookie": "^0.7.1"
+        "cookie": "^0.7.1",
+        "qs": "^6.15.0"
     },
     "prettier": {
         "tabWidth": 4,
