@@ -22,6 +22,9 @@
         "husky": "^9.0.0",
         "prettier": "^3.4.2"
     },
+    "resolutions": {
+        "cookie": "^0.7.1"
+    },
     "prettier": {
         "tabWidth": 4,
         "printWidth": 80,
