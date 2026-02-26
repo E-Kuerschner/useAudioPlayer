@@ -45,7 +45,7 @@ jobs:
       - name: Build package
         run: yarn g:build-package
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
         with:
           working-directory: packages/react-use-audio-player
           start: yarn demo:global-audio:start
