@@ -23,10 +23,12 @@
         "prettier": "^3.4.2"
     },
     "resolutions": {
-        "// cookie": "GHSA-pxg6-pf52-xh8x: force patched cookie across all transitive deps (express, @cypress/request, etc.)",
         "cookie": "^0.7.1",
-        "// qs": "CVE-2022-24999 / GHSA-hrpp-h998-j3pp: prototype pollution; cypress@4 pulled in vulnerable qs versions",
         "qs": "^6.15.0"
+    },
+    "resolutionComments": {
+        "cookie": "GHSA-pxg6-pf52-xh8x: force patched cookie across all transitive deps (express, @cypress/request, etc.)",
+        "qs": "CVE-2022-24999 / GHSA-hrpp-h998-j3pp: prototype pollution; cypress@4 pulled in vulnerable qs versions"
     },
     "prettier": {
         "tabWidth": 4,
