@@ -12,19 +12,23 @@
         "url": "https://github.com/E-Kuerschner/useAudioPlayer"
     },
     "scripts": {
+        "prepare": "husky",
         "lint-all": "yarn workspaces foreach --all run lint",
         "version": "yarn workspace react-use-audio-player version",
         "release": "yarn workspace react-use-audio-player release"
     },
     "devDependencies": {
         "@yarnpkg/types": "^4.0.0",
-        "husky": "^3.1.0",
+        "husky": "^9.0.0",
         "prettier": "^3.4.2"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn constraints && yarn lint-all"
-        }
+    "resolutions": {
+        "cookie": "^0.7.1",
+        "qs": "^6.15.0"
+    },
+    "resolutionComments": {
+        "cookie": "GHSA-pxg6-pf52-xh8x: force patched cookie across all transitive deps (express, @cypress/request, etc.)",
+        "qs": "CVE-2022-24999 / GHSA-hrpp-h998-j3pp: prototype pollution; cypress@4 pulled in vulnerable qs versions"
     },
     "prettier": {
         "tabWidth": 4,
