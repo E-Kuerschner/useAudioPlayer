@@ -4,7 +4,7 @@ on:
     branches:
       - "*"
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
     branches:
       - "*"
 
