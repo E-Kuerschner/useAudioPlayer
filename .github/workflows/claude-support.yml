@@ -1,0 +1,38 @@
+name: Claude Issue Assistant
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  analyze-and-act:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Claude Issue Handler
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # The prompt defines the logic for analyzing and acting on the issue
+          prompt: |
+            Analyze the following GitHub issue:
+            Title: ${{ github.event.issue.title }}
+            Body: ${{ github.event.issue.body }}
+
+            Instructions:
+            1. If the issue is a question, provide a clear and helpful answer as a comment.
+            2. If the issue is a feature request or a specific bug fix that you can implement, please:
+               - Create a new branch.
+               - Implement the necessary code changes.
+               - Open a Pull Request referencing this issue.
+            3. If you need more clarification before acting, ask the user in a comment.
+
+          claude_args: |
+            --max-turns 5
+            --model claude-4-6-sonnet-latest
