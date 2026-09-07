@@ -24,7 +24,7 @@
     },
     "resolutions": {
         "cookie": "^0.7.1",
-        "qs": "^6.15.0"
+        "qs": "^6.16.0"
     },
     "resolutionComments": {
         "cookie": "GHSA-pxg6-pf52-xh8x: force patched cookie across all transitive deps (express, @cypress/request, etc.)",
