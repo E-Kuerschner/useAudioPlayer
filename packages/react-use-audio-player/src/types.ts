@@ -68,14 +68,39 @@ export interface AudioLoadOptions {
     autoplay?: boolean
     /** When true, an HTML5 Audio tag will be used to load the audio instead of the modern Web Audio API */
     html5?: boolean
-    /** Callback that will be triggered when the audio is stopped */
-    onstop?: () => void | undefined
-    /** Callback that will be triggered when the audio is paused */
-    onpause?: () => void | undefined
     /** Callback that will be triggered when the audio is successfully loaded */
     onload?: () => void | undefined
-    /** Callback that will be triggered when the audio reaches its end */
-    onend?: () => void | undefined
+    /** Callback that will be triggered when the audio fails to load
+     * 
+     *  The load error codes are defined in the spec:
+     * 
+     *  1 - The fetching process for the media resource was aborted by the user agent at the user's request.
+     *  2 - A network error of some description caused the user agent to stop fetching the media resource, after the resource was established to be usable.
+     *  3 - An error of some description occurred while decoding the media resource, after the resource was established to be usable.
+     *  4 - The media resource indicated by the src attribute or assigned media provider object was not suitable.
+     */
+    onloaderror?: (soundId?: number, err?: unknown) => void | undefined
+    /** Callback that will be triggered when the audio fails to play */
+    onplayerror?: (soundId?: number, err?: unknown) => void | undefined
     /** Callback that will be triggered when the audio starts playing */
-    onplay?: () => void | undefined
+    onplay?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio reaches its end */
+    onend?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio is paused */
+    onpause?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio is stopped */
+    onstop?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio is muted/unmuted */
+    onmute?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio's volume has changed */
+    onvolume?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio's playback rate has changed */
+    onrate?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the audio has been seeked */
+    onseek?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when the current sound finishes fading in/out */
+    onfade?: (soundId?: number) => void | undefined
+    /** Callback that will be triggered when audio has been automatically unlocked through a touch/click event */
+    onunlock?: () => void | undefined
+
 }
